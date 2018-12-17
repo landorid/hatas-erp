@@ -1,0 +1,58 @@
+enum Permission {
+    ADMIN
+    USER
+}
+
+enum Job {
+    FRONTOFFICE
+    SALES
+    GRAPHICDESIGNER
+    OPERATOR
+    DECOR
+}
+
+type User {
+    id: ID! @unique
+    name: String!
+    email: String! @unique
+    phone: String
+    avatar: String
+    location: String
+    job: [Job]
+    bloodType: String
+    ICEName: String
+    ICEContact: String
+    password: String!
+    resetToken: String
+    resetTokenExpiry: Float
+    permissions: [Permission]
+    status: Boolean
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Customer {
+    id: ID! @unique
+    name: String
+    contact: String!
+    email: String!
+    phone: String
+    address: String
+    taxNumber: String @unique
+    status: Boolean
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}
+
+type Supplier {
+    id: ID! @unique
+    name: String
+    contact: String
+    email: String!
+    phone: String
+    web: String
+    companyProfile: String
+    status: Boolean
+    createdAt: DateTime!
+    updatedAt: DateTime!
+}

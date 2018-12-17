@@ -1,0 +1,918 @@
+type AggregateCustomer {
+  count: Int!
+}
+
+type AggregateSupplier {
+  count: Int!
+}
+
+type AggregateUser {
+  count: Int!
+}
+
+type BatchPayload {
+  count: Long!
+}
+
+type Customer {
+  id: ID!
+  name: String
+  contact: String!
+  email: String!
+  phone: String
+  address: String
+  taxNumber: String
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CustomerConnection {
+  pageInfo: PageInfo!
+  edges: [CustomerEdge]!
+  aggregate: AggregateCustomer!
+}
+
+input CustomerCreateInput {
+  name: String
+  contact: String!
+  email: String!
+  phone: String
+  address: String
+  taxNumber: String
+  status: Boolean
+}
+
+type CustomerEdge {
+  node: Customer!
+  cursor: String!
+}
+
+enum CustomerOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  contact_ASC
+  contact_DESC
+  email_ASC
+  email_DESC
+  phone_ASC
+  phone_DESC
+  address_ASC
+  address_DESC
+  taxNumber_ASC
+  taxNumber_DESC
+  status_ASC
+  status_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CustomerPreviousValues {
+  id: ID!
+  name: String
+  contact: String!
+  email: String!
+  phone: String
+  address: String
+  taxNumber: String
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CustomerSubscriptionPayload {
+  mutation: MutationType!
+  node: Customer
+  updatedFields: [String!]
+  previousValues: CustomerPreviousValues
+}
+
+input CustomerSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CustomerWhereInput
+  AND: [CustomerSubscriptionWhereInput!]
+  OR: [CustomerSubscriptionWhereInput!]
+  NOT: [CustomerSubscriptionWhereInput!]
+}
+
+input CustomerUpdateInput {
+  name: String
+  contact: String
+  email: String
+  phone: String
+  address: String
+  taxNumber: String
+  status: Boolean
+}
+
+input CustomerUpdateManyMutationInput {
+  name: String
+  contact: String
+  email: String
+  phone: String
+  address: String
+  taxNumber: String
+  status: Boolean
+}
+
+input CustomerWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  contact: String
+  contact_not: String
+  contact_in: [String!]
+  contact_not_in: [String!]
+  contact_lt: String
+  contact_lte: String
+  contact_gt: String
+  contact_gte: String
+  contact_contains: String
+  contact_not_contains: String
+  contact_starts_with: String
+  contact_not_starts_with: String
+  contact_ends_with: String
+  contact_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
+  address: String
+  address_not: String
+  address_in: [String!]
+  address_not_in: [String!]
+  address_lt: String
+  address_lte: String
+  address_gt: String
+  address_gte: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  taxNumber: String
+  taxNumber_not: String
+  taxNumber_in: [String!]
+  taxNumber_not_in: [String!]
+  taxNumber_lt: String
+  taxNumber_lte: String
+  taxNumber_gt: String
+  taxNumber_gte: String
+  taxNumber_contains: String
+  taxNumber_not_contains: String
+  taxNumber_starts_with: String
+  taxNumber_not_starts_with: String
+  taxNumber_ends_with: String
+  taxNumber_not_ends_with: String
+  status: Boolean
+  status_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CustomerWhereInput!]
+  OR: [CustomerWhereInput!]
+  NOT: [CustomerWhereInput!]
+}
+
+input CustomerWhereUniqueInput {
+  id: ID
+  taxNumber: String
+}
+
+scalar DateTime
+
+enum Job {
+  FRONTOFFICE
+  SALES
+  GRAPHICDESIGNER
+  OPERATOR
+  DECOR
+}
+
+scalar Long
+
+type Mutation {
+  createCustomer(data: CustomerCreateInput!): Customer!
+  updateCustomer(data: CustomerUpdateInput!, where: CustomerWhereUniqueInput!): Customer
+  updateManyCustomers(data: CustomerUpdateManyMutationInput!, where: CustomerWhereInput): BatchPayload!
+  upsertCustomer(where: CustomerWhereUniqueInput!, create: CustomerCreateInput!, update: CustomerUpdateInput!): Customer!
+  deleteCustomer(where: CustomerWhereUniqueInput!): Customer
+  deleteManyCustomers(where: CustomerWhereInput): BatchPayload!
+  createSupplier(data: SupplierCreateInput!): Supplier!
+  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
+  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
+  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
+  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
+  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+enum Permission {
+  ADMIN
+  USER
+}
+
+type Query {
+  customer(where: CustomerWhereUniqueInput!): Customer
+  customers(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Customer]!
+  customersConnection(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CustomerConnection!
+  supplier(where: SupplierWhereUniqueInput!): Supplier
+  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
+  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  customer(where: CustomerSubscriptionWhereInput): CustomerSubscriptionPayload
+  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Supplier {
+  id: ID!
+  name: String
+  contact: String
+  email: String!
+  phone: String
+  web: String
+  companyProfile: String
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SupplierConnection {
+  pageInfo: PageInfo!
+  edges: [SupplierEdge]!
+  aggregate: AggregateSupplier!
+}
+
+input SupplierCreateInput {
+  name: String
+  contact: String
+  email: String!
+  phone: String
+  web: String
+  companyProfile: String
+  status: Boolean
+}
+
+type SupplierEdge {
+  node: Supplier!
+  cursor: String!
+}
+
+enum SupplierOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  contact_ASC
+  contact_DESC
+  email_ASC
+  email_DESC
+  phone_ASC
+  phone_DESC
+  web_ASC
+  web_DESC
+  companyProfile_ASC
+  companyProfile_DESC
+  status_ASC
+  status_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SupplierPreviousValues {
+  id: ID!
+  name: String
+  contact: String
+  email: String!
+  phone: String
+  web: String
+  companyProfile: String
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SupplierSubscriptionPayload {
+  mutation: MutationType!
+  node: Supplier
+  updatedFields: [String!]
+  previousValues: SupplierPreviousValues
+}
+
+input SupplierSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SupplierWhereInput
+  AND: [SupplierSubscriptionWhereInput!]
+  OR: [SupplierSubscriptionWhereInput!]
+  NOT: [SupplierSubscriptionWhereInput!]
+}
+
+input SupplierUpdateInput {
+  name: String
+  contact: String
+  email: String
+  phone: String
+  web: String
+  companyProfile: String
+  status: Boolean
+}
+
+input SupplierUpdateManyMutationInput {
+  name: String
+  contact: String
+  email: String
+  phone: String
+  web: String
+  companyProfile: String
+  status: Boolean
+}
+
+input SupplierWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  contact: String
+  contact_not: String
+  contact_in: [String!]
+  contact_not_in: [String!]
+  contact_lt: String
+  contact_lte: String
+  contact_gt: String
+  contact_gte: String
+  contact_contains: String
+  contact_not_contains: String
+  contact_starts_with: String
+  contact_not_starts_with: String
+  contact_ends_with: String
+  contact_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
+  web: String
+  web_not: String
+  web_in: [String!]
+  web_not_in: [String!]
+  web_lt: String
+  web_lte: String
+  web_gt: String
+  web_gte: String
+  web_contains: String
+  web_not_contains: String
+  web_starts_with: String
+  web_not_starts_with: String
+  web_ends_with: String
+  web_not_ends_with: String
+  companyProfile: String
+  companyProfile_not: String
+  companyProfile_in: [String!]
+  companyProfile_not_in: [String!]
+  companyProfile_lt: String
+  companyProfile_lte: String
+  companyProfile_gt: String
+  companyProfile_gte: String
+  companyProfile_contains: String
+  companyProfile_not_contains: String
+  companyProfile_starts_with: String
+  companyProfile_not_starts_with: String
+  companyProfile_ends_with: String
+  companyProfile_not_ends_with: String
+  status: Boolean
+  status_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [SupplierWhereInput!]
+  OR: [SupplierWhereInput!]
+  NOT: [SupplierWhereInput!]
+}
+
+input SupplierWhereUniqueInput {
+  id: ID
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String
+  avatar: String
+  location: String
+  job: [Job!]!
+  bloodType: String
+  ICEName: String
+  ICEContact: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]!
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  name: String!
+  email: String!
+  phone: String
+  avatar: String
+  location: String
+  job: UserCreatejobInput
+  bloodType: String
+  ICEName: String
+  ICEContact: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserCreatepermissionsInput
+  status: Boolean
+}
+
+input UserCreatejobInput {
+  set: [Job!]
+}
+
+input UserCreatepermissionsInput {
+  set: [Permission!]
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  phone_ASC
+  phone_DESC
+  avatar_ASC
+  avatar_DESC
+  location_ASC
+  location_DESC
+  bloodType_ASC
+  bloodType_DESC
+  ICEName_ASC
+  ICEName_DESC
+  ICEContact_ASC
+  ICEContact_DESC
+  password_ASC
+  password_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
+  status_ASC
+  status_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String
+  avatar: String
+  location: String
+  job: [Job!]!
+  bloodType: String
+  ICEName: String
+  ICEContact: String
+  password: String!
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: [Permission!]!
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateInput {
+  name: String
+  email: String
+  phone: String
+  avatar: String
+  location: String
+  job: UserUpdatejobInput
+  bloodType: String
+  ICEName: String
+  ICEContact: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  status: Boolean
+}
+
+input UserUpdatejobInput {
+  set: [Job!]
+}
+
+input UserUpdateManyMutationInput {
+  name: String
+  email: String
+  phone: String
+  avatar: String
+  location: String
+  job: UserUpdatejobInput
+  bloodType: String
+  ICEName: String
+  ICEContact: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  status: Boolean
+}
+
+input UserUpdatepermissionsInput {
+  set: [Permission!]
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
+  avatar: String
+  avatar_not: String
+  avatar_in: [String!]
+  avatar_not_in: [String!]
+  avatar_lt: String
+  avatar_lte: String
+  avatar_gt: String
+  avatar_gte: String
+  avatar_contains: String
+  avatar_not_contains: String
+  avatar_starts_with: String
+  avatar_not_starts_with: String
+  avatar_ends_with: String
+  avatar_not_ends_with: String
+  location: String
+  location_not: String
+  location_in: [String!]
+  location_not_in: [String!]
+  location_lt: String
+  location_lte: String
+  location_gt: String
+  location_gte: String
+  location_contains: String
+  location_not_contains: String
+  location_starts_with: String
+  location_not_starts_with: String
+  location_ends_with: String
+  location_not_ends_with: String
+  bloodType: String
+  bloodType_not: String
+  bloodType_in: [String!]
+  bloodType_not_in: [String!]
+  bloodType_lt: String
+  bloodType_lte: String
+  bloodType_gt: String
+  bloodType_gte: String
+  bloodType_contains: String
+  bloodType_not_contains: String
+  bloodType_starts_with: String
+  bloodType_not_starts_with: String
+  bloodType_ends_with: String
+  bloodType_not_ends_with: String
+  ICEName: String
+  ICEName_not: String
+  ICEName_in: [String!]
+  ICEName_not_in: [String!]
+  ICEName_lt: String
+  ICEName_lte: String
+  ICEName_gt: String
+  ICEName_gte: String
+  ICEName_contains: String
+  ICEName_not_contains: String
+  ICEName_starts_with: String
+  ICEName_not_starts_with: String
+  ICEName_ends_with: String
+  ICEName_not_ends_with: String
+  ICEContact: String
+  ICEContact_not: String
+  ICEContact_in: [String!]
+  ICEContact_not_in: [String!]
+  ICEContact_lt: String
+  ICEContact_lte: String
+  ICEContact_gt: String
+  ICEContact_gte: String
+  ICEContact_contains: String
+  ICEContact_not_contains: String
+  ICEContact_starts_with: String
+  ICEContact_not_starts_with: String
+  ICEContact_ends_with: String
+  ICEContact_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  resetToken: String
+  resetToken_not: String
+  resetToken_in: [String!]
+  resetToken_not_in: [String!]
+  resetToken_lt: String
+  resetToken_lte: String
+  resetToken_gt: String
+  resetToken_gte: String
+  resetToken_contains: String
+  resetToken_not_contains: String
+  resetToken_starts_with: String
+  resetToken_not_starts_with: String
+  resetToken_ends_with: String
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+  resetTokenExpiry_not: Float
+  resetTokenExpiry_in: [Float!]
+  resetTokenExpiry_not_in: [Float!]
+  resetTokenExpiry_lt: Float
+  resetTokenExpiry_lte: Float
+  resetTokenExpiry_gt: Float
+  resetTokenExpiry_gte: Float
+  status: Boolean
+  status_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
+}
