@@ -13,6 +13,8 @@
     "url": "https://bitbucket.org/honlapvarazslo/hatas-erp/issues"
   },
   "dependencies": {
+    "@material-ui/core": "^3.6.2",
+    "@material-ui/icons": "^3.0.1",
     "apollo-boost": "^0.1.22",
     "formik": "^1.4.1",
     "graphql": "^14.0.2",
