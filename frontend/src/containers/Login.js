@@ -1,63 +1,46 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { Mutation } from 'react-apollo';
-import gql from 'graphql-tag';
-import Error from '../components/helper/Error';
-import { Link } from 'react-router-dom';
-import * as Yup from 'yup';
+import withStyles from '@material-ui/core/styles/withStyles';
+import LoginForm from '../components/form/LoginForm';
 import { Helmet } from 'react-helmet';
-import { CURRENT_USER_QUERY } from '../components/User';
 
-const SIGN_IN_MUTATION = gql`
-    mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
-        signIn(email: $email, password: $password) {
-            id
-        }
-    }
-`;
+
+const styles = theme => ( {
+  main: {
+    width: 'auto',
+    display: 'block', // Fix IE 11 issue.
+    marginLeft: theme.spacing.unit * 3,
+    marginRight: theme.spacing.unit * 3,
+    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+      width: 400,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit *
+    3}px ${theme.spacing.unit * 3}px`,
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
+} );
 
 const Login = (props) => {
-  const formDefaultValue = {
-    email: 'landori.david@gmail.com',
-    password: '123456',
-  };
-
-  const formLoginFormScheme = Yup.object().shape({
-    email: Yup.string().email().required(),
-    password: Yup.string().required(),
-  });
+  const { classes } = props;
 
   return (
-      <div>
+      <div className={classes.main}>
         <Helmet>
           <title>Bejelentkezés</title>
         </Helmet>
-        <Mutation mutation={SIGN_IN_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
-          {(signIn, { error, loading }) => (
-              <Formik initialValues={formDefaultValue} validationSchema={formLoginFormScheme}
-                      onSubmit={async (values, { setSubmitting }) => {
-                        await signIn({ variables: values }).catch(err => {});
-                        setSubmitting(false);
-                      }}>
-                {({ isSubmitting }) => (
-                    <Form>
-                      <Field type="email" name="email" autoComplete="email"/>
-                      <ErrorMessage name="email" component="div"/>
-                      <Field type="password" name="password" autoComplete="current-password"/>
-                      <ErrorMessage name="password" component="div"/>
-                      <button type="submit" disabled={isSubmitting}>
-                        Belépés
-                      </button>
-                      <Error error={error}/>
-                    </Form>
-                )}
-              </Formik>
-          )}
-        </Mutation>
-
-        <p> Vagy <Link to="/register">regisztrálj</Link>!</p>
+        <LoginForm/>
       </div>
   );
 };
 
-export default Login;
+export default withStyles(styles)(Login);

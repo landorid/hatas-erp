@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -18,12 +18,12 @@ class App extends Component {
     return (
         <ApolloProvider client={client}>
           <MuiThemeProvider theme={theme}>
+            <CssBaseline/>
             <Layout>
-              <CssBaseline/>
               <Switch>
                 <PrivateRoute path="/" exact component={Home}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
-                <Route component={NotFound}/>
+                <PrivateRoute component={NotFound}/>
               </Switch>
             </Layout>
           </MuiThemeProvider>

@@ -6,12 +6,12 @@ const mutations = {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
     if (!user) {
-      throw new Error(`No such user found for email ${email}`);
+      throw new Error(`NO_USER_FOUND`);
     }
     //2.check if their passowrd is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error(`Invalid password`);
+      throw new Error(`INVALID_PASSWORD`);
     }
     //3.generate jwt token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);

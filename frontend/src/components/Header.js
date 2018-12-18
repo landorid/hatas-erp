@@ -26,8 +26,19 @@ import CircularProgress from '@material-ui/core/CircularProgress/CircularProgres
 import Menu from '@material-ui/core/Menu/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import { Link } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
+import { CURRENT_USER_QUERY } from './User';
 
 const drawerWidth = 240;
+
+const SIGN_OUT_MUTATION = gql`
+    mutation SIGN_OUT_MUTATION {
+        signOut {
+            message
+        }
+    }
+`;
 
 const styles = theme => ( {
   appBar: {
@@ -116,11 +127,11 @@ class Header extends Component {
           <Divider/>
           <List>
             {[
-              {name: "Munkalapok", icon: <Munkalap/>, to: "/users"},
-              {name: "Feladatok", icon: <Feladatok/>, to: "/task"},
-              {name: "Ügyfelek", icon: <People/>, to: "/customers"},
-              {name: "Partnerek", icon: <UsersIcon/>, to: "/partners"},
-              {name: "Beszállítók", icon: <LocalShipping/>, to: "/supplier"},
+              { name: 'Munkalapok', icon: <Munkalap/>, to: '/users' },
+              { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
+              { name: 'Ügyfelek', icon: <People/>, to: '/customers' },
+              { name: 'Partnerek', icon: <UsersIcon/>, to: '/partners' },
+              { name: 'Beszállítók', icon: <LocalShipping/>, to: '/supplier' },
             ].map(item => (
                 <ListItem key={item.name} to={item.to} component={Link} button>
                   <ListItemIcon>{item.icon}</ListItemIcon>
@@ -132,9 +143,9 @@ class Header extends Component {
           <Divider/>
           <List>
             {[
-              {name: "Felhasználók", icon: <UsersIcon/>, to: "/users"},
-              {name: "Statisztika", icon: <StatIcon/>, to: "/statistic"},
-              {name: "Beállítások", icon: <SettingsIcon/>, to: "/settings"},
+              { name: 'Felhasználók', icon: <UsersIcon/>, to: '/users' },
+              { name: 'Statisztika', icon: <StatIcon/>, to: '/statistic' },
+              { name: 'Beállítások', icon: <SettingsIcon/>, to: '/settings' },
             ].map(item => (
                 <ListItem key={item.name} to={item.to} component={Link} button>
                   <ListItemIcon>{item.icon}</ListItemIcon>
@@ -188,26 +199,25 @@ class Header extends Component {
                 >
 
                   <MenuItem>Profil</MenuItem>
-                  <MenuItem>Kilépés</MenuItem>
-
+                  <Mutation mutation={SIGN_OUT_MUTATION} fetchPolicy={'no-cache'}
+                            refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+                    {(signOut) => (
+                        <MenuItem onClick={signOut}>Kilépés</MenuItem>
+                    )}
+                  </Mutation>
                 </Menu>
               </div>
             </Toolbar>
           </AppBar>
           <nav className={classes.drawer}>
-            {/* The implementation can be swap with js to avoid SEO duplication of links. */}
             <Hidden mdUp implementation="css">
               <Drawer
                   container={this.props.container}
                   variant="temporary"
                   open={this.state.drawerOpen}
                   onClose={this.toggleDrawerMenu}
-                  classes={{
-                    paper: classes.drawerPaper,
-                  }}
-                  ModalProps={{
-                    keepMounted: true,
-                  }}
+                  classes={{ paper: classes.drawerPaper }}
+                  ModalProps={{ keepMounted: true }}
               >
                 {renderDrawer}
               </Drawer>
