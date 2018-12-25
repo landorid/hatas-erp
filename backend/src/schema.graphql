@@ -1,13 +1,14 @@
 # import * from './generated/prisma.graphql'
 type SuccessMessage {
-    message: String
+  message: String
 }
 
 type Mutation {
-    signIn(email: String!, password: String!): User!
-    signOut : SuccessMessage
+  signIn(email: String!, password: String!): User!
+  signOut : SuccessMessage
+  updateProfile(name: String, email: String, phone: String, location: String, job: [Job], bloodType: String, ICEName: String, ICEContact: String) : User!
 }
 
 type Query {
-    me: User
+  me: User
 }

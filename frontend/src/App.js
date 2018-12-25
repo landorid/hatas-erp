@@ -25,6 +25,7 @@ class App extends Component {
             <Layout>
               <Switch>
                 <PrivateRoute path="/" exact component={Home}/>
+                <PrivateRoute path="/profile" exact component={Profile}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

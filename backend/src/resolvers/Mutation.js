@@ -28,5 +28,23 @@ const mutations = {
     res.clearCookie('token');
     return { message: 'Success Logout!' };
   },
+
+  async updateProfile(parent, args, { res, req, prisma }, info) {
+    if (!req.userId) {
+      throw new Error('Jelentkezz be!');
+    }
+
+    return prisma.mutation.updateUser({
+      where: {
+        id: req.userId,
+      },
+      data: {
+        ...args,
+        job: {
+          set: args.job,
+        },
+      },
+    }, info);
+  },
 };
 module.exports = mutations;
