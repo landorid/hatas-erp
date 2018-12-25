@@ -29,6 +29,7 @@ import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { CURRENT_USER_QUERY } from './User';
+import PageTitle from './PageTitle';
 
 const drawerWidth = 240;
 
@@ -165,7 +166,7 @@ class Header extends Component {
                 <MenuIcon/>
               </IconButton>
               <Typography variant="h6" color="inherit" noWrap>
-                <span id="page-title">{this.props.title}</span>
+                <PageTitle/>
               </Typography>
               <div className={classes.grow}/>
               <IconButton color="inherit">
@@ -198,7 +199,7 @@ class Header extends Component {
                     onClose={this.handleClose}
                 >
 
-                  <MenuItem>Profil</MenuItem>
+                  <MenuItem component={Link} to="/profile">Profil</MenuItem>
                   <Mutation mutation={SIGN_OUT_MUTATION} fetchPolicy={'no-cache'}
                             refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
                     {(signOut) => (

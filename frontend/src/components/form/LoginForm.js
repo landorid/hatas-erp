@@ -15,11 +15,11 @@ import { CURRENT_USER_QUERY } from '../User';
 import { handleError } from '../../lib/transformError';
 
 const SIGN_IN_MUTATION = gql`
-    mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
-        signIn(email: $email, password: $password) {
-            id
-        }
+  mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
+    signIn(email: $email, password: $password) {
+      id
     }
+  }
 `;
 
 const styles = theme => ( {
@@ -67,44 +67,44 @@ const LoginForm = (props) => {
   });
 
   return (
-      <Paper className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockIcon/>
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Bejelentkezés
-        </Typography>
-        <Mutation mutation={SIGN_IN_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
-          {(signIn) => (
-              <Formik initialValues={formDefaultValue} validationSchema={formLoginFormScheme}
-                      onSubmit={async (values, { setSubmitting, setErrors }) => {
-                        await signIn({ variables: values }).catch(err => {
-                          handleError(err, setErrors, [
-                            { input: 'email', err: 'NO_USER_FOUND' },
-                            { input: 'password', err: 'INVALID_PASSWORD' },
-                          ]);
-                          setSubmitting(false);
-                        });
-                      }}>
-                {({ isSubmitting }) => (
-                    <Form className={classes.form}>
-                      <Field type="email" name="email" autoComplete="email" label="E-mail" autoFocus
-                             component={MuiInput}/>
-                      <Field type="password" name="password" autoComplete="current-password" label="Jelszó"
-                             component={MuiInput}/>
+    <Paper className={classes.paper}>
+      <Avatar className={classes.avatar}>
+        <LockIcon/>
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Bejelentkezés
+      </Typography>
+      <Mutation mutation={SIGN_IN_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+        {(signIn) => (
+          <Formik initialValues={formDefaultValue} validationSchema={formLoginFormScheme}
+                  onSubmit={async (values, { setSubmitting, setErrors }) => {
+                    await signIn({ variables: values }).catch(err => {
+                      handleError(err, setErrors, [
+                        { input: 'email', err: 'NO_USER_FOUND' },
+                        { input: 'password', err: 'INVALID_PASSWORD' },
+                      ]);
+                      setSubmitting(false);
+                    });
+                  }}>
+            {({ isSubmitting }) => (
+              <Form className={classes.form}>
+                <Field type="email" name="email" autoComplete="email" label="E-mail" autoFocus
+                       component={MuiInput}/>
+                <Field type="password" name="password" autoComplete="current-password" label="Jelszó"
+                       component={MuiInput}/>
 
-                      <div className={classes.wrapper}>
-                        <Button type="submit" fullWidth variant="contained" color="primary"
-                                className={classes.submit} disabled={isSubmitting}>
-                          Belépés
-                        </Button>
-                      </div>
-                    </Form>
-                )}
-              </Formik>
-          )}
-        </Mutation>
-      </Paper>
+                <div className={classes.wrapper}>
+                  <Button type="submit" fullWidth variant="contained" color="primary"
+                          className={classes.submit} disabled={isSubmitting}>
+                    Belépés
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        )}
+      </Mutation>
+    </Paper>
   );
 };
 

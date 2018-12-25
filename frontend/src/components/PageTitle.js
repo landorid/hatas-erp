@@ -17,7 +17,7 @@ class PageTitle extends Component {
     }
 
     if (!this.props.title) {
-      return <>{this.props.context.title}</>;
+      return this.props.context.title;
     }
   }
 }
