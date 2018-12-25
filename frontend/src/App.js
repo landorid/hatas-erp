@@ -12,12 +12,15 @@ import client from './lib/dataProvider';
 import PrivateRoute from './components/helper/PrivateRoute';
 import UnauthenticatedRoute from './components/helper/UnauthenticatedRoute';
 import theme from './lib/muiTheme';
+import Profile from './containers/Profile';
+import { PageTitleProvider } from './lib/pageTitleProvider';
 
 class App extends Component {
   render() {
     return (
-        <ApolloProvider client={client}>
-          <MuiThemeProvider theme={theme}>
+      <ApolloProvider client={client}>
+        <MuiThemeProvider theme={theme}>
+          <PageTitleProvider>
             <CssBaseline/>
             <Layout>
               <Switch>
@@ -26,8 +29,9 @@ class App extends Component {
                 <PrivateRoute component={NotFound}/>
               </Switch>
             </Layout>
-          </MuiThemeProvider>
-        </ApolloProvider>
+          </PageTitleProvider>
+        </MuiThemeProvider>
+      </ApolloProvider>
     );
   }
 }
