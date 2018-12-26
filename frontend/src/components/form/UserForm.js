@@ -1,6 +1,7 @@
 import React from 'react';
 import * as Yup from 'yup';
 import { Formik, Form, Field } from 'formik';
+import { adopt } from 'react-adopt';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MuiInput from './elements/MuiInput';
 import Button from '@material-ui/core/Button';
@@ -10,6 +11,7 @@ import gql from 'graphql-tag';
 import ErrorMessage from '../ErrorMessage';
 import MenuItem from '@material-ui/core/MenuItem';
 import { roles } from '../../config';
+import Paper from '@material-ui/core/es/Paper/Paper';
 
 const CURRENT_USER_PROFILE_QUERY = gql`
   query CURRENT_USER_PROFILE_QUERY {
@@ -53,111 +55,125 @@ const CURRENT_USER_UPDATE_MUTATION = gql`
   }
 `;
 
-const style = (theme) => {
-
-};
+const style = (theme) => ( {
+  root: {
+    marginTop: 0,
+    marginBottom: 0,
+  },
+  formContainer: {
+    overflow: 'hidden',
+    padding: theme.spacing.unit * 2,
+  },
+  actionContainer: {
+    margin: theme.spacing.unit * -2,
+    marginTop: theme.spacing.unit * 2,
+    padding: theme.spacing.unit * 2,
+    backgroundColor: theme.palette.grey['100'],
+  },
+} );
 
 const UserForm = (props) => {
-  const { classes } = props;
-  const formDefaultValue = {
-    name: '',
-    email: '',
-    phone: '',
-    location: '',
-    job: '',
-    bloodType: '',
-    ICEName: '',
-    ICEContact: '',
-  };
-  const bloodTypes = [
-    '0-pozitív',
-    '0-negatív',
-    'A-pozitív',
-    'A-negatív',
-    'B-pozitív',
-    'B-negatív',
-    'AB-pozitív',
-    'AB-negatív',
-  ];
+    const { classes } = props;
+    const bloodTypes = [
+      '0-pozitív',
+      '0-negatív',
+      'A-pozitív',
+      'A-negatív',
+      'B-pozitív',
+      'B-negatív',
+      'AB-pozitív',
+      'AB-negatív',
+    ];
 
-  const formScheme = Yup.object().shape({
-    name: Yup.string().required(),
-    email: Yup.string().email().required(),
-    phone: Yup.string(),
-    location: Yup.string(),
-    job: Yup.string(),
-    bloodType: Yup.string(),
-    ICEName: Yup.string(),
-    ICECContact: Yup.string(),
-  });
+    const formDefaultValue = {
+      name: '',
+      email: '',
+      phone: '',
+      location: 'csa',
+      job: '',
+      bloodType: '',
+      ICEName: '',
+      ICEContact: '',
+    };
+    const formScheme = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string().email().required(),
+      phone: Yup.string(),
+      location: Yup.string(),
+      job: Yup.string(),
+      bloodType: Yup.string(),
+      ICEName: Yup.string(),
+      ICECContact: Yup.string(),
+    });
 
-  //TODO: show message when updated is finished properly
-  return (
-    <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}>
-      {(updateUser, { error: MutationError }) => {
-        return (
-          <Query query={CURRENT_USER_PROFILE_QUERY}>
-            {({ loading, error, data }) => {
-              if (loading) return 'betöltés';
-              if (error) return <ErrorMessage error={error}/>;
-              if (!loading) return (
-                <Formik initialValues={{ ...formDefaultValue, ...data.me }} validateOnChange={false}
-                        validateOnBlur={false}
-                        validationSchema={formScheme} onSubmit={async (values, { setSubmitting }) => {
-                  await updateUser({ variables: values }).catch(() => setSubmitting(false));
-                  setSubmitting(false);
-                }}>
-                  {({ isSubmitting }) => (
-                    <Form className={classes.form}>
-                      <Grid container className={classes.root} spacing={16}>
-                        <Grid item xs={12} sm={6} lg={4}>
-                          <Field type="text" name="name" label="Név" component={MuiInput} variant="outlined" autoFocus/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} lg={4}>
-                          <Field type="email" name="email" label="E-mail" component={MuiInput} variant="outlined"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} lg={4}>
-                          <Field type="text" name="phone" label="Telefonszám" component={MuiInput} variant="outlined"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} lg={4}>
-                          <Field type="text" name="location" label="Telephely" component={MuiInput} variant="outlined"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6} lg={4}>
-                          <Field type="text" name="job" label="Szerepkör" component={MuiInput} variant="outlined" select>
-                            {roles.map(role => <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>)}
+    const Composed = adopt({
+      getUser: ({ render }) => <Query query={CURRENT_USER_PROFILE_QUERY} children={render}/>,
+      updateUser: ({ render }) => <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}
+                                            children={render}/>,
+    });
 
-                          </Field>
-                        </Grid>
-                        <Grid item xs={12} sm={6} lg={4}>
-                          <Field type="text" name="bloodType" label="Vércsoport" component={MuiInput} variant="outlined"
-                                 select>
-                            {bloodTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
-                          </Field>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Field type="text" name="ICEName" label="ICEName" component={MuiInput} variant="outlined"/>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Field type="text" name="ICEContact" label="ICEContact" component={MuiInput}
-                                 variant="outlined"/>
-                        </Grid>
+//TODO: show message when updated is finished properly
+    return (
+      <Composed>
+        {({ getUser, updateUser }) => {
+          if (updateUser.loading || getUser.loading) return 'betöltés';
+          if (getUser.error) return <ErrorMessage error={getUser.error}/>;
+          if (updateUser.error) return <ErrorMessage error={updateUser.error}/>;
+          if (!getUser.loading) return (
+            <Formik initialValues={{ ...formDefaultValue, ...getUser.data.me }} validateOnChange={false}
+                    validateOnBlur={false}
+                    validationSchema={formScheme} onSubmit={async (values, { setSubmitting }) => {
+              await updateUser({ variables: values }).catch(() => setSubmitting(false));
+              setSubmitting(false);
+            }}>
+              {({ isSubmitting, dirty }) => (
+                <Paper className={classes.formContainer} square>
+                  <Form className={classes.form}>
+                    <Grid container className={classes.root} spacing={16}>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text" name="name" label="Név" component={MuiInput} variant="outlined" autoFocus/>
                       </Grid>
-                      <div className={classes.wrapper}>
-                        <Button type="submit" variant="contained" color="primary" className={classes.submit}
-                                disabled={isSubmitting}>
-                          Mentés
-                        </Button>
-                      </div>
-                      <ErrorMessage error={MutationError}/>
-                    </Form>
-                  )}
-                </Formik> );
-            }}
-          </Query>
-        );
-      }}
-    </Mutation>
-  );
-};
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="email" name="email" label="E-mail" component={MuiInput} variant="outlined"/>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text" name="phone" label="Telefonszám" component={MuiInput} variant="outlined"/>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text" name="location" label="Telephely" component={MuiInput} variant="outlined"/>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text" name="job" label="Szerepkör" component={MuiInput} variant="outlined" select>
+                          {roles.map(role => <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>)}
+                        </Field>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text" name="bloodType" label="Vércsoport" component={MuiInput} variant="outlined"
+                               select>
+                          {bloodTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+                        </Field>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field type="text" name="ICEName" label="ICE Név" component={MuiInput} variant="outlined"/>
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field type="text" name="ICEContact" label="ICE Elérhetőség" component={MuiInput}
+                               variant="outlined"/>
+                      </Grid>
+                    </Grid>
+                    <div className={classes.actionContainer}>
+                      <Button type="submit" variant="contained" color="primary" className={classes.submit}
+                              disabled={isSubmitting || !dirty}>
+                        Ment{!dirty ? 've' : 'és'}
+                      </Button>
+                    </div>
+                  </Form>
+                </Paper> )}
+            </Formik> );
+        }}
+      </Composed>
+    );
+  }
+;
 
 export default withStyles(style)(UserForm);
