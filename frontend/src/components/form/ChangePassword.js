@@ -1,15 +1,15 @@
 import React from 'react';
-import { Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Input from './elements/Input';
 import withStyles from '@material-ui/core/styles/withStyles';
-import Paper from '@material-ui/core/Paper';
 import gql from 'graphql-tag';
 import { adopt } from 'react-adopt';
 import { Mutation } from 'react-apollo';
 import { handleError } from '../../lib/transformError';
+import FormContainer from './elements/FormContainer';
 
 const CHANGE_CURRENT_USER_MUTATION = gql`
   mutation  CHANGE_CURRENT_USER_MUTATION(
@@ -29,10 +29,6 @@ const style = (theme) => ( {
   root: {
     marginTop: 0,
     marginBottom: 0,
-  },
-  formContainer: {
-    overflow: 'hidden',
-    padding: theme.spacing.unit * 2,
   },
   actionContainer: {
     margin: theme.spacing.unit * -2,
@@ -77,29 +73,27 @@ const ChangePassword = (props) => {
   return (
     <Composed>
       {({ formik: { isSubmitting, dirty } }) => (
-        <Paper className={classes.formContainer} square>
-          <Form className={classes.form}>
-            <Grid container className={classes.root} spacing={16}>
-              <Grid item xs={12} sm={12} lg={4}>
-                <Input type="password" name="oldPassword" label="Jelenlegi jelszó" autoComplete="current-password"
-                       autoFocus/>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={4}>
-                <Input type="password" name="newPassword" autoComplete="new-password" label="Új jelszó"/>
-              </Grid>
-              <Grid item xs={12} sm={6} lg={4}>
-                <Input type="password" name="newPasswordConfirm" autoComplete="new-password"
-                       label="Új jelszó mégegyszer"/>
-              </Grid>
+        <FormContainer>
+          <Grid container className={classes.root} spacing={16}>
+            <Grid item xs={12} sm={12} lg={4}>
+              <Input type="password" name="oldPassword" label="Jelenlegi jelszó" autoComplete="current-password"
+                     autoFocus/>
             </Grid>
-            <div className={classes.actionContainer}>
-              <Button type="submit" variant="contained" color="primary" className={classes.submit}
-                      disabled={isSubmitting || !dirty}>
-                Módosítás
-              </Button>
-            </div>
-          </Form>
-        </Paper>
+            <Grid item xs={12} sm={6} lg={4}>
+              <Input type="password" name="newPassword" autoComplete="new-password" label="Új jelszó"/>
+            </Grid>
+            <Grid item xs={12} sm={6} lg={4}>
+              <Input type="password" name="newPasswordConfirm" autoComplete="new-password"
+                     label="Új jelszó mégegyszer"/>
+            </Grid>
+          </Grid>
+          <div className={classes.actionContainer}>
+            <Button type="submit" variant="contained" color="primary" className={classes.submit}
+                    disabled={isSubmitting || !dirty}>
+              Módosítás
+            </Button>
+          </div>
+        </FormContainer>
       )}
     </Composed> );
 };

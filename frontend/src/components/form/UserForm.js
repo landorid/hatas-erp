@@ -1,6 +1,6 @@
 import React from 'react';
 import * as Yup from 'yup';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Field } from 'formik';
 import { adopt } from 'react-adopt';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MuiInput from './elements/MuiInput';
@@ -11,7 +11,7 @@ import gql from 'graphql-tag';
 import ErrorMessage from '../ErrorMessage';
 import MenuItem from '@material-ui/core/MenuItem';
 import { roles } from '../../config';
-import Paper from '@material-ui/core/es/Paper/Paper';
+import FormContainer from './elements/FormContainer';
 
 const CURRENT_USER_PROFILE_QUERY = gql`
   query CURRENT_USER_PROFILE_QUERY {
@@ -62,10 +62,6 @@ const style = (theme) => ( {
   root: {
     marginTop: 0,
     marginBottom: 0,
-  },
-  formContainer: {
-    overflow: 'hidden',
-    padding: theme.spacing.unit * 2,
   },
   actionContainer: {
     margin: theme.spacing.unit * -2,
@@ -133,52 +129,50 @@ const UserForm = (props) => {
               setSubmitting(false);
             }}>
               {({ isSubmitting, dirty }) => (
-                <Paper className={classes.formContainer} square>
-                  <Form className={classes.form}>
-                    <Grid container className={classes.root} spacing={16}>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="lastName" label="Vezetéknév" component={MuiInput} variant="outlined"
-                               autoFocus/>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="firstName" label="Keresztnév" component={MuiInput} variant="outlined"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="email" name="email" label="E-mail" component={MuiInput} variant="outlined"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="phone" label="Telefonszám" component={MuiInput} variant="outlined"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="location" label="Telephely" component={MuiInput} variant="outlined"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="job" label="Szerepkör" component={MuiInput} variant="outlined" select>
-                          {roles.map(role => <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>)}
-                        </Field>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="bloodType" label="Vércsoport" component={MuiInput} variant="outlined"
-                               select>
-                          {bloodTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
-                        </Field>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="ICEName" label="ICE Név" component={MuiInput} variant="outlined"/>
-                      </Grid>
-                      <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="ICEContact" label="ICE Elérhetőség" component={MuiInput}
-                               variant="outlined"/>
-                      </Grid>
+                <FormContainer>
+                  <Grid container className={classes.root} spacing={16}>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="lastName" label="Vezetéknév" component={MuiInput} variant="outlined"
+                             autoFocus/>
                     </Grid>
-                    <div className={classes.actionContainer}>
-                      <Button type="submit" variant="contained" color="primary" className={classes.submit}
-                              disabled={isSubmitting || !dirty}>
-                        Ment{!dirty ? 've' : 'és'}
-                      </Button>
-                    </div>
-                  </Form>
-                </Paper> )}
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="firstName" label="Keresztnév" component={MuiInput} variant="outlined"/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="email" name="email" label="E-mail" component={MuiInput} variant="outlined"/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="phone" label="Telefonszám" component={MuiInput} variant="outlined"/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="location" label="Telephely" component={MuiInput} variant="outlined"/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="job" label="Szerepkör" component={MuiInput} variant="outlined" select>
+                        {roles.map(role => <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>)}
+                      </Field>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="bloodType" label="Vércsoport" component={MuiInput} variant="outlined"
+                             select>
+                        {bloodTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
+                      </Field>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="ICEName" label="ICE Név" component={MuiInput} variant="outlined"/>
+                    </Grid>
+                    <Grid item xs={12} sm={6} lg={4}>
+                      <Field type="text" name="ICEContact" label="ICE Elérhetőség" component={MuiInput}
+                             variant="outlined"/>
+                    </Grid>
+                  </Grid>
+                  <div className={classes.actionContainer}>
+                    <Button type="submit" variant="contained" color="primary" className={classes.submit}
+                            disabled={isSubmitting || !dirty}>
+                      Ment{!dirty ? 've' : 'és'}
+                    </Button>
+                  </div>
+                </FormContainer> )}
             </Formik> );
         }}
       </Composed>
