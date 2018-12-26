@@ -31,7 +31,8 @@ MuiInput.propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.number
+      PropTypes.number,
+      PropTypes.array
     ])
   }),
   form: PropTypes.shape({

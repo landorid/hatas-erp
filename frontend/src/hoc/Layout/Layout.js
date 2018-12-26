@@ -10,28 +10,30 @@ const styles = theme => ( {
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3,
-    backgroundColor: theme.palette.background.default
+    backgroundColor: theme.palette.background.default,
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing.unit * 3,
+    },
   },
   toolbar: theme.mixins.toolbar,
 } );
 
 const Layout = (props) => {
   return (
-      <>
-        <Helmet titleTemplate="%s | Hatás ERP" defaultTitle="Hatás Vállalatirányítás"/>
-        <div className={props.classes.wrapper}>
-          <User>
-            {({ data: { me } }) => (
-                me ? <Header {...props.childProps}/> : null
-            )}
-          </User>
-          <main className={props.classes.content}>
-            <div className={props.classes.toolbar}/>
-            {props.children}
-          </main>
-        </div>
-      </>
+    <>
+      <Helmet titleTemplate="%s | Hatás ERP" defaultTitle="Hatás Vállalatirányítás"/>
+      <div className={props.classes.wrapper}>
+        <User>
+          {({ data: { me } }) => (
+            me ? <Header {...props.childProps}/> : null
+          )}
+        </User>
+        <main className={props.classes.content}>
+          <div className={props.classes.toolbar}/>
+          {props.children}
+        </main>
+      </div>
+    </>
   );
 };
 
