@@ -17,7 +17,8 @@ const CURRENT_USER_PROFILE_QUERY = gql`
   query CURRENT_USER_PROFILE_QUERY {
     me {
       id
-      name
+      lastName
+      firstName
       email
       phone
       location
@@ -31,7 +32,8 @@ const CURRENT_USER_PROFILE_QUERY = gql`
 
 const CURRENT_USER_UPDATE_MUTATION = gql`
   mutation CURRENT_USER_UPDATE_MUTATION(
-  $name: String
+  $lastName: String
+  $firstName: String
   $email: String
   $phone: String
   $location: String
@@ -41,7 +43,8 @@ const CURRENT_USER_UPDATE_MUTATION = gql`
   $ICEContact: String
   ) {
     updateProfile(
-      name: $name
+      lastName: $lastName
+      firstName: $firstName
       email: $email
       phone: $phone
       location: $location
@@ -86,7 +89,8 @@ const UserForm = (props) => {
     ];
 
     const formDefaultValue = {
-      name: '',
+      lastName: '',
+      firstName: '',
       email: '',
       phone: '',
       location: 'csa',
@@ -96,7 +100,8 @@ const UserForm = (props) => {
       ICEContact: '',
     };
     const formScheme = Yup.object().shape({
-      name: Yup.string().required(),
+      firstName: Yup.string().required(),
+      lastName: Yup.string().required(),
       email: Yup.string().email().required(),
       phone: Yup.string(),
       location: Yup.string(),
@@ -108,22 +113,23 @@ const UserForm = (props) => {
 
     const Composed = adopt({
       getUser: ({ render }) => <Query query={CURRENT_USER_PROFILE_QUERY} children={render}/>,
-      updateUser: ({ render }) => <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}
-                                            children={render}/>,
+      updateUser: ({ render }) => <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}>
+        {(mutation, result) => render({ mutation, result })}
+      </Mutation>,
     });
 
-//TODO: show message when updated is finished properly
+    //TODO: show message when updated is finished properly
     return (
       <Composed>
         {({ getUser, updateUser }) => {
-          if (updateUser.loading || getUser.loading) return 'betöltés';
+          if (updateUser.result.loading || getUser.loading) return 'betöltés';
           if (getUser.error) return <ErrorMessage error={getUser.error}/>;
-          if (updateUser.error) return <ErrorMessage error={updateUser.error}/>;
+          if (updateUser.result.error) return <ErrorMessage error={updateUser.result.error}/>;
           if (!getUser.loading) return (
             <Formik initialValues={{ ...formDefaultValue, ...getUser.data.me }} validateOnChange={false}
                     validateOnBlur={false}
                     validationSchema={formScheme} onSubmit={async (values, { setSubmitting }) => {
-              await updateUser({ variables: values }).catch(() => setSubmitting(false));
+              await updateUser.mutation({ variables: values }).catch(() => setSubmitting(false));
               setSubmitting(false);
             }}>
               {({ isSubmitting, dirty }) => (
@@ -131,7 +137,11 @@ const UserForm = (props) => {
                   <Form className={classes.form}>
                     <Grid container className={classes.root} spacing={16}>
                       <Grid item xs={12} sm={6} lg={4}>
-                        <Field type="text" name="name" label="Név" component={MuiInput} variant="outlined" autoFocus/>
+                        <Field type="text" name="lastName" label="Vezetéknév" component={MuiInput} variant="outlined"
+                               autoFocus/>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text" name="firstName" label="Keresztnév" component={MuiInput} variant="outlined"/>
                       </Grid>
                       <Grid item xs={12} sm={6} lg={4}>
                         <Field type="email" name="email" label="E-mail" component={MuiInput} variant="outlined"/>
@@ -153,10 +163,10 @@ const UserForm = (props) => {
                           {bloodTypes.map(type => <MenuItem key={type} value={type}>{type}</MenuItem>)}
                         </Field>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={6} lg={4}>
                         <Field type="text" name="ICEName" label="ICE Név" component={MuiInput} variant="outlined"/>
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={12} sm={6} lg={4}>
                         <Field type="text" name="ICEContact" label="ICE Elérhetőség" component={MuiInput}
                                variant="outlined"/>
                       </Grid>

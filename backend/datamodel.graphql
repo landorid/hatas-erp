@@ -13,7 +13,8 @@ enum Job {
 
 type User {
     id: ID! @unique
-    name: String!
+    lastName: String!
+    firstName: String!
     email: String! @unique
     phone: String
     avatar: String
