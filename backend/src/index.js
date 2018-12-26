@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const auth = require('./middlewares/auth');
 const prisma = require('./dataSources/Prisma');
+require('express-async-errors');
 const app = express();
 const typeDefs = importSchema(path.resolve('src/schema.graphql'));
 
