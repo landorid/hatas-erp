@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import PageTitle from '../components/PageTitle';
-import UserForm from '../components/form/UserForm';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AppBar from '@material-ui/core/AppBar';
+import PageTitle from '../components/PageTitle';
+import UserForm from '../components/form/UserForm';
+import ChangePassword from '../components/form/ChangePassword';
 
 class Profile extends Component {
   state = {
@@ -27,6 +28,7 @@ class Profile extends Component {
           </Tabs>
         </AppBar>
         {activeTab === 0 && <UserForm/>}
+        {activeTab === 2 && <ChangePassword/>}
       </div>
     );
   }

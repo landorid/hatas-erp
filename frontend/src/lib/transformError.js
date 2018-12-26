@@ -5,6 +5,8 @@ const transformError = (error) => {
       return 'Nincs ilyen felhasználó!';
     case 'INVALID_PASSWORD':
       return 'Helytelen jelszó!';
+    case 'INVALID_OLD_PASSWORD':
+      return 'Helytelen jelszó!';
     default:
       return errorMessage;
   }

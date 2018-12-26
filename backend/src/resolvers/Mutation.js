@@ -46,5 +46,28 @@ const mutations = {
       },
     }, info);
   },
+
+  async changePassword(parent, { oldPassword, newPassword }, { res, req, prisma }, info) {
+    if (!req.userId) {
+      throw new Error('Jelentkezz be!');
+    }
+
+    const user = await prisma.query.user({
+      where: { id: req.userId },
+    });
+
+    const valid = await bcrypt.compare(oldPassword, user.password);
+    if (!valid) {
+      throw new Error(`INVALID_OLD_PASSWORD`);
+    }
+    const secureNewPassword = await bcrypt.hash(newPassword, 10);
+
+    return prisma.mutation.updateUser({
+      where: { id: req.userId },
+      data: {
+        password: secureNewPassword,
+      },
+    }, info);
+  },
 };
 module.exports = mutations;
