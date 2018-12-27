@@ -89,7 +89,7 @@ const UserForm = (props) => {
       firstName: '',
       email: '',
       phone: '',
-      location: 'csa',
+      location: '',
       job: '',
       bloodType: '',
       ICEName: '',
@@ -110,8 +110,8 @@ const UserForm = (props) => {
     const Composed = adopt({
       getUser: ({ render }) => <Query query={CURRENT_USER_PROFILE_QUERY} children={render}/>,
       updateUser: ({ render }) => <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}>
-        {(mutation, result) => render({ mutation, result })}
-      </Mutation>,
+          {(mutation, result) => render({ mutation, result })}
+        </Mutation>,
     });
 
     //TODO: show message when updated is finished properly
@@ -125,7 +125,14 @@ const UserForm = (props) => {
             <Formik initialValues={{ ...formDefaultValue, ...getUser.data.me }} validateOnChange={false}
                     validateOnBlur={false}
                     validationSchema={formScheme} onSubmit={async (values, { setSubmitting }) => {
-              await updateUser.mutation({ variables: values }).catch(() => setSubmitting(false));
+              await updateUser.mutation({
+                variables: values,
+                update: (cache) => {
+                  const data = cache.readQuery({ query: CURRENT_USER_PROFILE_QUERY });
+                  data.me = values;
+                  cache.writeQuery({ query: CURRENT_USER_PROFILE_QUERY, data });
+                },
+              }).catch(() => setSubmitting(false));
               setSubmitting(false);
             }}>
               {({ isSubmitting, dirty }) => (
