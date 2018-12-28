@@ -8,6 +8,7 @@ type Mutation {
   signOut : SuccessMessage
   updateProfile(firstName: String, lastName: String, email: String, phone: String, location: String, job: [Job], bloodType: String, ICEName: String, ICEContact: String) : User!
   changePassword(oldPassword: String!, newPassword: String!): User!
+  changeAvatar(image: String!): User!
 }
 
 type Query {

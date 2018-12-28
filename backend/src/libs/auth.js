@@ -5,7 +5,7 @@ module.exports = async function(req, res, next) {
   const { token } = req.cookies;
 
   if (token) {
-    //TODO: handle JsonWebTokenError: invalid signature
+    //TODO: handle JsonWebTokenError: invalid signature (ha van egy nem valid token a tárolóban akkor összekressel)
     const { userId } = jwt.verify(token, process.env.APP_SECRET);
     // put the userId onto the req for future requests to access
     req.userId = userId;

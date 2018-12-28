@@ -15,7 +15,9 @@
   "dependencies": {
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
+    "@material-ui/lab": "^3.0.0-alpha.26",
     "apollo-boost": "^0.1.22",
+    "axios": "^0.18.0",
     "formik": "^1.4.1",
     "graphql": "^14.0.2",
     "graphql-tag": "latest",
@@ -24,6 +26,7 @@
     "react": "^16.6.3",
     "react-adopt": "^0.6.0",
     "react-apollo": "^2.3.3",
+    "react-avatar-editor": "^11.0.4",
     "react-dom": "^16.6.3",
     "react-helmet": "^5.2.0",
     "react-router-dom": "^4.3.1",

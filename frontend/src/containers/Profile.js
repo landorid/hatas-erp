@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import PageTitle from '../components/PageTitle';
 import UserForm from '../components/form/UserForm';
 import ChangePassword from '../components/form/ChangePassword';
+import AvatarForm from '../components/form/AvatarForm';
 
 class Profile extends Component {
   state = {
@@ -28,6 +29,7 @@ class Profile extends Component {
           </Tabs>
         </AppBar>
         {activeTab === 0 && <UserForm/>}
+        {activeTab === 1 && <AvatarForm/>}
         {activeTab === 2 && <ChangePassword/>}
       </div>
     );

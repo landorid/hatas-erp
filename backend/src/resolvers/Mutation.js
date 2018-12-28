@@ -69,5 +69,18 @@ const mutations = {
       },
     }, info);
   },
+
+  async changeAvatar(parent, { image }, { req, prisma }, info) {
+    if (!req.userId) {
+      throw new Error('Jelentkezz be!');
+    }
+
+    return prisma.mutation.updateUser({
+      where: { id: req.userId },
+      data: {
+        avatar: image,
+      },
+    }, info);
+  },
 };
 module.exports = mutations;
