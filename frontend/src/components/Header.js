@@ -25,7 +25,7 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import Menu from '@material-ui/core/Menu/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { CURRENT_USER_QUERY } from './User';
@@ -34,11 +34,11 @@ import PageTitle from './PageTitle';
 const drawerWidth = 240;
 
 const SIGN_OUT_MUTATION = gql`
-    mutation SIGN_OUT_MUTATION {
-        signOut {
-            message
-        }
+  mutation SIGN_OUT_MUTATION {
+    signOut {
+      message
     }
+  }
 `;
 
 const styles = theme => ( {
@@ -115,126 +115,130 @@ class Header extends Component {
     this.setState({ drawerOpen: !this.state.drawerOpen });
   };
 
+  closeDrawerMenu = () => {
+    this.setState({ drawerOpen: false });
+  };
+
   render() {
     const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     const renderDrawer = (
-        <div>
-          <div className={classes.toolbar}>
-            <Typography variant="h6" color="inherit" noWrap>Hatás Reklám</Typography>
-          </div>
-          <Divider/>
-          <List>
-            {[
-              { name: 'Munkalapok', icon: <Munkalap/>, to: '/users' },
-              { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
-              { name: 'Ügyfelek', icon: <People/>, to: '/customers' },
-              { name: 'Partnerek', icon: <UsersIcon/>, to: '/partners' },
-              { name: 'Beszállítók', icon: <LocalShipping/>, to: '/supplier' },
-            ].map(item => (
-                <ListItem key={item.name} to={item.to} component={Link} button>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.name}/>
-                </ListItem>
-            ))}
-          </List>
-
-          <Divider/>
-          <List>
-            {[
-              { name: 'Felhasználók', icon: <UsersIcon/>, to: '/users' },
-              { name: 'Statisztika', icon: <StatIcon/>, to: '/statistic' },
-              { name: 'Beállítások', icon: <SettingsIcon/>, to: '/settings' },
-            ].map(item => (
-                <ListItem key={item.name} to={item.to} component={Link} button>
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText primary={item.name}/>
-                </ListItem>
-            ))}
-          </List>
+      <div>
+        <div className={classes.toolbar}>
+          <Typography variant="h6" color="inherit" noWrap>Hatás Reklám</Typography>
         </div>
+        <Divider/>
+        <List>
+          {[
+            { name: 'Munkalapok', icon: <Munkalap/>, to: '/users' },
+            { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
+            { name: 'Ügyfelek', icon: <People/>, to: '/customers' },
+            { name: 'Partnerek', icon: <UsersIcon/>, to: '/partners' },
+            { name: 'Beszállítók', icon: <LocalShipping/>, to: '/supplier' },
+          ].map(item => (
+            <ListItem key={item.name} to={item.to} component={Link} button>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name}/>
+            </ListItem>
+          ))}
+        </List>
+
+        <Divider/>
+        <List>
+          {[
+            { name: 'Felhasználók', icon: <UsersIcon/>, to: '/users' },
+            { name: 'Statisztika', icon: <StatIcon/>, to: '/statistic' },
+            { name: 'Beállítások', icon: <SettingsIcon/>, to: '/settings' },
+          ].map(item => (
+            <ListItem key={item.name} to={item.to} component={NavLink} onClick={this.closeDrawerMenu} button>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.name}/>
+            </ListItem>
+          ))}
+        </List>
+      </div>
     );
 
     return (
-        <div className={classes.root}>
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <IconButton className={classes.menuButton} color="inherit"
-                          onClick={this.toggleDrawerMenu} aria-label="Open drawer">
-                <MenuIcon/>
-              </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
-                <PageTitle/>
-              </Typography>
-              <div className={classes.grow}/>
-              <IconButton color="inherit">
-                {this.state.loading ?
-                    <CircularProgress className={classes.progress} color="inherit" size={24}/> :
-                    <RefreshIcon/>
-                }
-              </IconButton>
-              <div>
-                <IconButton
-                    aria-owns={open ? 'menu-appbar' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleMenu}
-                    color="inherit"
-                >
-                  <AccountCircle/>
-                </IconButton>
-                <Menu
-                    id="menu-appbar"
-                    anchorEl={anchorEl}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={this.handleClose}
-                >
-
-                  <MenuItem component={Link} to="/profile" onClick={this.handleClose}>Profil</MenuItem>
-                  <Mutation mutation={SIGN_OUT_MUTATION} fetchPolicy={'no-cache'}
-                            refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
-                    {(signOut) => (
-                        <MenuItem onClick={signOut}>Kilépés</MenuItem>
-                    )}
-                  </Mutation>
-                </Menu>
-              </div>
-            </Toolbar>
-          </AppBar>
-          <nav className={classes.drawer}>
-            <Hidden mdUp implementation="css">
-              <Drawer
-                  container={this.props.container}
-                  variant="temporary"
-                  open={this.state.drawerOpen}
-                  onClose={this.toggleDrawerMenu}
-                  classes={{ paper: classes.drawerPaper }}
-                  ModalProps={{ keepMounted: true }}
+      <div className={classes.root}>
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton className={classes.menuButton} color="inherit"
+                        onClick={this.toggleDrawerMenu} aria-label="Open drawer">
+              <MenuIcon/>
+            </IconButton>
+            <Typography variant="h6" color="inherit" noWrap>
+              <PageTitle/>
+            </Typography>
+            <div className={classes.grow}/>
+            <IconButton color="inherit">
+              {this.state.loading ?
+                <CircularProgress className={classes.progress} color="inherit" size={24}/> :
+                <RefreshIcon/>
+              }
+            </IconButton>
+            <div>
+              <IconButton
+                aria-owns={open ? 'menu-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleMenu}
+                color="inherit"
               >
-                {renderDrawer}
-              </Drawer>
-            </Hidden>
-            <Hidden smDown implementation="css">
-              <Drawer
-                  classes={{
-                    paper: classes.drawerPaper,
-                  }}
-                  variant="permanent"
-                  open>
-                {renderDrawer}
-              </Drawer>
-            </Hidden>
-          </nav>
-        </div>
+                <AccountCircle/>
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={this.handleClose}
+              >
+
+                <MenuItem component={Link} to="/profile" onClick={this.handleClose}>Profil</MenuItem>
+                <Mutation mutation={SIGN_OUT_MUTATION} fetchPolicy={'no-cache'}
+                          refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+                  {(signOut) => (
+                    <MenuItem onClick={signOut}>Kilépés</MenuItem>
+                  )}
+                </Mutation>
+              </Menu>
+            </div>
+          </Toolbar>
+        </AppBar>
+        <nav className={classes.drawer}>
+          <Hidden mdUp>
+            <Drawer
+              container={this.props.container}
+              variant="temporary"
+              open={this.state.drawerOpen}
+              onClose={this.toggleDrawerMenu}
+              classes={{ paper: classes.drawerPaper }}
+              ModalProps={{ keepMounted: true }}
+            >
+              {renderDrawer}
+            </Drawer>
+          </Hidden>
+          <Hidden smDown>
+            <Drawer
+              classes={{
+                paper: classes.drawerPaper,
+              }}
+              variant="permanent"
+              open>
+              {renderDrawer}
+            </Drawer>
+          </Hidden>
+        </nav>
+      </div>
     );
   }
 }

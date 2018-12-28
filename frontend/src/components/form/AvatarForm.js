@@ -23,14 +23,22 @@ const UPLOAD_AVATAR_MUTATION = gql`
   }
 `;
 
-const styles = {
+const styles = (theme) => ( {
+  root: {
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center',
+    },
+  },
   avatar: {
-    margin: 10,
+    margin: '0 auto',
     width: 100,
     height: 100,
     fontSize: '40px',
+    [theme.breakpoints.up('sm')]: {
+      margin: 10,
+    },
   },
-};
+} );
 
 const Composed = adopt({
   userImage: ({ render }) => <Query query={CURRENT_USER_QUERY} children={render}/>,
@@ -102,7 +110,7 @@ class AvatarForm extends Component {
                     {userImage.data.me.lastName[0] + userImage.data.me.firstName[0]}
                   </Avatar>
                 </Grid>
-                <Grid xs={12} md={9} item>
+                <Grid xs={12} md={9} item className={classes.root}>
                   <Typography variant="h6">Profilkép feltöltése</Typography>
                   <TextField
                     type="file"
