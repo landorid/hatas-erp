@@ -12,7 +12,15 @@ import ErrorMessage from '../ErrorMessage';
 import MenuItem from '@material-ui/core/MenuItem';
 import { roles } from '../../config';
 import FormContainer from './elements/FormContainer';
+import ContentLoader from 'react-content-loader';
 
+const MyLoader = props => (
+  <ContentLoader height={30} ariaLabel={"Betöltés.."} rtl>
+    <rect x="12.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
+    <rect x="136.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
+    <rect x="265.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
+  </ContentLoader>
+);
 const CURRENT_USER_PROFILE_QUERY = gql`
   query CURRENT_USER_PROFILE_QUERY {
     me {
@@ -110,15 +118,22 @@ const UserForm = (props) => {
     const Composed = adopt({
       getUser: ({ render }) => <Query query={CURRENT_USER_PROFILE_QUERY} children={render}/>,
       updateUser: ({ render }) => <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}>
-          {(mutation, result) => render({ mutation, result })}
-        </Mutation>,
+        {(mutation, result) => render({ mutation, result })}
+      </Mutation>,
     });
 
     //TODO: show message when updated is finished properly
     return (
       <Composed>
         {({ getUser, updateUser }) => {
-          if (updateUser.result.loading || getUser.loading) return 'betöltés';
+          if (updateUser.result.loading || getUser.loading) {
+            return ( <FormContainer>
+              <MyLoader/>
+              <MyLoader/>
+              <MyLoader/>
+            </FormContainer> );
+          }
+
           if (getUser.error) return <ErrorMessage error={getUser.error}/>;
           if (updateUser.result.error) return <ErrorMessage error={updateUser.result.error}/>;
           if (!getUser.loading) return (
