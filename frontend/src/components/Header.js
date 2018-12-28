@@ -199,7 +199,7 @@ class Header extends Component {
                     onClose={this.handleClose}
                 >
 
-                  <MenuItem component={Link} to="/profile">Profil</MenuItem>
+                  <MenuItem component={Link} to="/profile" onClick={this.handleClose}>Profil</MenuItem>
                   <Mutation mutation={SIGN_OUT_MUTATION} fetchPolicy={'no-cache'}
                             refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
                     {(signOut) => (
