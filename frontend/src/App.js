@@ -14,6 +14,7 @@ import UnauthenticatedRoute from './components/helper/UnauthenticatedRoute';
 import theme from './lib/muiTheme';
 import Profile from './containers/Profile';
 import { PageTitleProvider } from './lib/pageTitleProvider';
+import Users from './containers/Users';
 
 class App extends Component {
   render() {
@@ -26,6 +27,7 @@ class App extends Component {
               <Switch>
                 <PrivateRoute path="/" exact component={Home}/>
                 <PrivateRoute path="/profile" exact component={Profile}/>
+                <PrivateRoute path="/users" exact component={Users}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

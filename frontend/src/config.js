@@ -6,3 +6,7 @@ export const roles = [
   { id: 'OPERATOR', name: 'Gyártás' },
   { id: 'DECOR', name: 'Dekor' },
 ];
+export const permissions = [
+  { id: 'ADMIN', name: 'Adminisztrátor' },
+  { id: 'USER', name: 'Felhasználó' },
+];
