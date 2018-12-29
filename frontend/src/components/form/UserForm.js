@@ -13,9 +13,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { roles } from '../../config';
 import FormContainer from './elements/FormContainer';
 import ContentLoader from 'react-content-loader';
+import Input from './elements/Input';
 
 const MyLoader = props => (
-  <ContentLoader height={30} ariaLabel={"Betöltés.."} rtl>
+  <ContentLoader height={30} ariaLabel={'Betöltés..'} rtl>
     <rect x="12.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
     <rect x="136.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
     <rect x="265.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
@@ -154,20 +155,19 @@ const UserForm = (props) => {
                 <FormContainer>
                   <Grid container className={classes.root} spacing={16}>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text" name="lastName" label="Vezetéknév" component={MuiInput} variant="outlined"
-                             autoFocus/>
+                      <Input name="lastName" label="Vezetéknév" autoFocus/>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text" name="firstName" label="Keresztnév" component={MuiInput} variant="outlined"/>
+                      <Input name="firstName" label="Keresztnév"/>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="email" name="email" label="E-mail" component={MuiInput} variant="outlined"/>
+                      <Input type="email" name="email" label="E-mail"/>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text" name="phone" label="Telefonszám" component={MuiInput} variant="outlined"/>
+                      <Input name="phone" label="Telefonszám"/>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text" name="location" label="Telephely" component={MuiInput} variant="outlined"/>
+                      <Input name="location" label="Telephely"/>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
                       <Field type="text" name="job" label="Szerepkör" component={MuiInput} variant="outlined" select>
@@ -181,11 +181,10 @@ const UserForm = (props) => {
                       </Field>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text" name="ICEName" label="ICE Név" component={MuiInput} variant="outlined"/>
+                      <Input name="ICEName" label="ICE Név"/>
                     </Grid>
                     <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text" name="ICEContact" label="ICE Elérhetőség" component={MuiInput}
-                             variant="outlined"/>
+                      <Input name="ICEContact" label="ICE Elérhetőség"/>
                     </Grid>
                   </Grid>
                   <div className={classes.actionContainer}>

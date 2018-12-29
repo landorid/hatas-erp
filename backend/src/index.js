@@ -30,12 +30,12 @@ const server = new ApolloServer({
 });
 
 app.use(cookieParser(), helmet());
-app.use(auth);
-
 app.use(cors({
   credentials: true,
   origin: process.env.FRONTEND_URL,
 }));
+app.use(auth);
+
 
 app.post('/upload', upload.single('data'), function(req, res, next) {
   if (!req.userId) {
