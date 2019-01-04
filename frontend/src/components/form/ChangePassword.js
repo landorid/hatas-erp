@@ -8,8 +8,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import gql from 'graphql-tag';
 import { adopt } from 'react-adopt';
 import { Mutation } from 'react-apollo';
-import { handleError } from '../../lib/transformError';
 import FormContainer from './elements/FormContainer';
+import { handleErrors } from '../../lib/utils';
 
 const CHANGE_CURRENT_USER_MUTATION = gql`
   mutation  CHANGE_CURRENT_USER_MUTATION(
@@ -50,22 +50,27 @@ const formScheme = Yup.object().shape({
   newPasswordConfirm: Yup.string().oneOf([Yup.ref('newPassword'), null], 'A két jelszó nem egyezik').required(),
 });
 
-const formSubmit = async (variables, { setErrors, setSubmitting }, mutation) => {
-  await mutation({ variables }).catch(err => {
-    handleError(err, setErrors, [
-      { input: 'oldPassword', err: 'INVALID_OLD_PASSWORD' },
-    ]);
+const formSubmit = async (variables, { setErrors, setSubmitting, resetForm }, mutation) => {
+  await mutation({ variables }).then(({ errors }) => {
+    handleErrors(errors, setErrors);
+  }).catch(err => {
+    console.log(err);
     setSubmitting(false);
   });
-  setSubmitting(false);
-  //TODO: show message when updated is finished properly
+  resetForm(formDefaultValue);
 };
 
 const Composed = adopt({
-  mutation: ({ render }) => <Mutation mutation={CHANGE_CURRENT_USER_MUTATION} children={render}/>,
+  mutation: ({ render }) =>
+    <Mutation mutation={CHANGE_CURRENT_USER_MUTATION}
+              children={render}/>,
   formik: ({ render, mutation }) =>
-    <Formik initialValues={formDefaultValue} validationSchema={formScheme} children={render} validateOnChange={false}
-            validateOnBlur={false} onSubmit={(v, a) => formSubmit(v, a, mutation)}/>,
+    <Formik initialValues={formDefaultValue}
+            validationSchema={formScheme}
+            children={render}
+            validateOnChange={false}
+            validateOnBlur={false}
+            onSubmit={(v, a) => formSubmit(v, a, mutation)}/>,
 });
 
 const ChangePassword = (props) => {
@@ -76,21 +81,32 @@ const ChangePassword = (props) => {
         <FormContainer>
           <Grid container className={classes.root} spacing={16}>
             <Grid item xs={12} sm={12} lg={4}>
-              <Input type="password" name="oldPassword" label="Jelenlegi jelszó" autoComplete="current-password"
+              <Input type="password"
+                     name="oldPassword"
+                     label="Jelenlegi jelszó"
+                     autoComplete="current-password"
                      autoFocus/>
             </Grid>
             <Grid item xs={12} sm={6} lg={4}>
-              <Input type="password" name="newPassword" autoComplete="new-password" label="Új jelszó"/>
+              <Input type="password"
+                     name="newPassword"
+                     autoComplete="new-password"
+                     label="Új jelszó"/>
             </Grid>
             <Grid item xs={12} sm={6} lg={4}>
-              <Input type="password" name="newPasswordConfirm" autoComplete="new-password"
+              <Input type="password"
+                     name="newPasswordConfirm"
+                     autoComplete="new-password"
                      label="Új jelszó mégegyszer"/>
             </Grid>
           </Grid>
           <div className={classes.actionContainer}>
-            <Button type="submit" variant="contained" color="primary" className={classes.submit}
+            <Button type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
                     disabled={isSubmitting || !dirty}>
-              Módosítás
+              {dirty ? 'Módosítás' : 'Módosítva'}
             </Button>
           </div>
         </FormContainer>

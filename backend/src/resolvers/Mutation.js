@@ -69,7 +69,11 @@ const mutations = {
 
     const valid = await bcrypt.compare(oldPassword, user.password);
     if (!valid) {
-      throw new Error(`INVALID_OLD_PASSWORD`);
+      throw new UserInputError('Form Arguments invalid', {
+        invalidArgs: {
+          'oldPassword': 'Helytelen jelszó!',
+        },
+      });
     }
     const secureNewPassword = await bcrypt.hash(newPassword, 10);
 
