@@ -15,7 +15,13 @@ const mutations = {
           'email': 'Nincs ilyen felhasználó!',
         },
       });
-
+    }
+    if(!user.status) {
+      throw new UserInputError('Form Arguments invalid', {
+        invalidArgs: {
+          'email': 'Archivált felhasználó!',
+        },
+      });
     }
     //2.check if their passowrd is correct
     const valid = await bcrypt.compare(password, user.password);
