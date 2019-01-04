@@ -16,6 +16,7 @@ import Profile from './containers/Profile';
 import { PageTitleProvider } from './lib/pageTitleProvider';
 import Users from './containers/Users';
 import AddUser from './containers/AddUser';
+import EditUser from './containers/EditUser';
 
 class App extends Component {
   render() {
@@ -30,6 +31,7 @@ class App extends Component {
                 <PrivateRoute path="/profile" exact component={Profile}/>
                 <PrivateRoute path="/users" exact component={Users}/>
                 <PrivateRoute path="/users/add" exact component={AddUser}/>
+                <PrivateRoute path="/users/:id" exact component={EditUser}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

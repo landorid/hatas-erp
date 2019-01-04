@@ -1,4 +1,7 @@
+const { forwardTo } = require('prisma-binding');
+
 const queries = {
+  user: forwardTo('prisma'),
   async users(parent, args, { req, prisma }, info) {
     if (!req.userId) {
       throw new Error('Unauthenticated!')

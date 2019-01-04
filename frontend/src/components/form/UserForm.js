@@ -23,6 +23,7 @@ const MyLoader = props => (
     <rect x="265.63" y="12" rx="0" ry="0" width="112.21" height="15"/>
   </ContentLoader>
 );
+
 const CURRENT_USER_PROFILE_QUERY = gql`
   query CURRENT_USER_PROFILE_QUERY {
     me {
@@ -118,7 +119,7 @@ const UserForm = (props) => {
     });
 
     const Composed = adopt({
-      getUser: ({ render }) => <Query query={CURRENT_USER_PROFILE_QUERY} children={render}/>,
+      getUser: ({ render }) => <Query query={CURRENT_USER_PROFILE_QUERY} children={render} fetchPolicy={'cache-first'}/>,
       updateUser: ({ render }) => <Mutation mutation={CURRENT_USER_UPDATE_MUTATION} ignoreResults={true}>
         {(mutation, result) => render({ mutation, result })}
       </Mutation>,
@@ -209,3 +210,4 @@ const UserForm = (props) => {
 ;
 
 export default withStyles(style)(UserForm);
+export { MyLoader };

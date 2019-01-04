@@ -1,9 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { AuthenticationError, UserInputError } = require('apollo-server');
+const { forwardTo } = require('prisma-binding');
 const { hasPermission } = require('../utils');
 
 const mutations = {
+  updateUser: forwardTo('prisma'),
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
