@@ -12,6 +12,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableHead from '@material-ui/core/TableHead';
+import Ok from '@material-ui/icons/CheckCircleOutlined';
+import Disabled from '@material-ui/icons/HighlightOffOutlined';
+
 import { getRoleName, getPermission } from '../../lib/utils';
 
 function desc(a, b, orderBy) {
@@ -87,7 +90,6 @@ class UsersListing extends React.Component {
   render() {
     const { classes, data, rows } = this.props;
     const { order, orderBy, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
@@ -140,14 +142,22 @@ class UsersListing extends React.Component {
                       </TableCell>
                       <TableCell align="right">{getRoleName(n.job[0])}</TableCell>
                       <TableCell align="right">{getPermission(n.permissions[0])}</TableCell>
+                      <TableCell align="right">{n.status ?
+                        <Tooltip
+                          title="Engedélyezve"
+                          placement="left"
+                          enterDelay={300}
+                        ><Ok color="default"/>
+                        </Tooltip> :
+                        <Tooltip
+                          title="Letiltva"
+                          placement="left"
+                          enterDelay={300}
+                        ><Disabled color="error"/>
+                        </Tooltip>}</TableCell>
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6}/>
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </div>

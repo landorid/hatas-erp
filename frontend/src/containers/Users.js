@@ -19,8 +19,8 @@ const USERS_QUERY = gql`
       lastName
       avatar
       job
-      createdAt
       permissions
+      status
     }
   }
 `;
@@ -45,6 +45,7 @@ const Users = (props) => {
     { id: 'lastName', numeric: false, label: 'Név' },
     { id: 'job', numeric: false, label: 'Beosztás' },
     { id: 'permissions', numeric: false, label: 'Jogosultság' },
+    { id: 'status', numeric: false, label: 'Státusz' },
   ];
 
   return (
