@@ -1,17 +1,28 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { AuthenticationError, UserInputError } = require('apollo-server');
 
 const mutations = {
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
     if (!user) {
-      throw new Error(`NO_USER_FOUND`);
+      // throw new Error('asdf');
+      throw new UserInputError('Form Arguments invalid', {
+        invalidArgs: {
+          'email': 'Nincs ilyen felhasználó!',
+        },
+      });
+
     }
     //2.check if their passowrd is correct
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error(`INVALID_PASSWORD`);
+      throw new UserInputError('Form Arguments invalid', {
+        invalidArgs: {
+          'password': 'Helytelen jelszó!',
+        },
+      });
     }
     //3.generate jwt token
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
@@ -31,7 +42,7 @@ const mutations = {
 
   async updateProfile(parent, args, { res, req, prisma }, info) {
     if (!req.userId) {
-      throw new Error('Jelentkezz be!');
+      throw new AuthenticationError('Jelentkezz be!');
     }
 
     return prisma.mutation.updateUser({
@@ -49,7 +60,7 @@ const mutations = {
 
   async changePassword(parent, { oldPassword, newPassword }, { res, req, prisma }, info) {
     if (!req.userId) {
-      throw new Error('Jelentkezz be!');
+      throw new AuthenticationError('Jelentkezz be!');
     }
 
     const user = await prisma.query.user({
@@ -72,7 +83,7 @@ const mutations = {
 
   async changeAvatar(parent, { image }, { req, prisma }, info) {
     if (!req.userId) {
-      throw new Error('Jelentkezz be!');
+      throw new AuthenticationError('Jelentkezz be!');
     }
 
     return prisma.mutation.updateUser({

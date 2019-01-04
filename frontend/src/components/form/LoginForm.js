@@ -3,6 +3,7 @@ import { Formik, Form, Field } from 'formik';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
+import { adopt } from 'react-adopt';
 import Button from '@material-ui/core/Button/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { blue } from '@material-ui/core/colors';
@@ -12,7 +13,7 @@ import Avatar from '@material-ui/core/Avatar/Avatar';
 import LockIcon from '@material-ui/icons/Lock';
 import MuiInput from './elements/MuiInput';
 import { CURRENT_USER_QUERY } from '../User';
-import { handleError } from '../../lib/transformError';
+import { handleErrors } from '../../lib/utils';
 
 const SIGN_IN_MUTATION = gql`
   mutation SIGN_IN_MUTATION($email: String!, $password: String!) {
@@ -66,44 +67,68 @@ const LoginForm = (props) => {
     password: Yup.string().required(),
   });
 
+  const formOnSubmit = async (values, { setSubmitting, setErrors }, signIn) => {
+    await signIn({ variables: values }).then(({ errors }) => {
+      handleErrors(errors, setErrors);
+    }).catch(err => {
+      //TODO: handle network error
+      console.log(err);
+      setSubmitting(false);
+    });
+    setSubmitting(false);
+  };
+
+  const ComposedLoginForm = adopt({
+    signIn: ({ render }) =>
+      <Mutation
+        mutation={SIGN_IN_MUTATION}
+        refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
+        {(mutation, result) => render({ mutation, result })}
+      </Mutation>,
+    formik: ({ render, signIn }) =>
+      <Formik initialValues={formDefaultValue}
+              validationSchema={formLoginFormScheme}
+              onSubmit={(v, a) => formOnSubmit(v, a, signIn.mutation)}
+              children={render}/>,
+  });
+
   return (
     <Paper className={classes.paper}>
       <Avatar className={classes.avatar}>
         <LockIcon/>
       </Avatar>
-      <Typography component="h1" variant="h5">
-        Bejelentkezés
-      </Typography>
-      <Mutation mutation={SIGN_IN_MUTATION} refetchQueries={[{ query: CURRENT_USER_QUERY }]}>
-        {(signIn) => (
-          <Formik initialValues={formDefaultValue} validationSchema={formLoginFormScheme}
-                  onSubmit={async (values, { setSubmitting, setErrors }) => {
-                    await signIn({ variables: values }).catch(err => {
-                      handleError(err, setErrors, [
-                        { input: 'email', err: 'NO_USER_FOUND' },
-                        { input: 'password', err: 'INVALID_PASSWORD' },
-                      ]);
-                      setSubmitting(false);
-                    });
-                  }}>
-            {({ isSubmitting }) => (
-              <Form className={classes.form}>
-                <Field type="email" name="email" autoComplete="email" label="E-mail" autoFocus
-                       component={MuiInput}/>
-                <Field type="password" name="password" autoComplete="current-password" label="Jelszó"
-                       component={MuiInput}/>
 
-                <div className={classes.wrapper}>
-                  <Button type="submit" fullWidth variant="contained" color="primary"
-                          className={classes.submit} disabled={isSubmitting}>
-                    Belépés
-                  </Button>
-                </div>
-              </Form>
-            )}
-          </Formik>
+      <Typography component="h1" variant="h5">Bejelentkezés</Typography>
+
+      <ComposedLoginForm>
+        {({ formik }) => (
+          <Form className={classes.form}>
+            <Field type="email"
+                   name="email"
+                   autoComplete="email"
+                   label="E-mail"
+                   component={MuiInput}
+                   autoFocus/>
+
+            <Field type="password"
+                   name="password"
+                   autoComplete="current-password"
+                   label="Jelszó"
+                   component={MuiInput}/>
+
+            <div className={classes.wrapper}>
+              <Button type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.submit}
+                      disabled={formik.isSubmitting}
+                      fullWidth>
+                Belépés
+              </Button>
+            </div>
+          </Form>
         )}
-      </Mutation>
+      </ComposedLoginForm>
     </Paper>
   );
 };
