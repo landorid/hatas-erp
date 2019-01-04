@@ -6,6 +6,7 @@ type SuccessMessage {
 type Mutation {
   signIn(email: String!, password: String!): User!
   signOut : SuccessMessage
+  signUp(data: UserCreateInput!): User!
   updateProfile(firstName: String, lastName: String, email: String, phone: String, location: String, job: [Job], bloodType: String, ICEName: String, ICEContact: String) : User!
   changePassword(oldPassword: String!, newPassword: String!): User!
   changeAvatar(image: String!): User!

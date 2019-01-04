@@ -15,6 +15,7 @@ import theme from './lib/muiTheme';
 import Profile from './containers/Profile';
 import { PageTitleProvider } from './lib/pageTitleProvider';
 import Users from './containers/Users';
+import AddUser from './containers/AddUser';
 
 class App extends Component {
   render() {
@@ -28,6 +29,7 @@ class App extends Component {
                 <PrivateRoute path="/" exact component={Home}/>
                 <PrivateRoute path="/profile" exact component={Profile}/>
                 <PrivateRoute path="/users" exact component={Users}/>
+                <PrivateRoute path="/users/add" exact component={AddUser}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

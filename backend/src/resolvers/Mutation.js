@@ -1,13 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { AuthenticationError, UserInputError } = require('apollo-server');
+const { hasPermission } = require('../utils');
 
 const mutations = {
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
     if (!user) {
-      // throw new Error('asdf');
       throw new UserInputError('Form Arguments invalid', {
         invalidArgs: {
           'email': 'Nincs ilyen felhasználó!',
@@ -38,6 +38,27 @@ const mutations = {
   async signOut(parent, args, { res }, info) {
     res.clearCookie('token');
     return { message: 'Success Logout!' };
+  },
+
+  async signUp(parent, { data }, { req, prisma }, info) {
+    if (!req.userId) {
+      throw new AuthenticationError('Jelentkezz be!');
+    }
+
+    hasPermission(req.user, ['sADMIN']);
+
+    const user = await prisma.query.user({ where: { email: data.email } });
+    if (user) {
+      throw new UserInputError('Form Arguments invalid', {
+        invalidArgs: {
+          'email': 'Ezzel az email címmel már regisztráltak!',
+        },
+      });
+    }
+
+    data.password = await bcrypt.hash(data.password, 10);
+
+    return prisma.mutation.createUser({ data }, info);
   },
 
   async updateProfile(parent, args, { res, req, prisma }, info) {
