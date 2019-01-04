@@ -18,6 +18,7 @@ const GET_USER_BY_ID_QUERY = gql`
       ICEName
       ICEContact
       permissions
+      status
     }
   }
 `;
@@ -26,6 +27,8 @@ const UPDATE_USER_MUTATION = gql`
   mutation CURRENT_USER_UPDATE_MUTATION($data: UserUpdateInput!, $where: UserWhereUniqueInput!) {
     updateUser(data: $data, where: $where) {
       id
+      permissions
+      job
     }
   }
 `;

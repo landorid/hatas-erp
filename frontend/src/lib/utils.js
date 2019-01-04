@@ -30,8 +30,11 @@ const handleErrors = (errors, errorHandler) => {
   });
 };
 
-const hasPermission = (user, permissionsNeeded) => {
-  const matchedPermissions = user.permissions.filter(permissionTheyHave =>
+const hasPermission = (permissions, permissionsNeeded) => {
+  if (!permissions) {
+    return false;
+  }
+  const matchedPermissions = permissions.filter(permissionTheyHave =>
     permissionsNeeded.includes(permissionTheyHave),
   );
 

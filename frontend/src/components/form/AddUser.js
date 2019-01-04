@@ -133,7 +133,7 @@ const UserForm = (props) => {
             <Grid container className={classes.root} spacing={16}>
               <User>
                 {({ loading, data: { me } }) => {
-                  return loading ? '' : ( hasPermission(me, ['ADMIN']) ?
+                  return loading ? '' : ( hasPermission(me.permissions, ['ADMIN']) ?
                     <Grid item xs={12} sm={6} lg={4}>
                       <Field type="text"
                              name="permissions"

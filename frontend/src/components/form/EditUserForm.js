@@ -13,6 +13,7 @@ import { handleErrors, hasPermission } from '../../lib/utils';
 import User from '../User';
 import { GET_USER_BY_ID_QUERY } from '../../containers/EditUser';
 import { MyLoader } from './UserForm';
+import Typography from '@material-ui/core/es/Typography/Typography';
 
 const style = (theme) => ( {
   root: {
@@ -51,6 +52,7 @@ const UserForm = (props) => {
       bloodType: Yup.string(),
       ICEName: Yup.string(),
       ICECContact: Yup.string(),
+      status: Yup.bool(),
     });
 
     const formOnSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
@@ -62,9 +64,11 @@ const UserForm = (props) => {
       formData.permissions = { set: formData.permissions };
       await mutation({
         variables: { where: { id: values.id }, data: formData },
-        update: (cache) => {
+        update: (cache, result) => {
           const data = cache.readQuery({ query: GET_USER_BY_ID_QUERY, variables: { id: values.id } });
           data.user = values;
+          data.user.permissions = result.data.updateUser.permissions;
+          data.user.job = result.data.updateUser.job;
           cache.writeQuery({ query: GET_USER_BY_ID_QUERY, data });
         },
       }).then(({ errors }) => {
@@ -89,7 +93,7 @@ const UserForm = (props) => {
                      validateOnBlur={false}
                      validationSchema={formScheme}
                      onSubmit={formOnSubmit}>
-        {({ isSubmitting, dirty }) => (
+        {({ isSubmitting, dirty, values }) => (
           <FormContainer>
             <Grid container className={classes.root} spacing={16}>
               <Grid item xs={12} sm={6} lg={4}>
@@ -110,27 +114,6 @@ const UserForm = (props) => {
                   {roles.map(role => <MenuItem key={role.id} value={role.id}>{role.name}</MenuItem>)}
                 </Field>
               </Grid>
-            </Grid>
-            <Grid container className={classes.root} spacing={16}>
-              <User>
-                {({ loading, data: { me } }) => {
-                  return loading ? '' : ( hasPermission(me, ['ADMIN']) ?
-                    <Grid item xs={12} sm={6} lg={4}>
-                      <Field type="text"
-                             name="permissions"
-                             label="Jogosultság"
-                             component={MuiInput}
-                             variant="outlined"
-                             select>
-                        {permissions.map(({ id, name }) =>
-                          <MenuItem key={id} value={id}>
-                            {name}
-                          </MenuItem>)
-                        }
-                      </Field>
-                    </Grid> : '' );
-                }}
-              </User>
             </Grid>
             <Grid container className={classes.root} spacing={16}>
               <Grid item xs={12} sm={6} lg={4}>
@@ -162,6 +145,39 @@ const UserForm = (props) => {
                 <Input name="ICEContact" label="ICE Elérhetőség"/>
               </Grid>
             </Grid>
+            <User>
+              {({ loading, data: { me } }) => {
+                return loading ? '' : ( hasPermission(me.permissions, ['ADMIN']) ?
+                  <><Typography variant={'h6'}>Hozzáférés</Typography>
+                    <Grid container className={classes.root} spacing={16}>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text"
+                               name="permissions"
+                               label="Jogosultság"
+                               component={MuiInput}
+                               variant="outlined"
+                               select>
+                          {permissions.map(({ id, name }) =>
+                            <MenuItem key={id} value={id}>
+                              {name}
+                            </MenuItem>)
+                          }
+                        </Field>
+                      </Grid>
+                      <Grid item xs={12} sm={6} lg={4}>
+                        <Field type="text"
+                               name="status"
+                               label="Státusz"
+                               component={MuiInput}
+                               variant="outlined"
+                               select>
+                          <MenuItem key="active" value={true}>Aktív</MenuItem>
+                          <MenuItem key="archive" value={false}>Archivált</MenuItem>
+                        </Field>
+                      </Grid>
+                    </Grid></> : '' );
+              }}
+            </User>
             <div className={classes.actionContainer}>
               <Button type="submit"
                       variant="contained"
