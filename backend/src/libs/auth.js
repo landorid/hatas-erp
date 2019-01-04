@@ -18,7 +18,7 @@ module.exports = async function(req, res, next) {
         '{id, email, lastName, firstName, permissions}');
       req.user = user;
     } catch (e) {
-      console.log('szak');
+      console.log(e);
     }
   }
 

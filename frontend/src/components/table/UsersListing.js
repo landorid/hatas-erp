@@ -147,7 +147,7 @@ class UsersListing extends React.Component {
                           title="Engedélyezve"
                           placement="left"
                           enterDelay={300}
-                        ><Ok color="default"/>
+                        ><Ok color="inherit"/>
                         </Tooltip> :
                         <Tooltip
                           title="Letiltva"

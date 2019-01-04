@@ -51,7 +51,7 @@ const Users = (props) => {
   return (
     <div>
       <PageTitle title="Felhasználók"/>
-      <Query query={USERS_QUERY}>
+      <Query query={USERS_QUERY} fetchPolicy="cache-first">
         {({ data: { users }, loading }) => {
           if (loading) return (
             <Paper>

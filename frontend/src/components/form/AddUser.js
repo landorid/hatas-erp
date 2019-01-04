@@ -49,7 +49,6 @@ const UserForm = (props) => {
       'AB-pozitív',
       'AB-negatív',
     ];
-
     const formDefaultValue = {
       lastName: '',
       firstName: '',
