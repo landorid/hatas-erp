@@ -14,6 +14,7 @@ import { roles } from '../../config';
 import FormContainer from './elements/FormContainer';
 import ContentLoader from 'react-content-loader';
 import Input from './elements/Input';
+import { handleErrors } from '../../lib/utils';
 
 const MyLoader = props => (
   <ContentLoader height={30} ariaLabel={'Betöltés..'} rtl>
@@ -123,6 +124,20 @@ const UserForm = (props) => {
       </Mutation>,
     });
 
+    const formOnSubmit = async (values, { setSubmitting, setErrors }, updateUser) => {
+      await updateUser({
+        variables: values,
+        update: (cache) => {
+          const data = cache.readQuery({ query: CURRENT_USER_PROFILE_QUERY });
+          data.me = values;
+          cache.writeQuery({ query: CURRENT_USER_PROFILE_QUERY, data });
+        },
+      }).then(({ errors }) => {
+        handleErrors(errors, setErrors);
+      }).catch(() => setSubmitting(false));
+      setSubmitting(false);
+    };
+
     //TODO: show message when updated is finished properly
     return (
       <Composed>
@@ -138,19 +153,11 @@ const UserForm = (props) => {
           if (getUser.error) return <ErrorMessage error={getUser.error}/>;
           if (updateUser.result.error) return <ErrorMessage error={updateUser.result.error}/>;
           if (!getUser.loading) return (
-            <Formik initialValues={{ ...formDefaultValue, ...getUser.data.me }} validateOnChange={false}
+            <Formik initialValues={{ ...formDefaultValue, ...getUser.data.me }}
+                    validateOnChange={false}
                     validateOnBlur={false}
-                    validationSchema={formScheme} onSubmit={async (values, { setSubmitting }) => {
-              await updateUser.mutation({
-                variables: values,
-                update: (cache) => {
-                  const data = cache.readQuery({ query: CURRENT_USER_PROFILE_QUERY });
-                  data.me = values;
-                  cache.writeQuery({ query: CURRENT_USER_PROFILE_QUERY, data });
-                },
-              }).catch(() => setSubmitting(false));
-              setSubmitting(false);
-            }}>
+                    validationSchema={formScheme}
+                    onSubmit={(v, a) => formOnSubmit(v, a, updateUser.mutation)}>
               {({ isSubmitting, dirty }) => (
                 <FormContainer>
                   <Grid container className={classes.root} spacing={16}>

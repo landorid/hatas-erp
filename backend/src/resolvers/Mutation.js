@@ -45,6 +45,15 @@ const mutations = {
       throw new AuthenticationError('Jelentkezz be!');
     }
 
+    const user = await prisma.query.users({ where: { email: args.email, id_not: req.userId } });
+    if (user && user.length) {
+      throw new UserInputError('Form Arguments invalid', {
+        invalidArgs: {
+          'email': 'Ezzel az email címmel már regisztráltak!',
+        },
+      });
+    }
+
     return prisma.mutation.updateUser({
       where: {
         id: req.userId,
