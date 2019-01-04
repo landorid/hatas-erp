@@ -9,6 +9,11 @@ class PageTitle extends Component {
       this.props.context.setTitle(this.props.title);
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.title !== prevProps.title)
+      this.props.context.setTitle(this.props.title);
+  }
+
   render() {
     if (this.props.title) {
       return <Helmet>
