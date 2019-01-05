@@ -3,6 +3,7 @@ import PageTitle from '../components/PageTitle';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import EditUserForm from '../components/form/EditUserForm';
+import { Redirect } from 'react-router-dom';
 
 const GET_USER_BY_ID_QUERY = gql`
   query GET_USER_BY_ID_QUERY($id: ID!) {
@@ -38,14 +39,19 @@ const EditUser = (props) => {
     <Query query={GET_USER_BY_ID_QUERY} variables={{ id: props.match.params.id }} fetchPolicy="cache-first">
       {({ data, loading }) => (
         <Mutation mutation={UPDATE_USER_MUTATION} ignoreResults={true}>
-          {(updateUser, result) => (
-            <>
-              <PageTitle title={loading ? 'Betöltés...' : `${data.user.lastName} ${data.user.firstName}`}/>
-              <EditUserForm data={data.user}
-                            mutation={updateUser}
-                            loading={loading || result.loading}/>
-            </>
-          )}
+          {(updateUser, result) => {
+            if (loading)
+              return null;
+            return data.user ?
+              <>
+                <PageTitle title={loading ? 'Betöltés...' : `${data.user.lastName} ${data.user.firstName}`}/>
+                <EditUserForm data={data.user}
+                              mutation={updateUser}
+                              loading={loading || result.loading}/>
+              </> :
+              <Redirect to="/users"/>;
+          }
+          }
         </Mutation> )
       }
     </Query>
