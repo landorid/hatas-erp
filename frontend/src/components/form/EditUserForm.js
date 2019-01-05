@@ -3,9 +3,9 @@ import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MuiInput from './elements/MuiInput';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/es/Typography/Typography';
 import { permissions, roles } from '../../config';
 import FormContainer from './elements/FormContainer';
 import Input from './elements/Input';
@@ -13,18 +13,12 @@ import { handleErrors, hasPermission } from '../../lib/utils';
 import User from '../User';
 import { GET_USER_BY_ID_QUERY } from '../../containers/EditUser';
 import { MyLoader } from './UserForm';
-import Typography from '@material-ui/core/es/Typography/Typography';
+import ActionFooter from './elements/ActionFooter';
 
 const style = (theme) => ( {
   root: {
     marginTop: 0,
     marginBottom: 0,
-  },
-  actionContainer: {
-    margin: theme.spacing.unit * -2,
-    marginTop: theme.spacing.unit * 2,
-    padding: theme.spacing.unit * 2,
-    backgroundColor: theme.palette.grey['100'],
   },
 } );
 
@@ -60,6 +54,7 @@ const UserForm = (props) => {
       delete formData.passwordConfirm;
       delete formData.id;
       delete formData.__typename;
+      delete formData.updatedAt;
       formData.job = { set: formData.job };
       formData.permissions = { set: formData.permissions };
       await mutation({
@@ -69,6 +64,7 @@ const UserForm = (props) => {
           data.user = values;
           data.user.permissions = result.data.updateUser.permissions;
           data.user.job = result.data.updateUser.job;
+          data.user.updatedAt = Date.now();
           cache.writeQuery({ query: GET_USER_BY_ID_QUERY, data });
         },
       }).then(({ errors }) => {
@@ -178,15 +174,9 @@ const UserForm = (props) => {
                     </Grid></> : '' );
               }}
             </User>
-            <div className={classes.actionContainer}>
-              <Button type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      disabled={isSubmitting || !dirty}>
-                Mentés
-              </Button>
-            </div>
+            <ActionFooter dirty={dirty}
+                          submitting={isSubmitting}
+                          updatedAt={data.updatedAt}/>
           </FormContainer> )}
       </Formik>
     );

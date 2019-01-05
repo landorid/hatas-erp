@@ -2,7 +2,6 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import Input from './elements/Input';
 import withStyles from '@material-ui/core/styles/withStyles';
 import gql from 'graphql-tag';
@@ -10,6 +9,7 @@ import { adopt } from 'react-adopt';
 import { Mutation } from 'react-apollo';
 import FormContainer from './elements/FormContainer';
 import { handleErrors } from '../../lib/utils';
+import ActionFooter from './elements/ActionFooter';
 
 const CHANGE_CURRENT_USER_MUTATION = gql`
   mutation  CHANGE_CURRENT_USER_MUTATION(
@@ -30,12 +30,6 @@ const style = (theme) => ( {
     marginTop: 0,
     marginBottom: 0,
   },
-  actionContainer: {
-    margin: theme.spacing.unit * -2,
-    marginTop: theme.spacing.unit * 2,
-    padding: theme.spacing.unit * 2,
-    backgroundColor: theme.palette.grey['100'],
-  },
 } );
 
 const formDefaultValue = {
@@ -53,11 +47,13 @@ const formScheme = Yup.object().shape({
 const formSubmit = async (variables, { setErrors, setSubmitting, resetForm }, mutation) => {
   await mutation({ variables }).then(({ errors }) => {
     handleErrors(errors, setErrors);
+    if (!errors)
+      resetForm(formDefaultValue);
   }).catch(err => {
     console.log(err);
     setSubmitting(false);
   });
-  resetForm(formDefaultValue);
+  setSubmitting(false);
 };
 
 const Composed = adopt({
@@ -100,15 +96,7 @@ const ChangePassword = (props) => {
                      label="Új jelszó mégegyszer"/>
             </Grid>
           </Grid>
-          <div className={classes.actionContainer}>
-            <Button type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.submit}
-                    disabled={isSubmitting || !dirty}>
-              {dirty ? 'Módosítás' : 'Módosítva'}
-            </Button>
-          </div>
+          <ActionFooter dirty={dirty} submitting={isSubmitting}/>
         </FormContainer>
       )}
     </Composed> );

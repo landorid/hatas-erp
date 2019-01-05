@@ -3,7 +3,6 @@ import * as Yup from 'yup';
 import { Formik, Field } from 'formik';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MuiInput from './elements/MuiInput';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,6 +14,7 @@ import { Redirect } from 'react-router-dom';
 import { handleErrors, hasPermission } from '../../lib/utils';
 import { adopt } from 'react-adopt';
 import User from '../User';
+import ActionFooter from './elements/ActionFooter';
 
 const SIGN_UP_MUTATION = gql`
   mutation SIGN_UP_MUTATION($data: UserCreateInput!) {
@@ -28,12 +28,6 @@ const style = (theme) => ( {
   root: {
     marginTop: 0,
     marginBottom: 0,
-  },
-  actionContainer: {
-    margin: theme.spacing.unit * -2,
-    marginTop: theme.spacing.unit * 2,
-    padding: theme.spacing.unit * 2,
-    backgroundColor: theme.palette.grey['100'],
   },
 } );
 
@@ -193,15 +187,9 @@ const UserForm = (props) => {
                 <Input name="ICEContact" label="ICE Elérhetőség"/>
               </Grid>
             </Grid>
-            <div className={classes.actionContainer}>
-              <Button type="submit"
-                      variant="contained"
-                      color="primary"
-                      className={classes.submit}
-                      disabled={formik.isSubmitting}>
-                Mentés
-              </Button>
-            </div>
+            <ActionFooter dirty={formik.dirty}
+                          submitting={formik.isSubmitting}
+                          updatedAt={false}/>
             {signUp.result.data && <Redirect to={`/user/${signUp.result.data.signUp.id}`}/>}
           </FormContainer> )}
       </ComposedAddUserForm>

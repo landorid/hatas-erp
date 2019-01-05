@@ -4,7 +4,6 @@ import { Formik, Field } from 'formik';
 import { adopt } from 'react-adopt';
 import withStyles from '@material-ui/core/styles/withStyles';
 import MuiInput from './elements/MuiInput';
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,6 +14,7 @@ import FormContainer from './elements/FormContainer';
 import ContentLoader from 'react-content-loader';
 import Input from './elements/Input';
 import { handleErrors } from '../../lib/utils';
+import ActionFooter from './elements/ActionFooter';
 
 const MyLoader = props => (
   <ContentLoader height={30} ariaLabel={'Betöltés..'} rtl>
@@ -37,6 +37,7 @@ const CURRENT_USER_PROFILE_QUERY = gql`
       bloodType
       ICEName
       ICEContact
+      updatedAt
     }
   }
 `;
@@ -73,12 +74,6 @@ const style = (theme) => ( {
   root: {
     marginTop: 0,
     marginBottom: 0,
-  },
-  actionContainer: {
-    margin: theme.spacing.unit * -2,
-    marginTop: theme.spacing.unit * 2,
-    padding: theme.spacing.unit * 2,
-    backgroundColor: theme.palette.grey['100'],
   },
 } );
 
@@ -131,6 +126,7 @@ const UserForm = (props) => {
         update: (cache) => {
           const data = cache.readQuery({ query: CURRENT_USER_PROFILE_QUERY });
           data.me = values;
+          data.me.updatedAt = Date.now();
           cache.writeQuery({ query: CURRENT_USER_PROFILE_QUERY, data });
         },
       }).then(({ errors }) => {
@@ -195,12 +191,9 @@ const UserForm = (props) => {
                       <Input name="ICEContact" label="ICE Elérhetőség"/>
                     </Grid>
                   </Grid>
-                  <div className={classes.actionContainer}>
-                    <Button type="submit" variant="contained" color="primary" className={classes.submit}
-                            disabled={isSubmitting || !dirty}>
-                      Ment{!dirty ? 've' : 'és'}
-                    </Button>
-                  </div>
+                  <ActionFooter dirty={dirty}
+                                submitting={isSubmitting}
+                                updatedAt={getUser.data.me.updatedAt}/>
                 </FormContainer> )}
             </Formik> );
         }}

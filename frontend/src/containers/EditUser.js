@@ -20,6 +20,7 @@ const GET_USER_BY_ID_QUERY = gql`
       ICEContact
       permissions
       status
+      updatedAt
     }
   }
 `;
