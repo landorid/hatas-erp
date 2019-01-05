@@ -2,14 +2,10 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import ContentLoader from 'react-content-loader';
-import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
-import { Link } from 'react-router-dom';
-import Tooltip from '@material-ui/core/Tooltip';
-import Fab from '@material-ui/core/Fab';
-import withStyles from '@material-ui/core/styles/withStyles';
 import UsersListing from '../components/table/UsersListing';
 import PageTitle from '../components/PageTitle';
+import AddFab from '../components/AddFab';
 
 const USERS_QUERY = gql`  
   query USERS_QUERY {
@@ -25,13 +21,6 @@ const USERS_QUERY = gql`
   }
 `;
 
-const style = (theme) =>( {
-  addUserButton: {
-    position: 'fixed',
-    bottom: theme.spacing.unit * 3,
-    right: theme.spacing.unit * 3,
-  },
-} );
 const MyLoader = props => (
   <ContentLoader height={30} ariaLabel={'Betöltés..'} rtl>
     <rect x="0" y="0" rx="0" ry="0" width="113.33" height="17"/>
@@ -40,7 +29,7 @@ const MyLoader = props => (
   </ContentLoader>
 );
 
-const Users = (props) => {
+const Users = () => {
   const rows = [
     { id: 'lastName', numeric: false, label: 'Név' },
     { id: 'job', numeric: false, label: 'Beosztás' },
@@ -66,13 +55,9 @@ const Users = (props) => {
         }}
       </Query>
 
-      <Tooltip placement="left" title="Új felhasználó" aria-label="Új felhasználó">
-        <Fab className={props.classes.addUserButton} color="primary" component={Link} to="/users/add">
-          <AddIcon/>
-        </Fab>
-      </Tooltip>
+      <AddFab title="Új felhasználó" to="/users/add"/>
     </div>
   );
 };
 
-export default withStyles(style)(Users);
+export default Users;
