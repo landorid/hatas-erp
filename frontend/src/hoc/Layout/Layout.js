@@ -24,9 +24,11 @@ const Layout = (props) => {
       <Helmet titleTemplate="%s | Hatás ERP" defaultTitle="Hatás Vállalatirányítás"/>
       <div className={props.classes.wrapper}>
         <User>
-          {({ data: { me } }) => (
-            me ? <Header {...props.childProps}/> : null
-          )}
+          {({ data, error, loading }) => {
+            return (
+              !loading && !error && data.me ? <Header {...props.childProps}/> : null
+            );
+          }}
         </User>
         <main className={props.classes.content}>
           <div className={props.classes.toolbar}/>
