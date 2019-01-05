@@ -21,8 +21,15 @@ const defaultOptions = {
 
 const client = new ApolloClient({
   link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError }) => {
-      if (networkError) console.log(`[Network error]: ${networkError}`);
+    onError(({ graphQLErrors, networkError, operation, forward  }) => {
+      if (graphQLErrors) {
+        for (let err of graphQLErrors) {
+          switch (err.extensions.code) {
+            case 'UNAUTHENTICATED':
+              window.location = "/login";
+          }
+        }
+      }
     }),
     new HttpLink({
       uri: process.env.NODE_ENV === 'development' ? endpoint : endpoint,

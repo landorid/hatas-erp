@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { AuthenticationError, UserInputError } = require('apollo-server');
 const { forwardTo } = require('prisma-binding');
-const { hasPermission } = require('../utils');
+const { hasPermission, authHelper } = require('../utils');
 
 const mutations = {
   updateUser: forwardTo('prisma'),
@@ -16,7 +16,7 @@ const mutations = {
         },
       });
     }
-    if(!user.status) {
+    if (!user.status) {
       throw new UserInputError('Form Arguments invalid', {
         invalidArgs: {
           'email': 'Archivált felhasználó!',
@@ -49,11 +49,8 @@ const mutations = {
   },
 
   async signUp(parent, { data }, { req, prisma }, info) {
-    if (!req.userId) {
-      throw new AuthenticationError('Jelentkezz be!');
-    }
-
-    hasPermission(req.user, ['sADMIN']);
+    authHelper(req);
+    hasPermission(req.user, ['ADMIN']);
 
     const user = await prisma.query.user({ where: { email: data.email } });
     if (user) {

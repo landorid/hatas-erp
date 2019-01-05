@@ -1,5 +1,6 @@
 const prisma = require('../dataSources/Prisma');
 const jwt = require('jsonwebtoken');
+const { AuthenticationError } = require('apollo-server');
 
 module.exports = async function(req, res, next) {
   const { token } = req.cookies;
@@ -15,10 +16,15 @@ module.exports = async function(req, res, next) {
       req.userId = userId;
 
       const user = await prisma.query.user({ where: { id: userId } },
-        '{id, email, lastName, firstName, permissions}');
+        '{id, email, lastName, firstName, status, permissions}');
+
       req.user = user;
     } catch (e) {
       console.log(e);
+    }
+
+    if(!req.user.status) {
+      res.clearCookie('token');
     }
   }
 

@@ -1,16 +1,17 @@
-const { forwardTo } = require('prisma-binding');
+const { authHelper } = require('../utils');
 
 const queries = {
-  user: forwardTo('prisma'),
+  async user(parent, args, { req, prisma }, info) {
+    authHelper(req);
+
+    return await prisma.query.user(args, info);
+  },
   async users(parent, args, { req, prisma }, info) {
-    if (!req.userId) {
-      throw new Error('Unauthenticated!')
-    }
+    authHelper(req);
 
     return await prisma.query.users(args, info);
   },
   async me(parent, args, { req, prisma }, info) {
-    //check if there is a current user
     if (!req.userId) {
       return null;
     }
