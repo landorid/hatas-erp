@@ -11,10 +11,13 @@ type Mutation {
   updateProfile(firstName: String, lastName: String, email: String, phone: String, location: String, job: [Job], bloodType: String, ICEName: String, ICEContact: String) : User!
   changePassword(oldPassword: String!, newPassword: String!): User!
   changeAvatar(image: String!): User!
+  createCustomer(data: CustomerCreateInput!): Customer!
+  updateCustomer(data: CustomerUpdateInput!, where: CustomerWhereUniqueInput!): Customer
 }
 
 type Query {
   me: User
   user(where: UserWhereInput!): User
   users: [User]!
+  customer(where: CustomerWhereUniqueInput!): Customer
 }

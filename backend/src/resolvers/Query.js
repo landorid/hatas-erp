@@ -1,6 +1,11 @@
 const { authHelper } = require('../utils');
 
 const queries = {
+  async customer(parent, args, { req, prisma }, info) {
+    authHelper(req);
+
+    return await prisma.query.customer(args, info);
+  },
   async user(parent, args, { req, prisma }, info) {
     authHelper(req);
 
@@ -20,7 +25,6 @@ const queries = {
       where: { id: req.userId },
     }, info);
   },
-
 };
 
 module.exports = queries;

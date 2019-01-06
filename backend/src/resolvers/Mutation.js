@@ -67,9 +67,7 @@ const mutations = {
   },
 
   async updateProfile(parent, args, { res, req, prisma }, info) {
-    if (!req.userId) {
-      throw new AuthenticationError('Jelentkezz be!');
-    }
+    authHelper(req);
 
     const user = await prisma.query.users({ where: { email: args.email, id_not: req.userId } });
     if (user && user.length) {
@@ -94,9 +92,7 @@ const mutations = {
   },
 
   async changePassword(parent, { oldPassword, newPassword }, { res, req, prisma }, info) {
-    if (!req.userId) {
-      throw new AuthenticationError('Jelentkezz be!');
-    }
+    authHelper(req);
 
     const user = await prisma.query.user({
       where: { id: req.userId },
@@ -121,9 +117,7 @@ const mutations = {
   },
 
   async changeAvatar(parent, { image }, { req, prisma }, info) {
-    if (!req.userId) {
-      throw new AuthenticationError('Jelentkezz be!');
-    }
+    authHelper(req);
 
     return prisma.mutation.updateUser({
       where: { id: req.userId },
@@ -131,6 +125,18 @@ const mutations = {
         avatar: image,
       },
     }, info);
+  },
+
+  async createCustomer(parent, args, { req, prisma }, info) {
+    authHelper(req);
+
+    return prisma.mutation.createCustomer(args, info);
+  },
+
+  async updateCustomer(parent, args, { req, prisma }, info) {
+    authHelper(req);
+
+    return prisma.mutation.updateCustomer(args, info);
   },
 };
 module.exports = mutations;

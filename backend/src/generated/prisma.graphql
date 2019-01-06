@@ -16,13 +16,14 @@ type BatchPayload {
 
 type Customer {
   id: ID!
-  name: String
-  contact: String!
-  email: String!
+  name: String!
+  contactName: String
+  email: String
   phone: String
   address: String
   taxNumber: String
   status: Boolean
+  note: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -34,13 +35,14 @@ type CustomerConnection {
 }
 
 input CustomerCreateInput {
-  name: String
-  contact: String!
-  email: String!
+  name: String!
+  contactName: String
+  email: String
   phone: String
   address: String
   taxNumber: String
   status: Boolean
+  note: String
 }
 
 type CustomerEdge {
@@ -53,8 +55,8 @@ enum CustomerOrderByInput {
   id_DESC
   name_ASC
   name_DESC
-  contact_ASC
-  contact_DESC
+  contactName_ASC
+  contactName_DESC
   email_ASC
   email_DESC
   phone_ASC
@@ -65,6 +67,8 @@ enum CustomerOrderByInput {
   taxNumber_DESC
   status_ASC
   status_DESC
+  note_ASC
+  note_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -73,13 +77,14 @@ enum CustomerOrderByInput {
 
 type CustomerPreviousValues {
   id: ID!
-  name: String
-  contact: String!
-  email: String!
+  name: String!
+  contactName: String
+  email: String
   phone: String
   address: String
   taxNumber: String
   status: Boolean
+  note: String
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -104,22 +109,24 @@ input CustomerSubscriptionWhereInput {
 
 input CustomerUpdateInput {
   name: String
-  contact: String
+  contactName: String
   email: String
   phone: String
   address: String
   taxNumber: String
   status: Boolean
+  note: String
 }
 
 input CustomerUpdateManyMutationInput {
   name: String
-  contact: String
+  contactName: String
   email: String
   phone: String
   address: String
   taxNumber: String
   status: Boolean
+  note: String
 }
 
 input CustomerWhereInput {
@@ -151,20 +158,20 @@ input CustomerWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  contact: String
-  contact_not: String
-  contact_in: [String!]
-  contact_not_in: [String!]
-  contact_lt: String
-  contact_lte: String
-  contact_gt: String
-  contact_gte: String
-  contact_contains: String
-  contact_not_contains: String
-  contact_starts_with: String
-  contact_not_starts_with: String
-  contact_ends_with: String
-  contact_not_ends_with: String
+  contactName: String
+  contactName_not: String
+  contactName_in: [String!]
+  contactName_not_in: [String!]
+  contactName_lt: String
+  contactName_lte: String
+  contactName_gt: String
+  contactName_gte: String
+  contactName_contains: String
+  contactName_not_contains: String
+  contactName_starts_with: String
+  contactName_not_starts_with: String
+  contactName_ends_with: String
+  contactName_not_ends_with: String
   email: String
   email_not: String
   email_in: [String!]
@@ -223,6 +230,20 @@ input CustomerWhereInput {
   taxNumber_not_ends_with: String
   status: Boolean
   status_not: Boolean
+  note: String
+  note_not: String
+  note_in: [String!]
+  note_not_in: [String!]
+  note_lt: String
+  note_lte: String
+  note_gt: String
+  note_gte: String
+  note_contains: String
+  note_not_contains: String
+  note_starts_with: String
+  note_not_starts_with: String
+  note_ends_with: String
+  note_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -246,7 +267,6 @@ input CustomerWhereInput {
 
 input CustomerWhereUniqueInput {
   id: ID
-  taxNumber: String
 }
 
 scalar DateTime
