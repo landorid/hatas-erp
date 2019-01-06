@@ -27,6 +27,9 @@ const server = new ApolloServer({
     ...req,
     prisma,
   } ),
+  engine: {
+    apiKey: process.env.ENGINE_API_KEY
+  }
 });
 
 app.use(cookieParser(), helmet());
