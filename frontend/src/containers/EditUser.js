@@ -37,7 +37,9 @@ const UPDATE_USER_MUTATION = gql`
 
 const EditUser = (props) => {
   return (
-    <Query query={GET_USER_BY_ID_QUERY} variables={{ id: props.match.params.id }} fetchPolicy="cache-first">
+    <Query query={GET_USER_BY_ID_QUERY}
+           variables={{ id: props.match.params.id }}
+           fetchPolicy="cache-first">
       {({ data, loading }) => (
         <Mutation mutation={UPDATE_USER_MUTATION} ignoreResults={true}>
           {(updateUser, result) => {

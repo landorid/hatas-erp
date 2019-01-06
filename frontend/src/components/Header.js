@@ -137,6 +137,7 @@ class Header extends Component {
             { name: 'Ügyfelek', icon: <People/>, to: '/customers' },
             { name: 'Partnerek', icon: <UsersIcon/>, to: '/partners' },
             { name: 'Beszállítók', icon: <LocalShipping/>, to: '/supplier' },
+            { name: 'Alapanyagok', icon: <LocalShipping/>, to: '/supplier' },
           ].map(item => (
             <ListItem key={item.name} to={item.to} component={Link} button>
               <ListItemIcon>{item.icon}</ListItemIcon>
