@@ -42,6 +42,8 @@ const UPDATE_CUSTOMER_MUTATION = gql`
 const Customer = (props) => {
   const singleCustomer = props.match.params.id;
 
+  //TODO: global error notification
+
   return singleCustomer ? (
     <div>
       <Query query={SINGLE_CUSTOMER_QUERY} variables={{ id: singleCustomer }}>
@@ -50,7 +52,7 @@ const Customer = (props) => {
             <>
               <PageTitle title={dataLoading ? 'Betöltés...' : data.customer.name}/>
               <Mutation mutation={UPDATE_CUSTOMER_MUTATION}>
-                {(updateCustomer, { loading, error }) => {
+                {(updateCustomer, { error }) => {
                   if (dataLoading) return <FormLoading/>;
 
                   return <CustomerForm mutation={updateCustomer} data={data.customer}/>;

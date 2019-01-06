@@ -4,6 +4,7 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import EditUserForm from '../components/form/EditUserForm';
 import { Redirect } from 'react-router-dom';
+import FormLoading from '../components/form/elements/FormLoading';
 
 const GET_USER_BY_ID_QUERY = gql`
   query GET_USER_BY_ID_QUERY($id: ID!) {
@@ -44,7 +45,7 @@ const EditUser = (props) => {
         <Mutation mutation={UPDATE_USER_MUTATION} ignoreResults={true}>
           {(updateUser, result) => {
             if (loading)
-              return null;
+              return <FormLoading/>;
             return data.user ?
               <>
                 <PageTitle title={loading ? 'Betöltés...' : `${data.user.lastName} ${data.user.firstName}`}/>

@@ -12,8 +12,8 @@ import Input from './elements/Input';
 import { handleErrors, hasPermission } from '../../lib/utils';
 import User from '../User';
 import { GET_USER_BY_ID_QUERY } from '../../containers/EditUser';
-import { MyLoader } from './UserForm';
 import ActionFooter from './elements/ActionFooter';
+import FormLoading from './elements/FormLoading';
 
 const style = (theme) => ( {
   root: {
@@ -75,14 +75,7 @@ const UserForm = (props) => {
       resetForm(values);
     };
 
-    if (loading)
-      return (
-        <FormContainer>
-          <MyLoader/>
-          <MyLoader/>
-          <MyLoader/>
-        </FormContainer>
-      );
+    if (loading) return <FormLoading/>;
 
     return ( <Formik initialValues={data}
                      validateOnChange={false}
