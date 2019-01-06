@@ -17,7 +17,7 @@ const style = (theme) => ( {
   },
   updatedAt: {
     marginLeft: 'auto',
-  }
+  },
 } );
 
 const ActionFooter = ({ classes, submitting, dirty, updatedAt }) => (
@@ -39,7 +39,10 @@ const ActionFooter = ({ classes, submitting, dirty, updatedAt }) => (
 ActionFooter.propTypes = {
   submitting: PropTypes.bool.isRequired,
   dirty: PropTypes.bool.isRequired,
-  updatedAt: PropTypes.string,
+  updatedAt: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 };
 
 export default withStyles(style)(ActionFooter);

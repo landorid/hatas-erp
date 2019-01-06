@@ -21,20 +21,23 @@ const defaultOptions = {
 
 const client = new ApolloClient({
   link: ApolloLink.from([
-    onError(({ graphQLErrors, networkError, operation, forward  }) => {
+    onError(({ graphQLErrors, networkError, operation, forward }) => {
       if (graphQLErrors) {
         for (let err of graphQLErrors) {
           switch (err.extensions.code) {
             case 'UNAUTHENTICATED':
-              window.location = "/login";
+              window.location = '/login';
+              break;
+            default:
+              return;
           }
         }
       }
     }),
     new HttpLink({
       uri: process.env.NODE_ENV === 'development' ? endpoint : endpoint,
-      credentials: 'include'
-    })
+      credentials: 'include',
+    }),
   ]),
   cache: new InMemoryCache(),
   defaultOptions,

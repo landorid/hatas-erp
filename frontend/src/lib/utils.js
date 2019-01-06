@@ -27,6 +27,7 @@ const handleErrors = (errors, errorHandler) => {
     if (invalidArgs) {
       Object.keys(invalidArgs).map(input => errorHandler({ [input]: invalidArgs[input] }));
     }
+    return true;
   });
 };
 

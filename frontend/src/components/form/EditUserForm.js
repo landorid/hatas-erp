@@ -24,6 +24,7 @@ const style = (theme) => ( {
 
 const UserForm = (props) => {
     const { classes, data, mutation, loading } = props;
+
     const bloodTypes = [
       '0-pozitív',
       '0-negatív',
@@ -46,7 +47,7 @@ const UserForm = (props) => {
       bloodType: Yup.string(),
       ICEName: Yup.string(),
       ICECContact: Yup.string(),
-      status: Yup.bool(),
+      status: Yup.boolean(),
     });
 
     const formOnSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {

@@ -18,6 +18,7 @@ const style = (theme) => ( {
 
 const CustomerForm = (props) => {
   const { classes, mutation, data } = props;
+  const updatedAt = data ? data.updatedAt : null;
 
   const formScheme = Yup.object().shape({
     name: Yup.string().required(),
@@ -31,13 +32,13 @@ const CustomerForm = (props) => {
   });
 
   const fromDefaultValue = {
-    name: 'Honlapvarázsló',
-    taxNumber: '1223456',
-    contactName: 'Lándori Dávid',
-    email: 'landori@honlapvarazslo.com',
-    phone: '06304321865',
-    address: '97000 Szombathely',
-    note: 'legsiekresebbek leszünk 5 éven belül',
+    name: '',
+    taxNumber: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    address: '',
+    note: '',
     status: true,
   };
 
@@ -98,7 +99,7 @@ const CustomerForm = (props) => {
               </Grid>
             </Grid>
             <ActionFooter submitting={isSubmitting}
-                          updatedAt={data.updatedAt}
+                          updatedAt={updatedAt}
                           dirty={dirty}/>
           </FormContainer> );
       }}
