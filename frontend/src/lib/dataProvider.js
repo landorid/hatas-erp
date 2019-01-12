@@ -45,6 +45,9 @@ const client = new ApolloClient({
         user: (_, args, { getCacheKey }) => {
           return getCacheKey({ __typename: 'User', id: args.where.id });
         },
+        customer: (_, args, { getCacheKey }) => {
+          return getCacheKey({ __typename: 'Customer', id: args.where.id });
+        },
       },
     },
   }),

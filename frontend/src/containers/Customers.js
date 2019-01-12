@@ -18,8 +18,8 @@ const CUSTOMERS_QUERY = gql`
       taxNumber
       status
       note
-      createdAt
       updatedAt
+      status
     }
   }
 `;

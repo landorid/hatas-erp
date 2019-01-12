@@ -46,7 +46,10 @@ const Customer = (props) => {
 
   return singleCustomer ? (
     <div>
-      <Query query={SINGLE_CUSTOMER_QUERY} variables={{ id: singleCustomer }}>
+      <Query query={SINGLE_CUSTOMER_QUERY}
+             variables={{ id: singleCustomer }}
+             fetchPolicy="cache-first"
+      >
         {({ data, loading: dataLoading, error }) => {
           if (!dataLoading && !data.customer) {
             return <Redirect to={`/customers`}/>;
