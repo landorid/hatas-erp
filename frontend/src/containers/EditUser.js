@@ -22,6 +22,7 @@ const GET_USER_BY_ID_QUERY = gql`
       permissions
       status
       updatedAt
+      avatar
     }
   }
 `;

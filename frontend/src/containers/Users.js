@@ -1,33 +1,31 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import ContentLoader from 'react-content-loader';
-import Paper from '@material-ui/core/Paper';
 import UsersListing from '../components/table/UsersListing';
 import PageTitle from '../components/PageTitle';
 import AddFab from '../components/AddFab';
+import TableLoading from '../components/table/elements/TableLoading';
 
 const USERS_QUERY = gql`  
   query USERS_QUERY {
     users {
       id
-      firstName
       lastName
-      avatar
+      firstName
+      email
+      phone
+      location
       job
+      bloodType
+      ICEName
+      ICEContact
       permissions
       status
+      updatedAt
+      avatar
     }
   }
 `;
-
-const MyLoader = props => (
-  <ContentLoader height={30} ariaLabel={'Betöltés..'} rtl>
-    <rect x="0" y="0" rx="0" ry="0" width="113.33" height="17"/>
-    <rect x="193.63" y="0" rx="0" ry="0" width="71.81" height="17"/>
-    <rect x="309.63" y="0" rx="0" ry="0" width="71.81" height="17"/>
-  </ContentLoader>
-);
 
 const Users = () => {
   const rows = [
@@ -42,13 +40,7 @@ const Users = () => {
       <PageTitle title="Felhasználók"/>
       <Query query={USERS_QUERY} fetchPolicy="cache-first">
         {({ data: { users }, loading }) => {
-          if (loading) return (
-            <Paper>
-              <MyLoader/>
-              <MyLoader/>
-              <MyLoader/>
-            </Paper>
-          );
+          if (loading) return <TableLoading/>;
           return (
             <UsersListing data={users} rows={rows}/>
           );

@@ -39,7 +39,15 @@ const client = new ApolloClient({
       credentials: 'include',
     }),
   ]),
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    cacheRedirects: {
+      Query: {
+        user: (_, args, { getCacheKey }) => {
+          return getCacheKey({ __typename: 'User', id: args.where.id });
+        },
+      },
+    },
+  }),
   defaultOptions,
 });
 
