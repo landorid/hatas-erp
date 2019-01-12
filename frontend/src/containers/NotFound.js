@@ -1,9 +1,10 @@
 import React from 'react';
+import PageTitle from '../components/PageTitle';
 
 const NotFound = () => {
   return (
       <div>
-        not found
+        <PageTitle title="Az oldal nem létezik"/>
       </div>
   );
 };

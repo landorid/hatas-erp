@@ -27,6 +27,7 @@ const server = new ApolloServer({
     ...req,
     prisma,
   } ),
+  tracing: true,
   engine: {
     apiKey: process.env.ENGINE_API_KEY
   }

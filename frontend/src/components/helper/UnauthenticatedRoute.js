@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import User from '../User';
-import ServerError from './PrivateRoute';
+import ServerError from '../../containers/ServerError';
 
 export default ({ component: C, props: cProps, ...rest }) =>
   <Route {...rest} render={props =>

@@ -188,9 +188,8 @@ const UserForm = (props) => {
               </Grid>
             </Grid>
             <ActionFooter dirty={formik.dirty}
-                          submitting={formik.isSubmitting}
-                          updatedAt={false}/>
-            {signUp.result.data && <Redirect to={`/user/${signUp.result.data.signUp.id}`}/>}
+                          submitting={formik.isSubmitting}/>
+            {signUp.result.data && <Redirect to={`/users/${signUp.result.data.signUp.id}`}/>}
           </FormContainer> )}
       </ComposedAddUserForm>
     );
