@@ -27,7 +27,7 @@ import Menu from '@material-ui/core/Menu/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
 import { Link, NavLink } from 'react-router-dom';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { ApolloConsumer, Mutation } from 'react-apollo';
 import { CURRENT_USER_QUERY } from './User';
 import PageTitle from './PageTitle';
 
@@ -134,7 +134,7 @@ class Header extends Component {
           {[
             { name: 'Munkalapok', icon: <Munkalap/>, to: '/users' },
             { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
-            { name: 'Ügyfelek', icon: <People/>, to: '/customers' },
+            { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },
             { name: 'Partnerek', icon: <UsersIcon/>, to: '/partners' },
             { name: 'Beszállítók', icon: <LocalShipping/>, to: '/supplier' },
             { name: 'Alapanyagok', icon: <LocalShipping/>, to: '/supplier' },
@@ -174,12 +174,15 @@ class Header extends Component {
               <PageTitle/>
             </Typography>
             <div className={classes.grow}/>
-            <IconButton color="inherit">
-              {this.state.loading ?
-                <CircularProgress className={classes.progress} color="inherit" size={24}/> :
-                <RefreshIcon/>
-              }
-            </IconButton>
+            <ApolloConsumer>
+              {client => (
+                <IconButton color="inherit" onClick={() => client.resetStore()}>
+                  {this.state.loading ?
+                    <CircularProgress className={classes.progress} color="inherit" size={24}/> :
+                    <RefreshIcon/>
+                  }
+                </IconButton> )}
+            </ApolloConsumer>
             <div>
               <IconButton
                 aria-owns={open ? 'menu-appbar' : undefined}

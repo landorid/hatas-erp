@@ -1,6 +1,11 @@
 const { authHelper } = require('../utils');
 
 const queries = {
+  async customers(parent, args, { req, prisma }, info) {
+    authHelper(req);
+
+    return await prisma.query.customers(args, info);
+  },
   async customer(parent, args, { req, prisma }, info) {
     authHelper(req);
 

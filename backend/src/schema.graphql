@@ -20,4 +20,5 @@ type Query {
   user(where: UserWhereInput!): User
   users: [User]!
   customer(where: CustomerWhereUniqueInput!): Customer
+  customers(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, first: Int): [Customer]!
 }

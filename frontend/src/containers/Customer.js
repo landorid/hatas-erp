@@ -48,6 +48,10 @@ const Customer = (props) => {
     <div>
       <Query query={SINGLE_CUSTOMER_QUERY} variables={{ id: singleCustomer }}>
         {({ data, loading: dataLoading, error }) => {
+          if (!dataLoading && !data.customer) {
+            return <Redirect to={`/customers`}/>;
+          }
+
           return (
             <>
               <PageTitle title={dataLoading ? 'Betöltés...' : data.customer.name}/>
