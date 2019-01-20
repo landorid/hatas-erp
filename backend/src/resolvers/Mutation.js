@@ -6,6 +6,10 @@ const { hasPermission, authHelper } = require('../utils');
 
 const mutations = {
   updateUser: forwardTo('prisma'),
+  createStockItem: forwardTo('prisma'),
+  createStockCategory: forwardTo('prisma'),
+  upsertStockCategory: forwardTo('prisma'),
+  deleteManyStockCategories: forwardTo('prisma'),
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
@@ -50,7 +54,7 @@ const mutations = {
 
   async signUp(parent, { data }, { req, prisma }, info) {
     authHelper(req);
-    hasPermission(req.user, ['ADMIN']);
+    // hasPermission(req.user, ['ADMIN']);
 
     const user = await prisma.query.user({ where: { email: data.email } });
     if (user) {

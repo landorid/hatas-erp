@@ -2,7 +2,11 @@ type AggregateCustomer {
   count: Int!
 }
 
-type AggregateSupplier {
+type AggregateStockCategory {
+  count: Int!
+}
+
+type AggregateStockItem {
   count: Int!
 }
 
@@ -288,12 +292,18 @@ type Mutation {
   upsertCustomer(where: CustomerWhereUniqueInput!, create: CustomerCreateInput!, update: CustomerUpdateInput!): Customer!
   deleteCustomer(where: CustomerWhereUniqueInput!): Customer
   deleteManyCustomers(where: CustomerWhereInput): BatchPayload!
-  createSupplier(data: SupplierCreateInput!): Supplier!
-  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
-  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
-  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
-  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
-  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
+  createStockCategory(data: StockCategoryCreateInput!): StockCategory!
+  updateStockCategory(data: StockCategoryUpdateInput!, where: StockCategoryWhereUniqueInput!): StockCategory
+  updateManyStockCategories(data: StockCategoryUpdateManyMutationInput!, where: StockCategoryWhereInput): BatchPayload!
+  upsertStockCategory(where: StockCategoryWhereUniqueInput!, create: StockCategoryCreateInput!, update: StockCategoryUpdateInput!): StockCategory!
+  deleteStockCategory(where: StockCategoryWhereUniqueInput!): StockCategory
+  deleteManyStockCategories(where: StockCategoryWhereInput): BatchPayload!
+  createStockItem(data: StockItemCreateInput!): StockItem!
+  updateStockItem(data: StockItemUpdateInput!, where: StockItemWhereUniqueInput!): StockItem
+  updateManyStockItems(data: StockItemUpdateManyMutationInput!, where: StockItemWhereInput): BatchPayload!
+  upsertStockItem(where: StockItemWhereUniqueInput!, create: StockItemCreateInput!, update: StockItemUpdateInput!): StockItem!
+  deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
+  deleteManyStockItems(where: StockItemWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -328,130 +338,115 @@ type Query {
   customer(where: CustomerWhereUniqueInput!): Customer
   customers(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Customer]!
   customersConnection(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CustomerConnection!
-  supplier(where: SupplierWhereUniqueInput!): Supplier
-  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
-  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
+  stockCategory(where: StockCategoryWhereUniqueInput!): StockCategory
+  stockCategories(where: StockCategoryWhereInput, orderBy: StockCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockCategory]!
+  stockCategoriesConnection(where: StockCategoryWhereInput, orderBy: StockCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockCategoryConnection!
+  stockItem(where: StockItemWhereUniqueInput!): StockItem
+  stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
+  stockItemsConnection(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockItemConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
-type Subscription {
-  customer(where: CustomerSubscriptionWhereInput): CustomerSubscriptionPayload
-  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type Supplier {
+type StockCategory {
   id: ID!
   name: String
-  contact: String
-  email: String!
-  phone: String
-  web: String
-  companyProfile: String
-  status: Boolean
-  createdAt: DateTime!
-  updatedAt: DateTime!
+  parent: StockCategory
 }
 
-type SupplierConnection {
+type StockCategoryConnection {
   pageInfo: PageInfo!
-  edges: [SupplierEdge]!
-  aggregate: AggregateSupplier!
+  edges: [StockCategoryEdge]!
+  aggregate: AggregateStockCategory!
 }
 
-input SupplierCreateInput {
+input StockCategoryCreateInput {
   name: String
-  contact: String
-  email: String!
-  phone: String
-  web: String
-  companyProfile: String
-  status: Boolean
+  parent: StockCategoryCreateOneInput
 }
 
-type SupplierEdge {
-  node: Supplier!
+input StockCategoryCreateOneInput {
+  create: StockCategoryCreateInput
+  connect: StockCategoryWhereUniqueInput
+}
+
+type StockCategoryEdge {
+  node: StockCategory!
   cursor: String!
 }
 
-enum SupplierOrderByInput {
+enum StockCategoryOrderByInput {
   id_ASC
   id_DESC
   name_ASC
   name_DESC
-  contact_ASC
-  contact_DESC
-  email_ASC
-  email_DESC
-  phone_ASC
-  phone_DESC
-  web_ASC
-  web_DESC
-  companyProfile_ASC
-  companyProfile_DESC
-  status_ASC
-  status_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
 }
 
-type SupplierPreviousValues {
+type StockCategoryPreviousValues {
   id: ID!
   name: String
-  contact: String
-  email: String!
-  phone: String
-  web: String
-  companyProfile: String
-  status: Boolean
-  createdAt: DateTime!
-  updatedAt: DateTime!
 }
 
-type SupplierSubscriptionPayload {
+type StockCategorySubscriptionPayload {
   mutation: MutationType!
-  node: Supplier
+  node: StockCategory
   updatedFields: [String!]
-  previousValues: SupplierPreviousValues
+  previousValues: StockCategoryPreviousValues
 }
 
-input SupplierSubscriptionWhereInput {
+input StockCategorySubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: SupplierWhereInput
-  AND: [SupplierSubscriptionWhereInput!]
-  OR: [SupplierSubscriptionWhereInput!]
-  NOT: [SupplierSubscriptionWhereInput!]
+  node: StockCategoryWhereInput
+  AND: [StockCategorySubscriptionWhereInput!]
+  OR: [StockCategorySubscriptionWhereInput!]
+  NOT: [StockCategorySubscriptionWhereInput!]
 }
 
-input SupplierUpdateInput {
+input StockCategoryUpdateDataInput {
   name: String
-  contact: String
-  email: String
-  phone: String
-  web: String
-  companyProfile: String
-  status: Boolean
+  parent: StockCategoryUpdateOneInput
 }
 
-input SupplierUpdateManyMutationInput {
+input StockCategoryUpdateInput {
   name: String
-  contact: String
-  email: String
-  phone: String
-  web: String
-  companyProfile: String
-  status: Boolean
+  parent: StockCategoryUpdateOneInput
 }
 
-input SupplierWhereInput {
+input StockCategoryUpdateManyMutationInput {
+  name: String
+}
+
+input StockCategoryUpdateOneInput {
+  create: StockCategoryCreateInput
+  update: StockCategoryUpdateDataInput
+  upsert: StockCategoryUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: StockCategoryWhereUniqueInput
+}
+
+input StockCategoryUpdateOneRequiredInput {
+  create: StockCategoryCreateInput
+  update: StockCategoryUpdateDataInput
+  upsert: StockCategoryUpsertNestedInput
+  connect: StockCategoryWhereUniqueInput
+}
+
+input StockCategoryUpsertNestedInput {
+  update: StockCategoryUpdateDataInput!
+  create: StockCategoryCreateInput!
+}
+
+input StockCategoryWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -480,78 +475,164 @@ input SupplierWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  contact: String
-  contact_not: String
-  contact_in: [String!]
-  contact_not_in: [String!]
-  contact_lt: String
-  contact_lte: String
-  contact_gt: String
-  contact_gte: String
-  contact_contains: String
-  contact_not_contains: String
-  contact_starts_with: String
-  contact_not_starts_with: String
-  contact_ends_with: String
-  contact_not_ends_with: String
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  phone: String
-  phone_not: String
-  phone_in: [String!]
-  phone_not_in: [String!]
-  phone_lt: String
-  phone_lte: String
-  phone_gt: String
-  phone_gte: String
-  phone_contains: String
-  phone_not_contains: String
-  phone_starts_with: String
-  phone_not_starts_with: String
-  phone_ends_with: String
-  phone_not_ends_with: String
-  web: String
-  web_not: String
-  web_in: [String!]
-  web_not_in: [String!]
-  web_lt: String
-  web_lte: String
-  web_gt: String
-  web_gte: String
-  web_contains: String
-  web_not_contains: String
-  web_starts_with: String
-  web_not_starts_with: String
-  web_ends_with: String
-  web_not_ends_with: String
-  companyProfile: String
-  companyProfile_not: String
-  companyProfile_in: [String!]
-  companyProfile_not_in: [String!]
-  companyProfile_lt: String
-  companyProfile_lte: String
-  companyProfile_gt: String
-  companyProfile_gte: String
-  companyProfile_contains: String
-  companyProfile_not_contains: String
-  companyProfile_starts_with: String
-  companyProfile_not_starts_with: String
-  companyProfile_ends_with: String
-  companyProfile_not_ends_with: String
-  status: Boolean
-  status_not: Boolean
+  parent: StockCategoryWhereInput
+  AND: [StockCategoryWhereInput!]
+  OR: [StockCategoryWhereInput!]
+  NOT: [StockCategoryWhereInput!]
+}
+
+input StockCategoryWhereUniqueInput {
+  id: ID
+}
+
+type StockItem {
+  id: ID!
+  name: String
+  category: StockCategory!
+  quantity: Int
+  quantityUnit: String
+  quantityAlarm: Int
+  createdAt: DateTime!
+}
+
+type StockItemConnection {
+  pageInfo: PageInfo!
+  edges: [StockItemEdge]!
+  aggregate: AggregateStockItem!
+}
+
+input StockItemCreateInput {
+  name: String
+  category: StockCategoryCreateOneInput!
+  quantity: Int
+  quantityUnit: String
+  quantityAlarm: Int
+}
+
+type StockItemEdge {
+  node: StockItem!
+  cursor: String!
+}
+
+enum StockItemOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  quantity_ASC
+  quantity_DESC
+  quantityUnit_ASC
+  quantityUnit_DESC
+  quantityAlarm_ASC
+  quantityAlarm_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type StockItemPreviousValues {
+  id: ID!
+  name: String
+  quantity: Int
+  quantityUnit: String
+  quantityAlarm: Int
+  createdAt: DateTime!
+}
+
+type StockItemSubscriptionPayload {
+  mutation: MutationType!
+  node: StockItem
+  updatedFields: [String!]
+  previousValues: StockItemPreviousValues
+}
+
+input StockItemSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: StockItemWhereInput
+  AND: [StockItemSubscriptionWhereInput!]
+  OR: [StockItemSubscriptionWhereInput!]
+  NOT: [StockItemSubscriptionWhereInput!]
+}
+
+input StockItemUpdateInput {
+  name: String
+  category: StockCategoryUpdateOneRequiredInput
+  quantity: Int
+  quantityUnit: String
+  quantityAlarm: Int
+}
+
+input StockItemUpdateManyMutationInput {
+  name: String
+  quantity: Int
+  quantityUnit: String
+  quantityAlarm: Int
+}
+
+input StockItemWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  category: StockCategoryWhereInput
+  quantity: Int
+  quantity_not: Int
+  quantity_in: [Int!]
+  quantity_not_in: [Int!]
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  quantityUnit: String
+  quantityUnit_not: String
+  quantityUnit_in: [String!]
+  quantityUnit_not_in: [String!]
+  quantityUnit_lt: String
+  quantityUnit_lte: String
+  quantityUnit_gt: String
+  quantityUnit_gte: String
+  quantityUnit_contains: String
+  quantityUnit_not_contains: String
+  quantityUnit_starts_with: String
+  quantityUnit_not_starts_with: String
+  quantityUnit_ends_with: String
+  quantityUnit_not_ends_with: String
+  quantityAlarm: Int
+  quantityAlarm_not: Int
+  quantityAlarm_in: [Int!]
+  quantityAlarm_not_in: [Int!]
+  quantityAlarm_lt: Int
+  quantityAlarm_lte: Int
+  quantityAlarm_gt: Int
+  quantityAlarm_gte: Int
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -560,21 +641,20 @@ input SupplierWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [SupplierWhereInput!]
-  OR: [SupplierWhereInput!]
-  NOT: [SupplierWhereInput!]
+  AND: [StockItemWhereInput!]
+  OR: [StockItemWhereInput!]
+  NOT: [StockItemWhereInput!]
 }
 
-input SupplierWhereUniqueInput {
+input StockItemWhereUniqueInput {
   id: ID
+}
+
+type Subscription {
+  customer(where: CustomerSubscriptionWhereInput): CustomerSubscriptionPayload
+  stockCategory(where: StockCategorySubscriptionWhereInput): StockCategorySubscriptionPayload
+  stockItem(where: StockItemSubscriptionWhereInput): StockItemSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User {

@@ -42,9 +42,36 @@ const hasPermission = (permissions, permissionsNeeded) => {
   return !!matchedPermissions.length;
 };
 
+/*
+* Flat StockItem Categories map to parent - children array
+ */
+const createCategoryTree = (cat) => {
+  if (!cat) return [];
+  const categories = JSON.parse(JSON.stringify(cat));
+
+  let newMainCategories = categories.reduce((arr, item) => {
+    if (!item.parent) {
+      arr.push({ ...item, children: [] });
+    }
+    return arr;
+
+  }, []);
+  categories.map(item => {
+    if (item.parent) {
+      const index = newMainCategories.findIndex(elem => elem.id === item.parent.id);
+      delete item.parent;
+      newMainCategories[index].children.push(item);
+    }
+  });
+
+  // newMainCategories.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+  return newMainCategories;
+};
+
 export {
   getRoleName,
   handleErrors,
   getPermission,
   hasPermission,
+  createCategoryTree,
 };

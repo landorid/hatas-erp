@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Redirect, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
@@ -19,6 +19,9 @@ import AddUser from './containers/AddUser';
 import EditUser from './containers/EditUser';
 import Customers from './containers/Customers';
 import Customer from './containers/Customer';
+import Stock from './containers/Stock';
+import StockItem from './containers/StockItem';
+import StockCategory from './containers/StockCategory';
 
 class App extends Component {
   render() {
@@ -37,6 +40,9 @@ class App extends Component {
                 <PrivateRoute path="/customers/add" exact component={Customer}/>
                 <PrivateRoute path="/customers/all/:page" component={Customers}/>
                 <PrivateRoute path="/customers/:id" component={Customer}/>
+                <PrivateRoute path="/stock" exact component={Stock}/>
+                <PrivateRoute path="/stock/add" exact component={StockItem}/>
+                <PrivateRoute path="/stock/category" exact component={StockCategory}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

@@ -46,15 +46,18 @@ type Customer {
     updatedAt: DateTime!
 }
 
-type Supplier {
+type StockCategory {
     id: ID! @unique
     name: String
-    contact: String
-    email: String!
-    phone: String
-    web: String
-    companyProfile: String
-    status: Boolean
+    parent: StockCategory
+}
+
+type StockItem {
+    id: ID! @unique
+    name: String
+    category: StockCategory!
+    quantity: Int
+    quantityUnit: String
+    quantityAlarm: Int
     createdAt: DateTime!
-    updatedAt: DateTime!
 }
