@@ -4,7 +4,7 @@ import { Field } from 'formik';
 
 const Input = (props) => {
   return (
-    <Field type="text" {...props} component={MuiInput} variant="outlined"/>
+    <Field type="text" component={MuiInput} variant="outlined" {...props}/>
   );
 };
 
