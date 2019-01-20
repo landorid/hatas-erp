@@ -15,17 +15,17 @@ module.exports = async function(req, res, next) {
       if (!userId) return next();
       req.userId = userId;
 
-      const user = await prisma.query.user({ where: { id: userId } },
-        '{id, email, lastName, firstName, status, permissions}');
-
-      req.user = user;
+      // const user = await prisma.query.user({ where: { id: userId } },
+      //   '{id, email, lastName, firstName, status, permissions}');
+      //
+      // req.user = user;
     } catch (e) {
       console.log(e);
     }
 
-    if(!req.user.status) {
-      res.clearCookie('token');
-    }
+    // if(!req.user.status) {
+    //   res.clearCookie('token');
+    // }
   }
 
   next();
