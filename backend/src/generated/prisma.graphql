@@ -493,6 +493,7 @@ type StockItem {
   quantityUnit: String
   quantityAlarm: Int
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type StockItemConnection {
@@ -538,6 +539,7 @@ type StockItemPreviousValues {
   quantityUnit: String
   quantityAlarm: Int
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type StockItemSubscriptionPayload {
@@ -641,6 +643,14 @@ input StockItemWhereInput {
   createdAt_lte: DateTime
   createdAt_gt: DateTime
   createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [StockItemWhereInput!]
   OR: [StockItemWhereInput!]
   NOT: [StockItemWhereInput!]

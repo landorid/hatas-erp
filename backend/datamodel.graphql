@@ -60,4 +60,5 @@ type StockItem {
     quantityUnit: String
     quantityAlarm: Int
     createdAt: DateTime!
+    updatedAt: DateTime!
 }

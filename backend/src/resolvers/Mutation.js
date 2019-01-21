@@ -10,6 +10,7 @@ const mutations = {
   createStockCategory: forwardTo('prisma'),
   upsertStockCategory: forwardTo('prisma'),
   deleteManyStockCategories: forwardTo('prisma'),
+  upsertStockItem: forwardTo('prisma'),
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });

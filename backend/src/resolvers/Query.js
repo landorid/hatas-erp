@@ -4,6 +4,7 @@ const { forwardTo } = require('prisma-binding');
 const queries = {
   // stockItems: forwardTo('prisma'),
   stockCategories: forwardTo('prisma'),
+  stockItem: forwardTo('prisma'),
 
   async customers(parent, args, { req, prisma }, info) {
     authHelper(req);

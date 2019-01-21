@@ -43,6 +43,7 @@ class App extends Component {
                 <PrivateRoute path="/stock" exact component={Stock}/>
                 <PrivateRoute path="/stock/add" exact component={StockItem}/>
                 <PrivateRoute path="/stock/category" exact component={StockCategory}/>
+                <PrivateRoute path="/stock/:id" component={StockItem}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>
