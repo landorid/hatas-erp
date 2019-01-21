@@ -8,14 +8,15 @@ import Button from '@material-ui/core/es/Button/Button';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import ArrowRight from '@material-ui/icons/ArrowRight';
+import { Typography } from '@material-ui/core';
 import Remove from '@material-ui/icons/Delete';
+import Add from '@material-ui/icons/Add';
 
 import FormContainer from './elements/FormContainer';
 import ActionFooter from './elements/ActionFooter';
 import Input from './elements/Input';
 import { createCategoryTree, handleErrors } from '../../lib/utils';
 import { STOCKCATEGORIES_QUERY } from '../../containers/StockCategory';
-import { Typography } from '@material-ui/core';
 
 const style = (theme) => ( {
   root: {
@@ -25,6 +26,9 @@ const style = (theme) => ( {
   activeInput: {
     background: theme.palette.grey[200],
   },
+  title: {
+    marginTop: theme.spacing.unit * 2,
+  }
 } );
 
 class StockItemCategory extends React.Component {
@@ -199,7 +203,6 @@ class StockItemCategory extends React.Component {
               onSubmit={formOnSubmit}>
         {({ isSubmitting, dirty, values, error }) => (
           <FormContainer>
-            {JSON.stringify(error)}
             <Grid container className={classes.root} spacing={16}>
               <Grid item xs={12} sm={6} lg={5}>
                 <FieldArray
@@ -230,8 +233,10 @@ class StockItemCategory extends React.Component {
                           />
                         ))
                       ) : null}
-                      <Button onClick={() => arrayHelpers.push({ name: '', id: null, children: [] })}>
-                        Új kategória
+                      <Button
+                        color="primary"
+                        onClick={() => arrayHelpers.push({ name: '', id: null, children: [] })}>
+                        <Add/> Új kategória
                       </Button>
                     </div>
                   )}
@@ -239,6 +244,9 @@ class StockItemCategory extends React.Component {
 
               </Grid>
               <Grid item xs={12} sm={6} lg={7}>
+                <Typography
+                  className={classes.title}
+                  variant="h6">{values.stockCategories[this.state.activeCategory].name}</Typography>
                 <FieldArray
                   name={`stockCategories[${this.state.activeCategory}].children`}>
                   {arrayHelpers => {
@@ -269,14 +277,16 @@ class StockItemCategory extends React.Component {
 
                       ) : null}
                       {currentCategory.id ?
-                        <Button onClick={() => arrayHelpers.push({
+                        <Button
+                          color="primary"
+                          onClick={() => arrayHelpers.push({
                           name: '',
                           id: null,
                           parent: {
                             id: values.stockCategories[this.state.activeCategory].id,
                           },
                         })}>
-                          Új alkategória
+                          <Add/> Új alkategória
                         </Button> : <Typography
                           variant="body1">
                           Mentsd el a főkategóriát, hogy alkategóriát hozzáadhass!
