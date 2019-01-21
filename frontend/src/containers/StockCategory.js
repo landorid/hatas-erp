@@ -4,6 +4,7 @@ import StockCategoryForm from '../components/form/StockCategoryForm';
 import gql from 'graphql-tag';
 import { Mutation, Query } from 'react-apollo';
 import { adopt } from 'react-adopt';
+import StockCategoryLoader from '../components/table/loader/StockCategoryLoader';
 
 const STOCKCATEGORIES_QUERY = gql`
   query STOCKCATEGORIES_QUERY {
@@ -63,7 +64,7 @@ const StockCategory = () => {
       <PageTitle title="Alapanyag kategóriák"/>
       <Composed>
         {({ stockCategories, createCategory, deleteCategory }) => {
-          if (stockCategories.loading) return '';
+          if (stockCategories.loading ) return <StockCategoryLoader/>;
           return <StockCategoryForm
             data={stockCategories.data.stockCategories}
             mutation={createCategory.mutation}
