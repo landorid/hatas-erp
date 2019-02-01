@@ -62,3 +62,14 @@ type StockItem {
     createdAt: DateTime!
     updatedAt: DateTime!
 }
+
+type Supplier {
+    id: ID! @unique
+    name: String!
+    contactName: String
+    email: String
+    phone: String
+    address: String
+    web: String
+    profile: String
+}

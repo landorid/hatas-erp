@@ -10,6 +10,10 @@ type AggregateStockItem {
   count: Int!
 }
 
+type AggregateSupplier {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -304,6 +308,12 @@ type Mutation {
   upsertStockItem(where: StockItemWhereUniqueInput!, create: StockItemCreateInput!, update: StockItemUpdateInput!): StockItem!
   deleteStockItem(where: StockItemWhereUniqueInput!): StockItem
   deleteManyStockItems(where: StockItemWhereInput): BatchPayload!
+  createSupplier(data: SupplierCreateInput!): Supplier!
+  updateSupplier(data: SupplierUpdateInput!, where: SupplierWhereUniqueInput!): Supplier
+  updateManySuppliers(data: SupplierUpdateManyMutationInput!, where: SupplierWhereInput): BatchPayload!
+  upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
+  deleteSupplier(where: SupplierWhereUniqueInput!): Supplier
+  deleteManySuppliers(where: SupplierWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -344,6 +354,9 @@ type Query {
   stockItem(where: StockItemWhereUniqueInput!): StockItem
   stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
   stockItemsConnection(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockItemConnection!
+  supplier(where: SupplierWhereUniqueInput!): Supplier
+  suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
+  suppliersConnection(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SupplierConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -664,7 +677,234 @@ type Subscription {
   customer(where: CustomerSubscriptionWhereInput): CustomerSubscriptionPayload
   stockCategory(where: StockCategorySubscriptionWhereInput): StockCategorySubscriptionPayload
   stockItem(where: StockItemSubscriptionWhereInput): StockItemSubscriptionPayload
+  supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type Supplier {
+  id: ID!
+  name: String!
+  contactName: String
+  email: String
+  phone: String
+  address: String
+  web: String
+  profile: String
+}
+
+type SupplierConnection {
+  pageInfo: PageInfo!
+  edges: [SupplierEdge]!
+  aggregate: AggregateSupplier!
+}
+
+input SupplierCreateInput {
+  name: String!
+  contactName: String
+  email: String
+  phone: String
+  address: String
+  web: String
+  profile: String
+}
+
+type SupplierEdge {
+  node: Supplier!
+  cursor: String!
+}
+
+enum SupplierOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  contactName_ASC
+  contactName_DESC
+  email_ASC
+  email_DESC
+  phone_ASC
+  phone_DESC
+  address_ASC
+  address_DESC
+  web_ASC
+  web_DESC
+  profile_ASC
+  profile_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type SupplierPreviousValues {
+  id: ID!
+  name: String!
+  contactName: String
+  email: String
+  phone: String
+  address: String
+  web: String
+  profile: String
+}
+
+type SupplierSubscriptionPayload {
+  mutation: MutationType!
+  node: Supplier
+  updatedFields: [String!]
+  previousValues: SupplierPreviousValues
+}
+
+input SupplierSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: SupplierWhereInput
+  AND: [SupplierSubscriptionWhereInput!]
+  OR: [SupplierSubscriptionWhereInput!]
+  NOT: [SupplierSubscriptionWhereInput!]
+}
+
+input SupplierUpdateInput {
+  name: String
+  contactName: String
+  email: String
+  phone: String
+  address: String
+  web: String
+  profile: String
+}
+
+input SupplierUpdateManyMutationInput {
+  name: String
+  contactName: String
+  email: String
+  phone: String
+  address: String
+  web: String
+  profile: String
+}
+
+input SupplierWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  contactName: String
+  contactName_not: String
+  contactName_in: [String!]
+  contactName_not_in: [String!]
+  contactName_lt: String
+  contactName_lte: String
+  contactName_gt: String
+  contactName_gte: String
+  contactName_contains: String
+  contactName_not_contains: String
+  contactName_starts_with: String
+  contactName_not_starts_with: String
+  contactName_ends_with: String
+  contactName_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
+  address: String
+  address_not: String
+  address_in: [String!]
+  address_not_in: [String!]
+  address_lt: String
+  address_lte: String
+  address_gt: String
+  address_gte: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  web: String
+  web_not: String
+  web_in: [String!]
+  web_not_in: [String!]
+  web_lt: String
+  web_lte: String
+  web_gt: String
+  web_gte: String
+  web_contains: String
+  web_not_contains: String
+  web_starts_with: String
+  web_not_starts_with: String
+  web_ends_with: String
+  web_not_ends_with: String
+  profile: String
+  profile_not: String
+  profile_in: [String!]
+  profile_not_in: [String!]
+  profile_lt: String
+  profile_lte: String
+  profile_gt: String
+  profile_gte: String
+  profile_contains: String
+  profile_not_contains: String
+  profile_starts_with: String
+  profile_not_starts_with: String
+  profile_ends_with: String
+  profile_not_ends_with: String
+  AND: [SupplierWhereInput!]
+  OR: [SupplierWhereInput!]
+  NOT: [SupplierWhereInput!]
+}
+
+input SupplierWhereUniqueInput {
+  id: ID
 }
 
 type User {
