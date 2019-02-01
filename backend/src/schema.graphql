@@ -28,4 +28,5 @@ type Query {
   customers(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, first: Int): [Customer]!
   stockCategories(where: StockCategoryWhereInput, orderBy: StockCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockCategory]!
   stockItem(where: StockItemWhereUniqueInput!): StockItem
+  stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
 }
