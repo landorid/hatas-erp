@@ -57,10 +57,13 @@ const STOCK_ITEM_QUERY = gql`
 
 const ComposedStockItem = adopt({
   stockCategory: ({ render }) =>
-    <Query query={STOCKCATEGORIES_QUERY} children={render}/>,
+    <Query query={STOCKCATEGORIES_QUERY}
+           fetchPolicy="cache-first"
+           children={render}/>,
   stockItem: ({ single, render }) =>
     <Query query={STOCK_ITEM_QUERY}
            children={render}
+           fetchPolicy="cache-first"
            variables={{ id: single }}
            skip={!single}/>,
   createStockItem: ({ render }) =>
