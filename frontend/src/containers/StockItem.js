@@ -4,6 +4,7 @@ import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
 import PageTitle from '../components/PageTitle';
 import StockItemForm from '../components/form/StockItemForm';
+import FormLoading from '../components/form/elements/FormLoading';
 
 const CREATE_STOCKITEM_MUTATION = gql`
   mutation CREATE_STOCKITEM_MUTATION(
@@ -74,7 +75,10 @@ const StockItem = (props) => {
   return (
     <ComposedStockItem single={singleStockItem}>
       {({ stockCategory, stockItem, createStockItem }) => {
-        if (stockItem.loading || stockCategory.loading) return '';
+        if (stockItem.loading || stockCategory.loading) return <>
+          <PageTitle title="Betöltés..."/>
+          <FormLoading size={2}/>
+        </>;
         return ( <>
           <PageTitle title={singleStockItem ? stockItem.data.stockItem.name : 'Új alapanyag'}/>
           <StockItemForm

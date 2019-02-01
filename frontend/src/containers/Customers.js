@@ -8,7 +8,7 @@ import TableLoading from '../components/table/elements/TableLoading';
 
 const CUSTOMERS_QUERY = gql`
   query CUSTOMERS_QUERY($where: CustomerWhereInput, $orderBy: CustomerOrderByInput, $skip: Int) {
-    customers(where: $where, orderBy: $orderBy, skip: $skip, first: 200) {
+    customers(where: $where, orderBy: $orderBy, skip: $skip) {
       id
       name
       contactName

@@ -244,6 +244,7 @@ class StockItemCategory extends React.Component {
 
               </Grid>
               <Grid item xs={12} sm={6} lg={7}>
+                <div>
                 <Typography
                   className={classes.title}
                   variant="h6">{values.stockCategories[this.state.activeCategory].name}</Typography>
@@ -294,6 +295,7 @@ class StockItemCategory extends React.Component {
                     </div> );
                   }}
                 </FieldArray>
+                </div>
               </Grid>
             </Grid>
 
