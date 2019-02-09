@@ -77,7 +77,7 @@ const Customer = (props) => {
         {(createCustomer, { loading, data }) => {
 
           if (!loading && data && data.createCustomer.id) {
-            return <Redirect to={`/customers/${data.createCustomer.id}`}/>;
+            return <Redirect to={`/customer/${data.createCustomer.id}`}/>;
           }
 
           return <CustomerForm mutation={createCustomer}/>;

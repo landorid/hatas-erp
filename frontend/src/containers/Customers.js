@@ -41,7 +41,7 @@ const Customers = (props) => {
         }}
       </Query>
 
-      <AddFab title="Új ügyfél" to="/customers/add"/>
+      <AddFab title="Új ügyfél" to="/customer/add"/>
     </div>
   );
 };

@@ -39,9 +39,9 @@ class App extends Component {
                 <PrivateRoute path="/users" exact component={Users}/>
                 <PrivateRoute path="/users/add" exact component={AddUser}/>
                 <PrivateRoute path="/users/:id" component={EditUser}/>
-                <PrivateRoute path="/customers/add" exact component={Customer}/>
+                <PrivateRoute path="/customer/add" exact component={Customer}/>
                 <PrivateRoute path="/customers/all/:page" component={Customers}/>
-                <PrivateRoute path="/customers/:id" component={Customer}/>
+                <PrivateRoute path="/customer/:id" component={Customer}/>
                 <PrivateRoute path="/stock" exact component={Stock}/>
                 <PrivateRoute path="/stock/add" exact component={StockItem}/>
                 <PrivateRoute path="/stock/category" exact component={StockCategory}/>

@@ -130,7 +130,7 @@ class CustomersListing extends React.Component {
                       key={n.id}
                     >
                       <TableCell align="right">
-                        <Link className={classes.userAvatar} to={`/customers/${n.id}`}>
+                        <Link className={classes.userAvatar} to={`/customer/${n.id}`}>
                           {n.name}
                         </Link>
                       </TableCell>
@@ -177,8 +177,9 @@ class CustomersListing extends React.Component {
 }
 
 CustomersListing.propTypes = {
-  classes: PropTypes.object.isRequired,
   rows: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+  page: PropTypes.number,
 };
 
 export default withStyles(styles)(CustomersListing);
