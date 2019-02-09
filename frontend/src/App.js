@@ -24,6 +24,8 @@ import StockItem from './containers/StockItem';
 import StockCategory from './containers/StockCategory';
 import Supplier from './containers/Supplier';
 import Suppliers from './containers/Suppliers';
+import Products from './containers/Products';
+import Product from './containers/Product';
 
 class App extends Component {
   render() {
@@ -49,6 +51,9 @@ class App extends Component {
                 <PrivateRoute path="/suppliers" component={Suppliers}/>
                 <PrivateRoute path="/supplier/add" exact component={Supplier}/>
                 <PrivateRoute path="/supplier/:id" component={Supplier}/>
+                <PrivateRoute path="/products" component={Products}/>
+                <PrivateRoute path="/product/add" exact component={Product}/>
+                <PrivateRoute path="/product/:id" component={Product}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

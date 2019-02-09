@@ -10,3 +10,10 @@ export const permissions = [
   { id: 'ADMIN', name: 'Adminisztrátor' },
   { id: 'USER', name: 'Felhasználó' },
 ];
+
+export const fieldTypes = [
+  { id: 'text', name: 'Szöveg' },
+  { id: 'textarea', name: 'Szövegterület' },
+  { id: 'number', name: 'Szám' },
+  { id: 'stockitem', name: 'Alapanyag' },
+];

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { ApolloConsumer, Mutation } from 'react-apollo';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,6 +17,9 @@ import Feladatok from '@material-ui/icons/Event';
 import People from '@material-ui/icons/People';
 import LocalShipping from '@material-ui/icons/LocalShipping';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Store from '@material-ui/icons/Store';
+import ListIcon from '@material-ui/icons/List';
+import Products from '@material-ui/icons/ImportantDevices';
 import Divider from '@material-ui/core/Divider/Divider';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
@@ -25,9 +31,6 @@ import { fade } from '@material-ui/core/styles/colorManipulator';
 import CircularProgress from '@material-ui/core/CircularProgress/CircularProgress';
 import Menu from '@material-ui/core/Menu/Menu';
 import MenuItem from '@material-ui/core/MenuItem/MenuItem';
-import { Link, NavLink } from 'react-router-dom';
-import gql from 'graphql-tag';
-import { ApolloConsumer, Mutation } from 'react-apollo';
 import { CURRENT_USER_QUERY } from './User';
 import PageTitle from './PageTitle';
 
@@ -91,6 +94,9 @@ const styles = theme => ( {
       alignItems: 'center',
     },
   },
+  menu_sub: {
+    paddingLeft: theme.spacing.unit * 5,
+  },
 } );
 
 class Header extends Component {
@@ -133,13 +139,18 @@ class Header extends Component {
         <List>
           {[
             { name: 'Munkalapok', icon: <Munkalap/>, to: '/users' },
+            { name: 'Termékek', icon: <Products/>, to: '/products'},
             { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
             { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },
-            { name: 'Partnerek', icon: <UsersIcon/>, to: '/partners' },
-            { name: 'Beszállítók', icon: <LocalShipping/>, to: '/supplier' },
-            { name: 'Alapanyagok', icon: <LocalShipping/>, to: '/supplier' },
+            { name: 'Beszállítók', icon: <LocalShipping/>, to: '/suppliers' },
+            { name: 'Alapanyagok', icon: <Store/>, to: '/stock' },
+            { name: 'Kategóriák', icon: <ListIcon/>, to: '/stock/category', sub: true },
           ].map(item => (
-            <ListItem key={item.name} to={item.to} component={Link} button>
+            <ListItem key={item.name}
+                      to={item.to}
+                      className={item.sub ? classes.menu_sub : null}
+                      component={Link}
+                      button>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name}/>
             </ListItem>

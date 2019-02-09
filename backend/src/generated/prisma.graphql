@@ -2,6 +2,22 @@ type AggregateCustomer {
   count: Int!
 }
 
+type AggregateProduct {
+  count: Int!
+}
+
+type AggregateProductData {
+  count: Int!
+}
+
+type AggregateProductField {
+  count: Int!
+}
+
+type AggregateProductTemplate {
+  count: Int!
+}
+
 type AggregateStockCategory {
   count: Int!
 }
@@ -296,6 +312,29 @@ type Mutation {
   upsertCustomer(where: CustomerWhereUniqueInput!, create: CustomerCreateInput!, update: CustomerUpdateInput!): Customer!
   deleteCustomer(where: CustomerWhereUniqueInput!): Customer
   deleteManyCustomers(where: CustomerWhereInput): BatchPayload!
+  createProduct(data: ProductCreateInput!): Product!
+  updateProduct(data: ProductUpdateInput!, where: ProductWhereUniqueInput!): Product
+  upsertProduct(where: ProductWhereUniqueInput!, create: ProductCreateInput!, update: ProductUpdateInput!): Product!
+  deleteProduct(where: ProductWhereUniqueInput!): Product
+  deleteManyProducts(where: ProductWhereInput): BatchPayload!
+  createProductData(data: ProductDataCreateInput!): ProductData!
+  updateProductData(data: ProductDataUpdateInput!, where: ProductDataWhereUniqueInput!): ProductData
+  updateManyProductDatas(data: ProductDataUpdateManyMutationInput!, where: ProductDataWhereInput): BatchPayload!
+  upsertProductData(where: ProductDataWhereUniqueInput!, create: ProductDataCreateInput!, update: ProductDataUpdateInput!): ProductData!
+  deleteProductData(where: ProductDataWhereUniqueInput!): ProductData
+  deleteManyProductDatas(where: ProductDataWhereInput): BatchPayload!
+  createProductField(data: ProductFieldCreateInput!): ProductField!
+  updateProductField(data: ProductFieldUpdateInput!, where: ProductFieldWhereUniqueInput!): ProductField
+  updateManyProductFields(data: ProductFieldUpdateManyMutationInput!, where: ProductFieldWhereInput): BatchPayload!
+  upsertProductField(where: ProductFieldWhereUniqueInput!, create: ProductFieldCreateInput!, update: ProductFieldUpdateInput!): ProductField!
+  deleteProductField(where: ProductFieldWhereUniqueInput!): ProductField
+  deleteManyProductFields(where: ProductFieldWhereInput): BatchPayload!
+  createProductTemplate(data: ProductTemplateCreateInput!): ProductTemplate!
+  updateProductTemplate(data: ProductTemplateUpdateInput!, where: ProductTemplateWhereUniqueInput!): ProductTemplate
+  updateManyProductTemplates(data: ProductTemplateUpdateManyMutationInput!, where: ProductTemplateWhereInput): BatchPayload!
+  upsertProductTemplate(where: ProductTemplateWhereUniqueInput!, create: ProductTemplateCreateInput!, update: ProductTemplateUpdateInput!): ProductTemplate!
+  deleteProductTemplate(where: ProductTemplateWhereUniqueInput!): ProductTemplate
+  deleteManyProductTemplates(where: ProductTemplateWhereInput): BatchPayload!
   createStockCategory(data: StockCategoryCreateInput!): StockCategory!
   updateStockCategory(data: StockCategoryUpdateInput!, where: StockCategoryWhereUniqueInput!): StockCategory
   updateManyStockCategories(data: StockCategoryUpdateManyMutationInput!, where: StockCategoryWhereInput): BatchPayload!
@@ -344,10 +383,765 @@ enum Permission {
   USER
 }
 
+type Product {
+  id: ID!
+  template: ProductTemplate!
+  fields(where: ProductDataWhereInput, orderBy: ProductDataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductData!]
+}
+
+type ProductConnection {
+  pageInfo: PageInfo!
+  edges: [ProductEdge]!
+  aggregate: AggregateProduct!
+}
+
+input ProductCreateInput {
+  template: ProductTemplateCreateOneInput!
+  fields: ProductDataCreateManyInput
+}
+
+type ProductData {
+  id: ID!
+  field: ProductField!
+  value: String
+}
+
+type ProductDataConnection {
+  pageInfo: PageInfo!
+  edges: [ProductDataEdge]!
+  aggregate: AggregateProductData!
+}
+
+input ProductDataCreateInput {
+  field: ProductFieldCreateOneInput!
+  value: String
+}
+
+input ProductDataCreateManyInput {
+  create: [ProductDataCreateInput!]
+  connect: [ProductDataWhereUniqueInput!]
+}
+
+type ProductDataEdge {
+  node: ProductData!
+  cursor: String!
+}
+
+enum ProductDataOrderByInput {
+  id_ASC
+  id_DESC
+  value_ASC
+  value_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProductDataPreviousValues {
+  id: ID!
+  value: String
+}
+
+input ProductDataScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  value: String
+  value_not: String
+  value_in: [String!]
+  value_not_in: [String!]
+  value_lt: String
+  value_lte: String
+  value_gt: String
+  value_gte: String
+  value_contains: String
+  value_not_contains: String
+  value_starts_with: String
+  value_not_starts_with: String
+  value_ends_with: String
+  value_not_ends_with: String
+  AND: [ProductDataScalarWhereInput!]
+  OR: [ProductDataScalarWhereInput!]
+  NOT: [ProductDataScalarWhereInput!]
+}
+
+type ProductDataSubscriptionPayload {
+  mutation: MutationType!
+  node: ProductData
+  updatedFields: [String!]
+  previousValues: ProductDataPreviousValues
+}
+
+input ProductDataSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ProductDataWhereInput
+  AND: [ProductDataSubscriptionWhereInput!]
+  OR: [ProductDataSubscriptionWhereInput!]
+  NOT: [ProductDataSubscriptionWhereInput!]
+}
+
+input ProductDataUpdateDataInput {
+  field: ProductFieldUpdateOneRequiredInput
+  value: String
+}
+
+input ProductDataUpdateInput {
+  field: ProductFieldUpdateOneRequiredInput
+  value: String
+}
+
+input ProductDataUpdateManyDataInput {
+  value: String
+}
+
+input ProductDataUpdateManyInput {
+  create: [ProductDataCreateInput!]
+  update: [ProductDataUpdateWithWhereUniqueNestedInput!]
+  upsert: [ProductDataUpsertWithWhereUniqueNestedInput!]
+  delete: [ProductDataWhereUniqueInput!]
+  connect: [ProductDataWhereUniqueInput!]
+  disconnect: [ProductDataWhereUniqueInput!]
+  deleteMany: [ProductDataScalarWhereInput!]
+  updateMany: [ProductDataUpdateManyWithWhereNestedInput!]
+}
+
+input ProductDataUpdateManyMutationInput {
+  value: String
+}
+
+input ProductDataUpdateManyWithWhereNestedInput {
+  where: ProductDataScalarWhereInput!
+  data: ProductDataUpdateManyDataInput!
+}
+
+input ProductDataUpdateWithWhereUniqueNestedInput {
+  where: ProductDataWhereUniqueInput!
+  data: ProductDataUpdateDataInput!
+}
+
+input ProductDataUpsertWithWhereUniqueNestedInput {
+  where: ProductDataWhereUniqueInput!
+  update: ProductDataUpdateDataInput!
+  create: ProductDataCreateInput!
+}
+
+input ProductDataWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  field: ProductFieldWhereInput
+  value: String
+  value_not: String
+  value_in: [String!]
+  value_not_in: [String!]
+  value_lt: String
+  value_lte: String
+  value_gt: String
+  value_gte: String
+  value_contains: String
+  value_not_contains: String
+  value_starts_with: String
+  value_not_starts_with: String
+  value_ends_with: String
+  value_not_ends_with: String
+  AND: [ProductDataWhereInput!]
+  OR: [ProductDataWhereInput!]
+  NOT: [ProductDataWhereInput!]
+}
+
+input ProductDataWhereUniqueInput {
+  id: ID
+}
+
+type ProductEdge {
+  node: Product!
+  cursor: String!
+}
+
+type ProductField {
+  id: ID!
+  type: String!
+  name: String!
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+type ProductFieldConnection {
+  pageInfo: PageInfo!
+  edges: [ProductFieldEdge]!
+  aggregate: AggregateProductField!
+}
+
+input ProductFieldCreateInput {
+  type: String!
+  name: String!
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+input ProductFieldCreateManyInput {
+  create: [ProductFieldCreateInput!]
+  connect: [ProductFieldWhereUniqueInput!]
+}
+
+input ProductFieldCreateOneInput {
+  create: ProductFieldCreateInput
+  connect: ProductFieldWhereUniqueInput
+}
+
+type ProductFieldEdge {
+  node: ProductField!
+  cursor: String!
+}
+
+enum ProductFieldOrderByInput {
+  id_ASC
+  id_DESC
+  type_ASC
+  type_DESC
+  name_ASC
+  name_DESC
+  default_ASC
+  default_DESC
+  suffix_ASC
+  suffix_DESC
+  required_ASC
+  required_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProductFieldPreviousValues {
+  id: ID!
+  type: String!
+  name: String!
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+input ProductFieldScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_gt: String
+  type_gte: String
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  default: String
+  default_not: String
+  default_in: [String!]
+  default_not_in: [String!]
+  default_lt: String
+  default_lte: String
+  default_gt: String
+  default_gte: String
+  default_contains: String
+  default_not_contains: String
+  default_starts_with: String
+  default_not_starts_with: String
+  default_ends_with: String
+  default_not_ends_with: String
+  suffix: String
+  suffix_not: String
+  suffix_in: [String!]
+  suffix_not_in: [String!]
+  suffix_lt: String
+  suffix_lte: String
+  suffix_gt: String
+  suffix_gte: String
+  suffix_contains: String
+  suffix_not_contains: String
+  suffix_starts_with: String
+  suffix_not_starts_with: String
+  suffix_ends_with: String
+  suffix_not_ends_with: String
+  required: Boolean
+  required_not: Boolean
+  AND: [ProductFieldScalarWhereInput!]
+  OR: [ProductFieldScalarWhereInput!]
+  NOT: [ProductFieldScalarWhereInput!]
+}
+
+type ProductFieldSubscriptionPayload {
+  mutation: MutationType!
+  node: ProductField
+  updatedFields: [String!]
+  previousValues: ProductFieldPreviousValues
+}
+
+input ProductFieldSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ProductFieldWhereInput
+  AND: [ProductFieldSubscriptionWhereInput!]
+  OR: [ProductFieldSubscriptionWhereInput!]
+  NOT: [ProductFieldSubscriptionWhereInput!]
+}
+
+input ProductFieldUpdateDataInput {
+  type: String
+  name: String
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+input ProductFieldUpdateInput {
+  type: String
+  name: String
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+input ProductFieldUpdateManyDataInput {
+  type: String
+  name: String
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+input ProductFieldUpdateManyInput {
+  create: [ProductFieldCreateInput!]
+  update: [ProductFieldUpdateWithWhereUniqueNestedInput!]
+  upsert: [ProductFieldUpsertWithWhereUniqueNestedInput!]
+  delete: [ProductFieldWhereUniqueInput!]
+  connect: [ProductFieldWhereUniqueInput!]
+  disconnect: [ProductFieldWhereUniqueInput!]
+  deleteMany: [ProductFieldScalarWhereInput!]
+  updateMany: [ProductFieldUpdateManyWithWhereNestedInput!]
+}
+
+input ProductFieldUpdateManyMutationInput {
+  type: String
+  name: String
+  default: String
+  suffix: String
+  required: Boolean
+}
+
+input ProductFieldUpdateManyWithWhereNestedInput {
+  where: ProductFieldScalarWhereInput!
+  data: ProductFieldUpdateManyDataInput!
+}
+
+input ProductFieldUpdateOneRequiredInput {
+  create: ProductFieldCreateInput
+  update: ProductFieldUpdateDataInput
+  upsert: ProductFieldUpsertNestedInput
+  connect: ProductFieldWhereUniqueInput
+}
+
+input ProductFieldUpdateWithWhereUniqueNestedInput {
+  where: ProductFieldWhereUniqueInput!
+  data: ProductFieldUpdateDataInput!
+}
+
+input ProductFieldUpsertNestedInput {
+  update: ProductFieldUpdateDataInput!
+  create: ProductFieldCreateInput!
+}
+
+input ProductFieldUpsertWithWhereUniqueNestedInput {
+  where: ProductFieldWhereUniqueInput!
+  update: ProductFieldUpdateDataInput!
+  create: ProductFieldCreateInput!
+}
+
+input ProductFieldWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_gt: String
+  type_gte: String
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  default: String
+  default_not: String
+  default_in: [String!]
+  default_not_in: [String!]
+  default_lt: String
+  default_lte: String
+  default_gt: String
+  default_gte: String
+  default_contains: String
+  default_not_contains: String
+  default_starts_with: String
+  default_not_starts_with: String
+  default_ends_with: String
+  default_not_ends_with: String
+  suffix: String
+  suffix_not: String
+  suffix_in: [String!]
+  suffix_not_in: [String!]
+  suffix_lt: String
+  suffix_lte: String
+  suffix_gt: String
+  suffix_gte: String
+  suffix_contains: String
+  suffix_not_contains: String
+  suffix_starts_with: String
+  suffix_not_starts_with: String
+  suffix_ends_with: String
+  suffix_not_ends_with: String
+  required: Boolean
+  required_not: Boolean
+  AND: [ProductFieldWhereInput!]
+  OR: [ProductFieldWhereInput!]
+  NOT: [ProductFieldWhereInput!]
+}
+
+input ProductFieldWhereUniqueInput {
+  id: ID
+}
+
+enum ProductOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProductPreviousValues {
+  id: ID!
+}
+
+type ProductSubscriptionPayload {
+  mutation: MutationType!
+  node: Product
+  updatedFields: [String!]
+  previousValues: ProductPreviousValues
+}
+
+input ProductSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ProductWhereInput
+  AND: [ProductSubscriptionWhereInput!]
+  OR: [ProductSubscriptionWhereInput!]
+  NOT: [ProductSubscriptionWhereInput!]
+}
+
+type ProductTemplate {
+  id: ID!
+  name: String!
+  owner: User!
+  status: Boolean
+  fields(where: ProductFieldWhereInput, orderBy: ProductFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductField!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ProductTemplateConnection {
+  pageInfo: PageInfo!
+  edges: [ProductTemplateEdge]!
+  aggregate: AggregateProductTemplate!
+}
+
+input ProductTemplateCreateInput {
+  name: String!
+  owner: UserCreateOneInput!
+  status: Boolean
+  fields: ProductFieldCreateManyInput
+}
+
+input ProductTemplateCreateOneInput {
+  create: ProductTemplateCreateInput
+  connect: ProductTemplateWhereUniqueInput
+}
+
+type ProductTemplateEdge {
+  node: ProductTemplate!
+  cursor: String!
+}
+
+enum ProductTemplateOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  status_ASC
+  status_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ProductTemplatePreviousValues {
+  id: ID!
+  name: String!
+  status: Boolean
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ProductTemplateSubscriptionPayload {
+  mutation: MutationType!
+  node: ProductTemplate
+  updatedFields: [String!]
+  previousValues: ProductTemplatePreviousValues
+}
+
+input ProductTemplateSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ProductTemplateWhereInput
+  AND: [ProductTemplateSubscriptionWhereInput!]
+  OR: [ProductTemplateSubscriptionWhereInput!]
+  NOT: [ProductTemplateSubscriptionWhereInput!]
+}
+
+input ProductTemplateUpdateDataInput {
+  name: String
+  owner: UserUpdateOneRequiredInput
+  status: Boolean
+  fields: ProductFieldUpdateManyInput
+}
+
+input ProductTemplateUpdateInput {
+  name: String
+  owner: UserUpdateOneRequiredInput
+  status: Boolean
+  fields: ProductFieldUpdateManyInput
+}
+
+input ProductTemplateUpdateManyMutationInput {
+  name: String
+  status: Boolean
+}
+
+input ProductTemplateUpdateOneRequiredInput {
+  create: ProductTemplateCreateInput
+  update: ProductTemplateUpdateDataInput
+  upsert: ProductTemplateUpsertNestedInput
+  connect: ProductTemplateWhereUniqueInput
+}
+
+input ProductTemplateUpsertNestedInput {
+  update: ProductTemplateUpdateDataInput!
+  create: ProductTemplateCreateInput!
+}
+
+input ProductTemplateWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  owner: UserWhereInput
+  status: Boolean
+  status_not: Boolean
+  fields_every: ProductFieldWhereInput
+  fields_some: ProductFieldWhereInput
+  fields_none: ProductFieldWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ProductTemplateWhereInput!]
+  OR: [ProductTemplateWhereInput!]
+  NOT: [ProductTemplateWhereInput!]
+}
+
+input ProductTemplateWhereUniqueInput {
+  id: ID
+}
+
+input ProductUpdateInput {
+  template: ProductTemplateUpdateOneRequiredInput
+  fields: ProductDataUpdateManyInput
+}
+
+input ProductWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  template: ProductTemplateWhereInput
+  fields_every: ProductDataWhereInput
+  fields_some: ProductDataWhereInput
+  fields_none: ProductDataWhereInput
+  AND: [ProductWhereInput!]
+  OR: [ProductWhereInput!]
+  NOT: [ProductWhereInput!]
+}
+
+input ProductWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   customer(where: CustomerWhereUniqueInput!): Customer
   customers(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Customer]!
   customersConnection(where: CustomerWhereInput, orderBy: CustomerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CustomerConnection!
+  product(where: ProductWhereUniqueInput!): Product
+  products(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Product]!
+  productsConnection(where: ProductWhereInput, orderBy: ProductOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductConnection!
+  productData(where: ProductDataWhereUniqueInput!): ProductData
+  productDatas(where: ProductDataWhereInput, orderBy: ProductDataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductData]!
+  productDatasConnection(where: ProductDataWhereInput, orderBy: ProductDataOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductDataConnection!
+  productField(where: ProductFieldWhereUniqueInput!): ProductField
+  productFields(where: ProductFieldWhereInput, orderBy: ProductFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductField]!
+  productFieldsConnection(where: ProductFieldWhereInput, orderBy: ProductFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductFieldConnection!
+  productTemplate(where: ProductTemplateWhereUniqueInput!): ProductTemplate
+  productTemplates(where: ProductTemplateWhereInput, orderBy: ProductTemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductTemplate]!
+  productTemplatesConnection(where: ProductTemplateWhereInput, orderBy: ProductTemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ProductTemplateConnection!
   stockCategory(where: StockCategoryWhereUniqueInput!): StockCategory
   stockCategories(where: StockCategoryWhereInput, orderBy: StockCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockCategory]!
   stockCategoriesConnection(where: StockCategoryWhereInput, orderBy: StockCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StockCategoryConnection!
@@ -675,6 +1469,10 @@ input StockItemWhereUniqueInput {
 
 type Subscription {
   customer(where: CustomerSubscriptionWhereInput): CustomerSubscriptionPayload
+  product(where: ProductSubscriptionWhereInput): ProductSubscriptionPayload
+  productData(where: ProductDataSubscriptionWhereInput): ProductDataSubscriptionPayload
+  productField(where: ProductFieldSubscriptionWhereInput): ProductFieldSubscriptionPayload
+  productTemplate(where: ProductTemplateSubscriptionWhereInput): ProductTemplateSubscriptionPayload
   stockCategory(where: StockCategorySubscriptionWhereInput): StockCategorySubscriptionPayload
   stockItem(where: StockItemSubscriptionWhereInput): StockItemSubscriptionPayload
   supplier(where: SupplierSubscriptionWhereInput): SupplierSubscriptionPayload
@@ -956,6 +1754,11 @@ input UserCreatejobInput {
   set: [Job!]
 }
 
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreatepermissionsInput {
   set: [Permission!]
 }
@@ -1039,6 +1842,24 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  lastName: String
+  firstName: String
+  email: String
+  phone: String
+  avatar: String
+  location: String
+  job: UserUpdatejobInput
+  bloodType: String
+  ICEName: String
+  ICEContact: String
+  password: String
+  resetToken: String
+  resetTokenExpiry: Float
+  permissions: UserUpdatepermissionsInput
+  status: Boolean
+}
+
 input UserUpdateInput {
   lastName: String
   firstName: String
@@ -1079,8 +1900,20 @@ input UserUpdateManyMutationInput {
   status: Boolean
 }
 
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdatepermissionsInput {
   set: [Permission!]
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
