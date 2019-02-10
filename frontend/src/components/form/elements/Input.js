@@ -1,11 +1,14 @@
 import React from 'react';
+import { Field, FastField } from 'formik';
+import PropTypes from 'prop-types';
 import MuiInput from './MuiInput';
-import { Field } from 'formik';
 
-const Input = (props) => {
-  return (
-    <Field type="text" component={MuiInput} variant="outlined" {...props}/>
-  );
+const Input = (props) => props.noFast ?
+  <Field type="text" component={MuiInput} variant="outlined" {...props}/> :
+  <FastField type="text" component={MuiInput} variant="outlined" {...props}/>;
+
+Input.propTypes = {
+  noFast: PropTypes.bool,
 };
 
-export default Input;
+export default React.memo(Input);

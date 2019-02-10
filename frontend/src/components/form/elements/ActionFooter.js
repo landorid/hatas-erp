@@ -45,4 +45,4 @@ ActionFooter.propTypes = {
   ]),
 };
 
-export default withStyles(style)(ActionFooter);
+export default withStyles(style)(React.memo(ActionFooter));
