@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field, FieldArray, Form, Formik } from 'formik';
+import { FastField, Field, FieldArray, Formik } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -8,7 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Add from '@material-ui/icons/Add';
 import ActionFooter from './elements/ActionFooter';
-import { fieldTypes } from '../../config';
+import { fieldTypes, roles } from '../../config';
 import Input from './elements/Input';
 import MuiInput from './elements/MuiInput';
 import FormContainer from './elements/FormContainer';
@@ -26,7 +26,10 @@ const style = (theme) => ( {
   subField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    flex: '1 1 30%',
+    flex: '1 1 20%',
+    [theme.breakpoints.up('md')]: {
+      flex: '0 1 20%',
+    },
   },
   subFieldGroup: {
     display: 'flex',
@@ -34,16 +37,19 @@ const style = (theme) => ( {
     paddingTop: theme.spacing.unit,
     paddingBottom: theme.spacing.unit,
     borderBottom: `solid 1px grey`,
-    [theme.breakpoints.up('md')]: {
-      flexDirection: 'row',
-    },
   },
   subFieldList: {
     display: 'flex',
-    alignItems: 'center',
+    flexDirection: 'column',
+    [theme.breakpoints.up('sm')]: {
+      flexDirection: 'row',
+    },
   },
   deleteSubField: {
     marginLeft: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
 } );
 
@@ -61,15 +67,18 @@ const ProductForm = props => {
         default: Yup.string(),
         suffix: Yup.string(),
         required: Yup.boolean(),
+        role: Yup.number(),
       }),
-    ).required(),
+    ).min(1, 'Minimum egy mezőt tartalmaznia kell a Terméknek'),
   });
+
   const fieldDefaultValue = {
     name: '',
     type: 'text',
     default: '',
     suffix: '',
-    required: true,
+    required: 1,
+    role: -1,
   };
 
   const formDefaultValue = {
@@ -88,7 +97,7 @@ const ProductForm = props => {
             validateOnBlur={false}
             validationSchema={formScheme}
             onSubmit={formOnSubmit}>
-      {({ isSubmitting, dirty, values, handleChange }) => {
+      {({ isSubmitting, dirty, values, handleChange, errors }) => {
         return (
           <FormContainer>
             <Grid container className={classes.root} spacing={16}>
@@ -96,96 +105,107 @@ const ProductForm = props => {
                 <Input name="name" label="Név" autoFocus/>
               </Grid>
               <Grid item xs={12} sm={6} lg={4}>
-                <Field type="text"
-                       name="status"
-                       label="Állapot"
-                       component={MuiInput}
-                       variant="outlined"
-                       select>
+                <FastField type="text"
+                           name="status"
+                           label="Állapot"
+                           component={MuiInput}
+                           variant="outlined"
+                           select>
                   <MenuItem key="active" value={1}>Elérhető</MenuItem>
                   <MenuItem key="archive" value={0}>Nem elérhető</MenuItem>
-                </Field>
+                </FastField>
               </Grid>
             </Grid>
             <Typography variant={'h6'}>Mezők</Typography>
-            <Typography variant={'body2'}>Ha beikszeled a Kötelező Mező-t, akkor a felhasználó
-              nem fogja tudni elmenteni a Munkalapot, a mező kitöltése nélkül!</Typography>
+            <Typography variant={'body2'}>Ha bejelölöd a Kötelező Mező-t, akkor egyik felhasználó
+              sem fogja tudni elmenteni a Munkalapot a mező kitöltése nélkül! Ha kiválasztod a jogosultságot is, akkor
+              csak annak a felhasználónak lesz az adott bező kötelező</Typography>
             <FieldArray name="fields">
               {({ push, remove }) => {
                 return ( <>
-                  {values.fields.map((item, index) => (
-                    <div key={index} className={classes.subFieldGroup}>
-                      <div className={classes.subFieldList}>
-                        <Input name={`fields[${index}].name`}
-                               fullWidth={false}
-                               className={classes.subField}
-                               label="Mező neve"/>
+                    {values.fields.map((item, index) => (
+                      <div key={index} className={classes.subFieldGroup}>
+                        <div className={classes.subFieldList}>
+                          <Input name={`fields[${index}].name`}
+                                 fullWidth={false}
+                                 className={classes.subField}
+                                 label="Mező neve"/>
 
-                        <Field name={`fields[${index}].type`}
-                               label="Típus"
-                               className={classes.subField}
-                               fullWidth={false}
-                               component={MuiInput}
-                               variant="outlined"
-                               select>
-                          {fieldTypes.map(item => (
-                            <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                          ))}
-                        </Field>
+                          <FastField name={`fields[${index}].type`}
+                                     label="Típus"
+                                     className={classes.subField}
+                                     fullWidth={false}
+                                     component={MuiInput}
+                                     variant="outlined"
+                                     select>
+                            {fieldTypes.map(item => (
+                              <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                            ))}
+                          </FastField>
 
-                        <Input name={`fields[${index}].default`}
-                               fullWidth={false}
-                               disabled={values.fields[index].type === 'stockitem'}
-                               className={classes.subField}
-                               label="Alap érték"/>
-                      </div>
-                      <div className={classes.subFieldList}>
-                        <Input name={`fields[${index}].suffix`}
-                               fullWidth={false}
-                               width={50}
-                               className={classes.subField}
-                               label="Mértékegység"/>
+                          <Input name={`fields[${index}].default`}
+                                 fullWidth={false}
+                                 disabled={values.fields[index].type === 'stockitem'}
+                                 className={classes.subField}
+                                 label="Alap érték"/>
+                          <Input name={`fields[${index}].suffix`}
+                                 fullWidth={false}
+                                 width={50}
+                                 className={classes.subField}
+                                 label="Mértékegység"/>
+                        </div>
+                        <div className={classes.subFieldList}>
+                          <FastField name={`fields[${index}].required`}
+                                     label="Kötelező"
+                                     className={classes.subField}
+                                     fullWidth={false}
+                                     component={MuiInput}
+                                     variant="outlined"
+                                     select>
+                            <MenuItem value={1}>Igen</MenuItem>
+                            <MenuItem value={0}>Nem</MenuItem>
+                          </FastField>
+                          {!!values.fields[index].required &&
+                          <FastField name={`fields[${index}].role`}
+                                     label="Felelős"
+                                     className={classes.subField}
+                                     fullWidth={false}
+                                     component={MuiInput}
+                                     variant="outlined"
+                                     select>
+                            <MenuItem key={-1} value={-1}>Mindenki</MenuItem>
+                            {roles.map(item => (
+                              <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                            ))}
+                          </FastField>}
 
-                        <FormControlLabel
-                          className={classes.subField}
-                          control={
-                            <Checkbox
-                              name={`fields[${index}].required`}
-                              checked={values.fields[index].required}
-                              onChange={handleChange}
-                              color="primary"
-                              value={values.fields[index].required.toString()}
-                            />
-                          }
-                          label="Kötelező mező"
-                        />
-                        <div>
-                          <IconButton
-                            className={classes.deleteSubField}
-                            onClick={() => remove(index)}
-                            aria-label="Törlés">
-                            <Remove/>
-                          </IconButton>
+                          {values.fields.length > 1 && <div className={classes.deleteSubField}>
+                            <IconButton
+                              onClick={() => remove(index)}
+                              aria-label="Törlés">
+                              <Remove/>
+                            </IconButton>
+                          </div>}
                         </div>
                       </div>
-                    </div>
-                  ))}
-                  <Button
-                    color="primary"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      push(fieldDefaultValue);
-                    }}>
-                    <Add/> Mező hozzáadása
-                  </Button>
-                </> );
+                    ))}
+
+                    <Button
+                      color="primary"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        push(fieldDefaultValue);
+                      }}>
+                      <Add/> Mező hozzáadása
+                    </Button>
+                  </>
+                );
               }}
             </FieldArray>
-
-            <ActionFooter submitting={isSubmitting}
-                          updatedAt={updatedAt}
-                          dirty={dirty}/>
+            < ActionFooter submitting={isSubmitting}
+                           updatedAt={updatedAt}
+                           dirty={dirty}/>
           </FormContainer> );
       }}
     </Formik>
