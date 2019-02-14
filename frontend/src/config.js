@@ -17,3 +17,34 @@ export const fieldTypes = [
   { id: 'stockitem', name: 'Alapanyag' },
   { id: 'deadline', name: 'Határidő' },
 ];
+
+export const tableLabels = {
+  textLabels: {
+    body: {
+      noMatch: 'Sajnos nem találtunk semmit!',
+      toolTip: 'Rendezés',
+    },
+    pagination: {
+      next: 'Következő Oldal',
+      previous: 'Előző Oldal',
+      rowsPerPage: 'Megjelenítés:',
+      displayRows: '/',
+    },
+    toolbar: {
+      search: 'Keresés',
+      downloadCsv: 'CSV letöltés',
+      print: 'Nyomtatás',
+      viewColumns: 'Megjelenő oszlopok',
+      filterTable: 'Szűrés',
+    },
+    filter: {
+      all: 'Összes',
+      title: 'SZŰRŐK',
+      reset: 'VISSZAÁLLÍT',
+    },
+    viewColumns: {
+      title: 'Megjelenő oszlopok',
+      titleAria: 'Elrejtés/megjelenítés',
+    },
+  },
+};

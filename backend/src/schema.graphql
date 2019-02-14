@@ -54,4 +54,5 @@ type Query {
   supplier(where: SupplierWhereUniqueInput!): Supplier
   suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
   productTemplate(where: ProductTemplateWhereUniqueInput!): ProductTemplate
+  productTemplates(where: ProductTemplateWhereInput, orderBy: ProductTemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductTemplate]!
 }
