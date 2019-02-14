@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FastField, Field, FieldArray, Formik } from 'formik';
+import { FastField, FieldArray, Formik } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import * as Yup from 'yup';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -16,7 +16,6 @@ import Button from '@material-ui/core/Button';
 import Remove from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
 import { handleErrors } from '../../lib/utils';
-import { PRODUCTTEMPLATE_QUERY } from '../../containers/Product';
 
 const style = (theme) => ( {
   root: {
@@ -73,39 +72,40 @@ const ProductForm = props => {
   });
 
   const fieldDefaultValue = {
-    name: 'Dizájn',
+    name: '',
     type: 'text',
     default: '',
     suffix: '',
-    required: 1,
+    required: 0,
     role: 'EVERYBODY',
   };
 
   const formDefaultValue = {
-    name: 'Weboldal',
+    name: '',
     status: 1,
     fields: [{ ...fieldDefaultValue }],
   };
 
   const formOnSubmit = async (variables, { resetForm, setErrors, setSubmitting }) => {
-    delete variables.__typename;
-    delete variables.updatedAt;
-
     const fieldsToDelete = [];
 
+    delete variables.__typename;
+    delete variables.updatedAt;
     variables.fields.map(item => delete item.__typename);
 
     //Find fields, which is now not present int formtemplate, but there was
-    data.fields.map(item => {
-      if (variables.fields.some(fieldItem => {
-        //if item is new (=not saved in db)
-        if (!fieldItem.id) return false;
+    if (data) {
+      data.fields.map(item => {
+        if (variables.fields.some(fieldItem => {
+          //if item is new (=not saved in db)
+          if (!fieldItem.id) return false;
 
-        return fieldItem.id !== item.id;
-      })) {
-        fieldsToDelete.push({ id: item.id });
-      }
-    });
+          return fieldItem.id !== item.id;
+        })) {
+          fieldsToDelete.push({ id: item.id });
+        }
+      });
+    }
 
     const formData = {
       variables: {

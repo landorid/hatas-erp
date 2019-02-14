@@ -76,8 +76,8 @@ const Product = props => {
         if (dataLoading)
           return <FormLoading size={3}/>;
 
-        if (!singleProductTemplate && !loading && data && data.upsertProduct.id)
-          return <Redirect to={`/product/${data.upsertProduct.id}`}/>;
+        if (!singleProductTemplate && !loading && data && data.upsertProductTemplateItem.id)
+          return <Redirect to={`/product/${data.upsertProductTemplateItem.id}`}/>;
 
         if (singleProductTemplate && !dataProductTemplate.productTemplate)
           return <Redirect to={`/products/`}/>;
