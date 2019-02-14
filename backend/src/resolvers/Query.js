@@ -8,6 +8,7 @@ const queries = {
   stockItems: forwardTo('prisma'),
   supplier: forwardTo('prisma'),
   suppliers: forwardTo('prisma'),
+  productTemplate: forwardTo('prisma'),
 
   async customers(parent, args, { req, prisma }, info) {
     authHelper(req);

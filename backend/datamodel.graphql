@@ -4,6 +4,7 @@ enum Permission {
 }
 
 enum Job {
+  EVERYBODY
   FRONTOFFICE
   SALES
   GRAPHICDESIGNER
@@ -78,7 +79,7 @@ type ProductTemplate {
   id: ID! @unique
   name: String!
   owner: User!
-  status: Boolean @default(value: "true")
+  status: Int @default(value: 1)
   fields: [ProductField]! @relation(name: "FieldOnTemplate", onDelete: CASCADE)
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -90,7 +91,8 @@ type ProductField {
   name: String!
   default: String
   suffix: String
-  required: Boolean @default(value: "false")
+  role: Job
+  required: Int @default(value: 0)
 }
 
 type ProductData {

@@ -3,6 +3,24 @@ type SuccessMessage {
   message: String
 }
 
+input ProductTemplateInput {
+  id: ID
+  name: String!
+  status: Boolean
+  fields: [ProductFieldInput]!
+  delete: [ProductFieldWhereUniqueInput]!
+}
+
+input ProductFieldInput {
+  id: ID
+  type: String!
+  name: String!
+  default: String
+  suffix: String
+  role: Job
+  required: Boolean
+}
+
 type Mutation {
   signIn(email: String!, password: String!): User!
   signOut : SuccessMessage
@@ -19,6 +37,9 @@ type Mutation {
   deleteManyStockCategories(where: StockCategoryWhereInput): BatchPayload!
   upsertStockItem(where: StockItemWhereUniqueInput!, create: StockItemCreateInput!, update: StockItemUpdateInput!): StockItem!
   upsertSupplier(where: SupplierWhereUniqueInput!, create: SupplierCreateInput!, update: SupplierUpdateInput!): Supplier!
+  upsertProductTemplate(where: ProductTemplateWhereUniqueInput!, create: ProductTemplateCreateInput!, update: ProductTemplateUpdateInput!): ProductTemplate!
+  upsertProductField(where: ProductFieldWhereUniqueInput!, create: ProductFieldCreateInput!, update: ProductFieldUpdateInput!): ProductField!
+  upsertProductTemplateItem(where: ID, data: ProductTemplateInput!): ProductTemplate!
 }
 
 type Query {
@@ -32,4 +53,5 @@ type Query {
   stockItems(where: StockItemWhereInput, orderBy: StockItemOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StockItem]!
   supplier(where: SupplierWhereUniqueInput!): Supplier
   suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
+  productTemplate(where: ProductTemplateWhereUniqueInput!): ProductTemplate
 }

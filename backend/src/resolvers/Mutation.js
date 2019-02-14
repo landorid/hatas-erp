@@ -12,6 +12,8 @@ const mutations = {
   deleteManyStockCategories: forwardTo('prisma'),
   upsertStockItem: forwardTo('prisma'),
   upsertSupplier: forwardTo('prisma'),
+  upsertProductTemplate: forwardTo('prisma'),
+  upsertProductField: forwardTo('prisma'),
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
@@ -143,6 +145,48 @@ const mutations = {
     authHelper(req);
 
     return prisma.mutation.updateCustomer(args, info);
+  },
+
+  async upsertProductTemplateItem(parent, args, { req, prisma }, info) {
+    const fieldsToUpsert = args.data.fields.reduce((array, item) => {
+      const id = item.id || -1;
+      delete item.id;
+
+      array.push({
+        where: { id },
+        update: item,
+        create: item,
+      });
+      return array;
+    }, []);
+
+    const productTemplate = {
+      where: {
+        id: args.data.id || -1,
+      },
+      create: {
+        name: args.data.name,
+        owner: {
+          connect: {
+            id: req.userId,
+          },
+        },
+        status: args.data.status,
+        fields: {
+          create: args.data.fields,
+        },
+      },
+      update: {
+        name: args.data.name,
+        status: args.data.status,
+        fields: {
+          upsert: fieldsToUpsert,
+          delete: args.data.delete,
+        },
+      },
+    };
+
+    return prisma.mutation.upsertProductTemplate(productTemplate, info);
   },
 };
 module.exports = mutations;

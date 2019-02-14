@@ -296,6 +296,7 @@ input CustomerWhereUniqueInput {
 scalar DateTime
 
 enum Job {
+  EVERYBODY
   FRONTOFFICE
   SALES
   GRAPHICDESIGNER
@@ -590,7 +591,8 @@ type ProductField {
   name: String!
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 type ProductFieldConnection {
@@ -604,7 +606,8 @@ input ProductFieldCreateInput {
   name: String!
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 input ProductFieldCreateManyInput {
@@ -633,6 +636,8 @@ enum ProductFieldOrderByInput {
   default_DESC
   suffix_ASC
   suffix_DESC
+  role_ASC
+  role_DESC
   required_ASC
   required_DESC
   createdAt_ASC
@@ -647,7 +652,8 @@ type ProductFieldPreviousValues {
   name: String!
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 input ProductFieldScalarWhereInput {
@@ -721,8 +727,18 @@ input ProductFieldScalarWhereInput {
   suffix_not_starts_with: String
   suffix_ends_with: String
   suffix_not_ends_with: String
-  required: Boolean
-  required_not: Boolean
+  role: Job
+  role_not: Job
+  role_in: [Job!]
+  role_not_in: [Job!]
+  required: Int
+  required_not: Int
+  required_in: [Int!]
+  required_not_in: [Int!]
+  required_lt: Int
+  required_lte: Int
+  required_gt: Int
+  required_gte: Int
   AND: [ProductFieldScalarWhereInput!]
   OR: [ProductFieldScalarWhereInput!]
   NOT: [ProductFieldScalarWhereInput!]
@@ -751,7 +767,8 @@ input ProductFieldUpdateDataInput {
   name: String
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 input ProductFieldUpdateInput {
@@ -759,7 +776,8 @@ input ProductFieldUpdateInput {
   name: String
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 input ProductFieldUpdateManyDataInput {
@@ -767,7 +785,8 @@ input ProductFieldUpdateManyDataInput {
   name: String
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 input ProductFieldUpdateManyInput {
@@ -786,7 +805,8 @@ input ProductFieldUpdateManyMutationInput {
   name: String
   default: String
   suffix: String
-  required: Boolean
+  role: Job
+  required: Int
 }
 
 input ProductFieldUpdateManyWithWhereNestedInput {
@@ -888,8 +908,18 @@ input ProductFieldWhereInput {
   suffix_not_starts_with: String
   suffix_ends_with: String
   suffix_not_ends_with: String
-  required: Boolean
-  required_not: Boolean
+  role: Job
+  role_not: Job
+  role_in: [Job!]
+  role_not_in: [Job!]
+  required: Int
+  required_not: Int
+  required_in: [Int!]
+  required_not_in: [Int!]
+  required_lt: Int
+  required_lte: Int
+  required_gt: Int
+  required_gte: Int
   AND: [ProductFieldWhereInput!]
   OR: [ProductFieldWhereInput!]
   NOT: [ProductFieldWhereInput!]
@@ -934,7 +964,7 @@ type ProductTemplate {
   id: ID!
   name: String!
   owner: User!
-  status: Boolean
+  status: Int
   fields(where: ProductFieldWhereInput, orderBy: ProductFieldOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductField!]
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -949,7 +979,7 @@ type ProductTemplateConnection {
 input ProductTemplateCreateInput {
   name: String!
   owner: UserCreateOneInput!
-  status: Boolean
+  status: Int
   fields: ProductFieldCreateManyInput
 }
 
@@ -979,7 +1009,7 @@ enum ProductTemplateOrderByInput {
 type ProductTemplatePreviousValues {
   id: ID!
   name: String!
-  status: Boolean
+  status: Int
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1005,20 +1035,20 @@ input ProductTemplateSubscriptionWhereInput {
 input ProductTemplateUpdateDataInput {
   name: String
   owner: UserUpdateOneRequiredInput
-  status: Boolean
+  status: Int
   fields: ProductFieldUpdateManyInput
 }
 
 input ProductTemplateUpdateInput {
   name: String
   owner: UserUpdateOneRequiredInput
-  status: Boolean
+  status: Int
   fields: ProductFieldUpdateManyInput
 }
 
 input ProductTemplateUpdateManyMutationInput {
   name: String
-  status: Boolean
+  status: Int
 }
 
 input ProductTemplateUpdateOneRequiredInput {
@@ -1063,8 +1093,14 @@ input ProductTemplateWhereInput {
   name_ends_with: String
   name_not_ends_with: String
   owner: UserWhereInput
-  status: Boolean
-  status_not: Boolean
+  status: Int
+  status_not: Int
+  status_in: [Int!]
+  status_not_in: [Int!]
+  status_lt: Int
+  status_lte: Int
+  status_gt: Int
+  status_gte: Int
   fields_every: ProductFieldWhereInput
   fields_some: ProductFieldWhereInput
   fields_none: ProductFieldWhereInput

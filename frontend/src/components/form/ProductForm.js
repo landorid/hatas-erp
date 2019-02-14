@@ -15,8 +15,8 @@ import FormContainer from './elements/FormContainer';
 import Button from '@material-ui/core/Button';
 import Remove from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import { handleErrors } from '../../lib/utils';
+import { PRODUCTTEMPLATE_QUERY } from '../../containers/Product';
 
 const style = (theme) => ( {
   root: {
@@ -67,28 +67,78 @@ const ProductForm = props => {
         default: Yup.string(),
         suffix: Yup.string(),
         required: Yup.boolean(),
-        role: Yup.number(),
+        role: Yup.string(),
       }),
     ).min(1, 'Minimum egy mezőt tartalmaznia kell a Terméknek'),
   });
 
   const fieldDefaultValue = {
-    name: '',
+    name: 'Dizájn',
     type: 'text',
     default: '',
     suffix: '',
     required: 1,
-    role: -1,
+    role: 'EVERYBODY',
   };
 
   const formDefaultValue = {
-    name: '',
+    name: 'Weboldal',
     status: 1,
     fields: [{ ...fieldDefaultValue }],
   };
 
-  const formOnSubmit = async (variables, { resetForm, setErrors }) => {
-    console.log('submitted');
+  const formOnSubmit = async (variables, { resetForm, setErrors, setSubmitting }) => {
+    delete variables.__typename;
+    delete variables.updatedAt;
+
+    const fieldsToDelete = [];
+
+    variables.fields.map(item => delete item.__typename);
+
+    //Find fields, which is now not present int formtemplate, but there was
+    data.fields.map(item => {
+      if (variables.fields.some(fieldItem => {
+        //if item is new (=not saved in db)
+        if (!fieldItem.id) return false;
+
+        return fieldItem.id !== item.id;
+      })) {
+        fieldsToDelete.push({ id: item.id });
+      }
+    });
+
+    const formData = {
+      variables: {
+        where: variables.id || 1,
+        data: {
+          delete: fieldsToDelete,
+          ...variables,
+        },
+      },
+      // update: (cache, payload) => {
+      //   const data = cache.readQuery({
+      //     query: PRODUCTTEMPLATE_QUERY,
+      //     variables: { id: payload.data.upsertProduct.id},
+      //   });
+      //   console.log(data);
+      //   cache.writeQuery({
+      //     query: PRODUCTTEMPLATE_QUERY,
+      //     variables: { id: payload.data.upsertProduct.id },
+      //     data,
+      //   });
+      // },
+    };
+
+    await mutation(formData).then(({ errors }) => {
+      handleErrors(errors, setErrors);
+    }).catch(err => {
+      console.log(err);
+      setSubmitting(false);
+    });
+
+    if (data) {
+      resetForm(variables);
+    }
   };
 
   return (
@@ -120,7 +170,7 @@ const ProductForm = props => {
             <Typography variant={'body2'}>Ha bejelölöd a Kötelező Mező-t, akkor egyik felhasználó
               sem fogja tudni elmenteni a Munkalapot a mező kitöltése nélkül! Ha kiválasztod a jogosultságot is, akkor
               csak annak a felhasználónak lesz az adott bező kötelező</Typography>
-            <FieldArray name="fields">
+            <FieldArray validateOnChange={false} name="fields">
               {({ push, remove }) => {
                 return ( <>
                     {values.fields.map((item, index) => (
@@ -148,6 +198,7 @@ const ProductForm = props => {
                                  disabled={values.fields[index].type === 'stockitem'}
                                  className={classes.subField}
                                  label="Alap érték"/>
+
                           <Input name={`fields[${index}].suffix`}
                                  fullWidth={false}
                                  width={50}
@@ -165,6 +216,7 @@ const ProductForm = props => {
                             <MenuItem value={1}>Igen</MenuItem>
                             <MenuItem value={0}>Nem</MenuItem>
                           </FastField>
+
                           {!!values.fields[index].required &&
                           <FastField name={`fields[${index}].role`}
                                      label="Felelős"
@@ -173,7 +225,7 @@ const ProductForm = props => {
                                      component={MuiInput}
                                      variant="outlined"
                                      select>
-                            <MenuItem key={-1} value={-1}>Mindenki</MenuItem>
+                            <MenuItem key={-1} value="EVERYBODY">Mindenki</MenuItem>
                             {roles.map(item => (
                               <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                             ))}
@@ -192,20 +244,17 @@ const ProductForm = props => {
 
                     <Button
                       color="primary"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        push(fieldDefaultValue);
-                      }}>
+                      onClick={() => push(fieldDefaultValue)}>
                       <Add/> Mező hozzáadása
                     </Button>
                   </>
                 );
               }}
             </FieldArray>
-            < ActionFooter submitting={isSubmitting}
-                           updatedAt={updatedAt}
-                           dirty={dirty}/>
+
+            <ActionFooter submitting={isSubmitting}
+                          updatedAt={updatedAt}
+                          dirty={dirty}/>
           </FormContainer> );
       }}
     </Formik>
@@ -214,6 +263,7 @@ const ProductForm = props => {
 
 ProductForm.propTypes = {
   data: PropTypes.object,
+  mutation: PropTypes.func.isRequired,
 };
 
 export default withStyles(style)(ProductForm);
