@@ -29,6 +29,7 @@ const styles = theme => ( {
     overflow: 'hidden',
   },
   chip: {
+    height: 28,
     margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
   },
   chipFocused: {
@@ -46,7 +47,6 @@ const styles = theme => ( {
   paper: {
     position: 'absolute',
     zIndex: 1,
-    // marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
   },
@@ -80,11 +80,11 @@ function Control(props) {
   return (
     <TextField
       fullWidth
-      label={'Ügyfél'}
+      label={props.selectProps.label}
       variant="outlined"
       margin='normal'
       error={props.selectProps.error}
-      helperText={props.selectProps.helperText}
+      helperText={props.selectProps.helperText.value}
       InputLabelProps={{ shrink: true }}
       InputProps={{
         inputComponent,
@@ -141,6 +141,7 @@ function ValueContainer(props) {
 }
 
 function MultiValue(props) {
+  console.log(props);
   return (
     <Chip
       tabIndex={-1}
@@ -182,7 +183,9 @@ class MuiSelect extends React.PureComponent {
       isDisabled,
       newItem,
       options,
-      form: { touched, errors, setFieldValue },
+      label,
+      isMulti,
+      form: { touched, errors, setFieldValue, values },
     } = this.props;
     const hasError = Boolean(touched[field.name] && errors[field.name]) || Boolean(getIn(errors, field.name));
     const errorText = errors[field.name] || getIn(errors, field.name);
@@ -195,13 +198,25 @@ class MuiSelect extends React.PureComponent {
         isLoading={isLoading}
         isDisabled={isDisabled}
         components={components}
+        label={label}
+        isMulti={isMulti}
         placeholder="Kezdj el gépelni.."
         error={hasError}
         helperText={errorText || ''}
-        onChange={option => setFieldValue(field.name, {
-          label: option.label,
-          value: option.__isNew__ ? 'newItem' : option.value,
-        })}
+        onChange={option => {
+          if (!isMulti) {
+            setFieldValue(field.name, {
+              label: option.label,
+              value: option.__isNew__ ? 'newItem' : option.value,
+            });
+          } else {
+            const newOptions = option.map((item, index) => ( {
+              label: item.label,
+              value: item.__isNew__ ? `newItem_${index}` : item.value,
+            } ));
+            setFieldValue(field.name, newOptions);
+          }
+        }}
       />
     );
   }
@@ -213,8 +228,10 @@ MuiSelect.propTypes = {
   newItem: PropTypes.string,
   name: PropTypes.string,
   isLoading: PropTypes.bool,
+  isMulti: PropTypes.bool,
   isDisabled: PropTypes.bool,
   options: PropTypes.array.isRequired,
+  label: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(MuiSelect);
