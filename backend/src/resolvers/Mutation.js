@@ -181,6 +181,7 @@ const mutations = {
         status: args.data.status,
         fields: {
           upsert: fieldsToUpsert,
+          //TODO: if you want to delete field which is used before, app will crash
           delete: args.data.delete,
         },
       },

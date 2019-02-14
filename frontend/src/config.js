@@ -14,6 +14,6 @@ export const permissions = [
 export const fieldTypes = [
   { id: 'text', name: 'Szöveg' },
   { id: 'textarea', name: 'Szövegterület' },
-  { id: 'number', name: 'Szám' },
   { id: 'stockitem', name: 'Alapanyag' },
+  { id: 'deadline', name: 'Határidő' },
 ];

@@ -59,7 +59,6 @@ const CustomerForm = (props) => {
     }).catch(err => {
       console.log(err);
     });
-    resetForm(variables);
   };
 
   return (

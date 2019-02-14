@@ -115,18 +115,6 @@ const ProductForm = props => {
           ...variables,
         },
       },
-      // update: (cache, payload) => {
-      //   const data = cache.readQuery({
-      //     query: PRODUCTTEMPLATE_QUERY,
-      //     variables: { id: payload.data.upsertProduct.id},
-      //   });
-      //   console.log(data);
-      //   cache.writeQuery({
-      //     query: PRODUCTTEMPLATE_QUERY,
-      //     variables: { id: payload.data.upsertProduct.id },
-      //     data,
-      //   });
-      // },
     };
 
     await mutation(formData).then(({ errors }) => {
