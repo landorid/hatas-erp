@@ -33,7 +33,7 @@ const getMuiTheme = () => createMuiTheme({
 });
 
 const Products = props => {
-  const { classes, history } = props;
+  const { history } = props;
 
   const columns = [
     {

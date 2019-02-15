@@ -46,7 +46,7 @@ const styles = theme => ( {
   },
   paper: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 2,
     left: 0,
     right: 0,
   },

@@ -1,16 +1,13 @@
 import React from 'react';
-import { Field, Formik } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import * as PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormContainer from './elements/FormContainer';
-import { handleErrors, createCategoryTree } from '../../lib/utils';
+import { handleErrors } from '../../lib/utils';
 import ActionFooter from './elements/ActionFooter';
 import Input from './elements/Input';
-import MuiInput from './elements/MuiInput';
 
 const style = (theme) => ( {
   root: {

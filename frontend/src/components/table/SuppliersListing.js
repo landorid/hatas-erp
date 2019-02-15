@@ -11,8 +11,6 @@ import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import TableHead from '@material-ui/core/TableHead';
-import Ok from '@material-ui/icons/CheckCircleOutlined';
-import Disabled from '@material-ui/icons/HighlightOffOutlined';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
