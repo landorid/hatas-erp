@@ -55,7 +55,11 @@ class AvatarResizeModal extends React.Component {
   setEditorRef = (editor) => this.editor = editor;
 
   render() {
-    const { open, onClose, fullScreen, image, classes } = this.props;
+    const {
+      open, onClose, fullScreen,
+      classes, borderRadius,
+      image, imageHeight, imageWidth,
+    } = this.props;
 
     return (
       <Dialog fullScreen={fullScreen} open={open} onClose={onClose} aria-labelledby="avatar-beallitas">
@@ -65,12 +69,12 @@ class AvatarResizeModal extends React.Component {
           <>
             <ReactAvatarEditor
               ref={this.setEditorRef}
-              width={250}
-              height={250}
+              width={imageWidth}
+              height={imageHeight}
               scale={this.state.zoom}
               image={image}
               border={0}
-              borderRadius={125}
+              borderRadius={borderRadius}
             />
             <Slider
               value={this.state.zoom}
@@ -105,6 +109,9 @@ AvatarResizeModal.propTypes = {
     PropTypes.string,
     PropTypes.object,
   ]).isRequired,
+  imageWidth: PropTypes.number.isRequired,
+  imageHeight: PropTypes.number.isRequired,
+  borderRadius: PropTypes.number.isRequired,
 };
 
 export default withStyles(style)(withMobileDialog()(AvatarResizeModal));

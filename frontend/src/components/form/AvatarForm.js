@@ -12,7 +12,7 @@ import { CURRENT_USER_QUERY } from '../User';
 import AvatarResizeModal from '../AvatarResizeModal';
 import FormContainer from './elements/FormContainer';
 import ErrorMessage from './UserForm';
-import { endpoint } from '../../config';
+import { endpoint, SUPPORTED_FORMATS } from '../../config';
 
 const UPLOAD_AVATAR_MUTATION = gql`
   mutation UPLOAD_AVATAR_MUTATION($image: String!) {
@@ -53,6 +53,7 @@ class AvatarForm extends Component {
     imageInput: '',
     imageFile: '',
     imageUrl: '',
+    imageInvalid: false
   };
 
   onCloseModal = () => {
@@ -89,8 +90,13 @@ class AvatarForm extends Component {
     if (e.target.files[0] === undefined) {
       return;
     }
-    //TODO: if file is not picture, don't allow to upload it
-    this.setState({ modalIsOpen: true, imageFile: e.target.files[0] });
+
+    if (!SUPPORTED_FORMATS.includes(e.target.files[0].type)) {
+      this.setState({ imageInvalid: true });
+      return;
+    }
+
+    this.setState({ modalIsOpen: true, imageFile: e.target.files[0], imageInvalid: false });
   };
 
   render() {
@@ -117,6 +123,8 @@ class AvatarForm extends Component {
                     name="avatar"
                     margin="normal"
                     variant="outlined"
+                    error={this.state.imageInvalid}
+                    helperText={this.state.imageInvalid && 'Csak képet tölthetsz fel!'}
                     value={this.state.imageInput}
                     onChange={this.avatarOnChange}
                   />
@@ -125,6 +133,9 @@ class AvatarForm extends Component {
                   open={this.state.modalIsOpen}
                   onClose={this.onCloseModal}
                   image={this.state.imageFile}
+                  imageWidth={250}
+                  imageHeight={250}
+                  borderRadius={125}
                   onSave={(image) => this.onSaveModal(image, saveImage, userImage.data.me.id)}
                 />}
               </Grid>
