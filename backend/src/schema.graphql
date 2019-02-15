@@ -55,4 +55,5 @@ type Query {
   suppliers(where: SupplierWhereInput, orderBy: SupplierOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Supplier]!
   productTemplate(where: ProductTemplateWhereUniqueInput!): ProductTemplate
   productTemplates(where: ProductTemplateWhereInput, orderBy: ProductTemplateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ProductTemplate]!
+  tags(where: TagWhereInput, orderBy: TagOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Tag]!
 }

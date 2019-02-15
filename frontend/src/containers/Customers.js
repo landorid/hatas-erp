@@ -47,3 +47,4 @@ const Customers = (props) => {
 };
 
 export default Customers;
+export { CUSTOMERS_QUERY };

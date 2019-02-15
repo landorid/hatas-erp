@@ -138,7 +138,7 @@ class Header extends Component {
         <Divider/>
         <List>
           {[
-            { name: 'Munkalapok', icon: <Munkalap/>, to: '/users' },
+            { name: 'Munkalapok', icon: <Munkalap/>, to: '/worksheets' },
             { name: 'Termékek', icon: <Products/>, to: '/products'},
             { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
             { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },

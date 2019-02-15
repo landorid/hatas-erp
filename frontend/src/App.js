@@ -26,6 +26,8 @@ import Supplier from './containers/Supplier';
 import Suppliers from './containers/Suppliers';
 import Products from './containers/Products';
 import Product from './containers/Product';
+import Worksheets from './containers/Worksheets';
+import Worksheet from './containers/Worksheet';
 
 class App extends Component {
   render() {
@@ -54,6 +56,9 @@ class App extends Component {
                 <PrivateRoute path="/products" component={Products}/>
                 <PrivateRoute path="/product/add" exact component={Product}/>
                 <PrivateRoute path="/product/:id" component={Product}/>
+                <PrivateRoute path="/worksheets" component={Worksheets}/>
+                <PrivateRoute path="/worksheet/add" exact component={Worksheet}/>
+                <PrivateRoute path="/worksheet/:id" component={Worksheet}/>
                 <UnauthenticatedRoute path="/login" component={Login}/>
                 <PrivateRoute component={NotFound}/>
               </Switch>

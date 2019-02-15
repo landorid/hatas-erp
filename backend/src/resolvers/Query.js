@@ -10,6 +10,7 @@ const queries = {
   suppliers: forwardTo('prisma'),
   productTemplate: forwardTo('prisma'),
   productTemplates: forwardTo('prisma'),
+  tags: forwardTo('prisma'),
 
   async customers(parent, args, { req, prisma }, info) {
     authHelper(req);

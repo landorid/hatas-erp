@@ -12,6 +12,17 @@ enum Job {
   DECOR
 }
 
+enum Status {
+  INVOICE
+  FRONTOFFICE
+  SALES
+  GRAPHICDESIGNER
+  OPERATOR
+  DECOR
+  SUPPLIER
+  ARCHIVE
+}
+
 type User {
   id: ID! @unique
   lastName: String!
@@ -105,4 +116,21 @@ type Product {
   id: ID! @unique
   template: ProductTemplate!
   fields: [ProductData]! @relation(name: "DataOnProduct", onDelete: CASCADE)
+}
+
+type Tag {
+  id: ID! @unique
+  name: String!
+}
+
+type Worksheet {
+  id: ID! @unique
+  name: String!
+  owner: User! @relation(name: "WorksheetOwner")
+  customer: Customer!
+  status: Status!
+  cover: String
+  responsible: User! @relation(name: "WorksheetResponsible")
+  tags: [Tag]!
+  products: [Product]!
 }
