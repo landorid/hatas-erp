@@ -5,19 +5,30 @@ import { getIn } from 'formik';
 
 class MuiInput extends PureComponent {
   render() {
-    const { label, autoFocus, autoComplete, field, form: { touched, errors }, inputProps, ...other } = this.props;
+    const {
+      label,
+      autoFocus,
+      autoComplete,
+      field,
+      form: { touched, errors },
+      InputProps,
+      inputProps,
+      ...other
+    } = this.props;
     const hasError = Boolean(touched[field.name] && errors[field.name]) || Boolean(getIn(errors, field.name));
     const errorText = errors[field.name] || getIn(errors, field.name);
+
     return (
       <TextField
         label={label}
         fullWidth
         margin='normal'
         error={hasError}
-        helperText={errorText || ''}
+        helperText={hasError ? errorText : ''}
         {...field}
         {...other}
-        InputProps={inputProps}
+        InputProps={InputProps}
+        inputProps={inputProps}
         autoFocus={autoFocus}
         autoComplete={autoComplete}
       />

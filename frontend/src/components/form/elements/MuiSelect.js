@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import CreatableSelect from 'react-select/lib/Creatable';
+import Select from 'react-select';
 import { getIn } from 'formik';
 
 const styles = theme => ( {
@@ -185,18 +186,22 @@ class MuiSelect extends React.PureComponent {
       options,
       label,
       isMulti,
+      isClearable,
+      creatable,
       form: { touched, errors, setFieldValue, values },
     } = this.props;
     const hasError = Boolean(touched[field.name] && errors[field.name]) || Boolean(getIn(errors, field.name));
     const errorText = errors[field.name] || getIn(errors, field.name);
+    const SelectComponent = creatable ? CreatableSelect : Select;
     return (
-      <CreatableSelect
+      <SelectComponent
         {...field}
         formatCreateLabel={item => `${newItem} "${item}"`}
         classes={classes}
         options={options}
         isLoading={isLoading}
         isDisabled={isDisabled}
+        isClearable={isClearable}
         components={components}
         label={label}
         isMulti={isMulti}
@@ -204,6 +209,11 @@ class MuiSelect extends React.PureComponent {
         error={hasError}
         helperText={errorText || ''}
         onChange={option => {
+          if (!option) {
+            setFieldValue(field.name, '');
+
+            return;
+          }
           if (!isMulti) {
             setFieldValue(field.name, {
               label: option.label,
@@ -230,6 +240,8 @@ MuiSelect.propTypes = {
   isLoading: PropTypes.bool,
   isMulti: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  isClearable: PropTypes.bool,
+  creatable: PropTypes.bool,
   options: PropTypes.array.isRequired,
   label: PropTypes.string.isRequired,
 };
