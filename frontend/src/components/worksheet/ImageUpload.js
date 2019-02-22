@@ -46,8 +46,6 @@ class ImageUpload extends React.Component {
         });
       //set image url to Formik
       this.props.onChange(this.props.name, uploadedImage.data.file);
-
-      this.setState({ imageUrl: uploadedImage.data.file, modalIsOpen: false, imageInput: '' });
     } catch (e) {
       console.log(e);
     }

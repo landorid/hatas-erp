@@ -6,8 +6,8 @@ import { Query } from 'react-apollo';
 import TableLoading from '../components/table/elements/TableLoading';
 import StockListing from '../components/table/StockListing';
 
-const STOCK_ITEM_QUERY = gql`
-  query STOCK_ITEM_QUERY {
+const STOCK_ITEMS_QUERY = gql`
+  query STOCK_ITEMS_QUERY {
     stockItems(orderBy: createdAt_ASC) {
       id
       name
@@ -36,7 +36,7 @@ const Stock = (props) => {
   return (
     <div>
       <PageTitle title="Alapanyagok"/>
-      <Query query={STOCK_ITEM_QUERY}>
+      <Query query={STOCK_ITEMS_QUERY}>
         {({ data, loading, error }) => {
           if (loading) return <TableLoading/>;
           return <StockListing data={data.stockItems}
@@ -51,3 +51,4 @@ const Stock = (props) => {
 };
 
 export default Stock;
+export { STOCK_ITEMS_QUERY };
