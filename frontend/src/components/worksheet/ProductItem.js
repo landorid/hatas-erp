@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FastField, Field, FieldArray } from 'formik';
+import { Field, FieldArray } from 'formik';
 import { Query } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';

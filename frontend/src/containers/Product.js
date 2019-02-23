@@ -73,6 +73,7 @@ const Product = props => {
             data: dataProductTemplate, loading: dataLoading,
           },
         }) => {
+
         if (dataLoading)
           return <FormLoading size={3}/>;
 

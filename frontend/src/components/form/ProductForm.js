@@ -95,13 +95,8 @@ const ProductForm = props => {
 
     //Find fields, which is now not present int formtemplate, but there was
     if (data) {
-      data.fields.map(item => {
-        if (variables.fields.some(fieldItem => {
-          //if item is new (=not saved in db)
-          if (!fieldItem.id) return false;
-
-          return fieldItem.id !== item.id;
-        })) {
+      data.fields.forEach(item => {
+        if (!variables.fields.some(fieldItem => fieldItem.id && ( fieldItem.id === item.id ))) {
           fieldsToDelete.push({ id: item.id });
         }
       });
@@ -254,4 +249,4 @@ ProductForm.propTypes = {
   mutation: PropTypes.func.isRequired,
 };
 
-export default withStyles(style)(ProductForm);
+export default withStyles(style)(React.memo(ProductForm));
