@@ -56,7 +56,7 @@ const createCategoryTree = (cat) => {
     return arr;
 
   }, []);
-  categories.map(item => {
+  categories.forEach(item => {
     if (item.parent) {
       const index = newMainCategories.findIndex(elem => elem.id === item.parent.id);
       delete item.parent;

@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 
 const TAGS_SQUERY = gql`
@@ -14,12 +13,10 @@ const TAGS_SQUERY = gql`
 const Tags = props => {
   return (
     <div>
-tagsz
+tagszd
     </div>
   );
 };
-
-Tags.propTypes = {};
 
 export default Tags;
 export { TAGS_SQUERY };

@@ -188,7 +188,7 @@ class MuiSelect extends React.PureComponent {
       isMulti,
       isClearable,
       creatable,
-      form: { touched, errors, setFieldValue, values },
+      form: { touched, errors, setFieldValue },
     } = this.props;
     const hasError = Boolean(touched[field.name] && errors[field.name]) || Boolean(getIn(errors, field.name));
     const errorText = errors[field.name] || getIn(errors, field.name);

@@ -120,9 +120,9 @@ class CustomersListing extends React.Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy)).
-                slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).
-                map(n => {
+              {stableSort(data, getSorting(order, orderBy))
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(n => {
                   return (
                     <TableRow
                       hover
