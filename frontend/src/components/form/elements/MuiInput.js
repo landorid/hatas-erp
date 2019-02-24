@@ -18,6 +18,9 @@ class MuiInput extends PureComponent {
     const hasError = Boolean(touched[field.name] && errors[field.name]) || Boolean(getIn(errors, field.name));
     const errorText = errors[field.name] || getIn(errors, field.name);
 
+    // Because of https://reactjs.org/warnings/unknown-prop.html
+    delete other.noFast;
+
     return (
       <TextField
         label={label}
@@ -45,6 +48,7 @@ MuiInput.propTypes = {
       PropTypes.string,
       PropTypes.number,
       PropTypes.array,
+      PropTypes.bool,
     ]),
   }),
   form: PropTypes.shape({
