@@ -1323,12 +1323,21 @@ type StockCategoryConnection {
 
 input StockCategoryCreateInput {
   name: String
-  parent: StockCategoryCreateOneInput
+  parent: StockCategoryCreateOneWithoutParentInput
 }
 
 input StockCategoryCreateOneInput {
   create: StockCategoryCreateInput
   connect: StockCategoryWhereUniqueInput
+}
+
+input StockCategoryCreateOneWithoutParentInput {
+  create: StockCategoryCreateWithoutParentInput
+  connect: StockCategoryWhereUniqueInput
+}
+
+input StockCategoryCreateWithoutParentInput {
+  name: String
 }
 
 type StockCategoryEdge {
@@ -1372,25 +1381,16 @@ input StockCategorySubscriptionWhereInput {
 
 input StockCategoryUpdateDataInput {
   name: String
-  parent: StockCategoryUpdateOneInput
+  parent: StockCategoryUpdateOneWithoutParentInput
 }
 
 input StockCategoryUpdateInput {
   name: String
-  parent: StockCategoryUpdateOneInput
+  parent: StockCategoryUpdateOneWithoutParentInput
 }
 
 input StockCategoryUpdateManyMutationInput {
   name: String
-}
-
-input StockCategoryUpdateOneInput {
-  create: StockCategoryCreateInput
-  update: StockCategoryUpdateDataInput
-  upsert: StockCategoryUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: StockCategoryWhereUniqueInput
 }
 
 input StockCategoryUpdateOneRequiredInput {
@@ -1400,9 +1400,27 @@ input StockCategoryUpdateOneRequiredInput {
   connect: StockCategoryWhereUniqueInput
 }
 
+input StockCategoryUpdateOneWithoutParentInput {
+  create: StockCategoryCreateWithoutParentInput
+  update: StockCategoryUpdateWithoutParentDataInput
+  upsert: StockCategoryUpsertWithoutParentInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: StockCategoryWhereUniqueInput
+}
+
+input StockCategoryUpdateWithoutParentDataInput {
+  name: String
+}
+
 input StockCategoryUpsertNestedInput {
   update: StockCategoryUpdateDataInput!
   create: StockCategoryCreateInput!
+}
+
+input StockCategoryUpsertWithoutParentInput {
+  update: StockCategoryUpdateWithoutParentDataInput!
+  create: StockCategoryCreateWithoutParentInput!
 }
 
 input StockCategoryWhereInput {
