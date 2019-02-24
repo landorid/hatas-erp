@@ -2,8 +2,33 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField/TextField';
 import { getIn } from 'formik';
+import { debounce } from 'debounce';
 
 class MuiInput extends PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: props.field.value,
+    };
+
+    this.syncChange = debounce(this.syncChange, 200);
+  }
+
+  syncChange = (e) => {
+    const { field: { onChange } } = this.props;
+    onChange(e);
+  };
+
+  handleChange = (e) => {
+    if (e.persist) {
+      e.persist();
+    }
+
+    this.setState({ value: e.target.value });
+    this.syncChange(e);
+  };
+
   render() {
     const {
       label,
@@ -30,6 +55,9 @@ class MuiInput extends PureComponent {
         helperText={hasError ? errorText : ''}
         {...field}
         {...other}
+        onChange={this.handleChange}
+        onBlur={this.props.onChange}
+        value={this.state.value}
         InputProps={InputProps}
         inputProps={inputProps}
         autoFocus={autoFocus}
