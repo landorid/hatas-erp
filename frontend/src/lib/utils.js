@@ -63,7 +63,7 @@ const createCategoryTree = (cat) => {
       newMainCategories[index].children.push(item);
     }
   });
-
+  
   // newMainCategories.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
   return newMainCategories;
 };

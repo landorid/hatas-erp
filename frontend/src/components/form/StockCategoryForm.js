@@ -201,6 +201,7 @@ console.log(payload.data);
       <Formik initialValues={formInitValue}
               validationSchema={formScheme}
               validateOnChange={false}
+              enableReinitialize
               validateOnBlur={false}
               onSubmit={formOnSubmit}>
         {({ isSubmitting, dirty, values, error }) => (
@@ -217,7 +218,6 @@ console.log(payload.data);
                     deleteHandler={deleteItem}
                     subCatHandler={subCatHandler}
                     {...props}/>}/>
-
               </Grid>
               <Grid item xs={12} sm={6} lg={7}>
                 <div>
@@ -240,6 +240,7 @@ console.log(payload.data);
                                    margin="dense"
                                    variant="standard"
                                    autoComplete="off"
+                                   noFast
                                    InputProps={{
                                      endAdornment: (
                                        <InputAdornment variant="filled" position="end">
