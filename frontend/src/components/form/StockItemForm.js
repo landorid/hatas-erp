@@ -101,15 +101,15 @@ const StockItemForm = (props) => {
               </Grid>
               <Grid item xs={12} sm={6} lg={4}>
                 <FastField type="text"
-                       name="category"
-                       label="Főkategória"
-                       component={MuiInput}
-                       variant="outlined"
-                       onChange={(e) => {
-                         setFieldValue('category', e.target.value);
-                         setFieldValue('subcategory', '');
-                       }}
-                       select>
+                           name="category"
+                           label="Főkategória"
+                           component={MuiInput}
+                           variant="outlined"
+                           onChange={(e) => {
+                             setFieldValue('category', e.target.value);
+                             setFieldValue('subcategory', '');
+                           }}
+                           select>
                   <MenuItem value="">
                     <em>Egyik sem</em>
                   </MenuItem>
@@ -122,11 +122,11 @@ const StockItemForm = (props) => {
               </Grid>
               <Grid item xs={12} sm={6} lg={4}>
                 <FastField type="text"
-                       name="subcategory"
-                       label="Alkategória"
-                       component={MuiInput}
-                       variant="outlined"
-                       select>
+                           name="subcategory"
+                           label="Alkategória"
+                           component={MuiInput}
+                           variant="outlined"
+                           select>
                   {selectedCat && selectedCat.children.length === 0 &&
                   <MenuItem value="">
                     <em>Nincsen alkategória</em>
@@ -146,11 +146,14 @@ const StockItemForm = (props) => {
                 <Input name="quantity"
                        label="Mennyiség"
                        InputLabelProps={{ shrink: true }}
-                       inputProps={{
-                         style: { textAlign: 'right' },
+                       InputProps={{
                          endAdornment: <InputAdornment position="end">{values.quantityUnit}</InputAdornment>,
+                         inputProps: {
+                           style: { textAlign: 'right' },
+                         },
                        }}
-                       type="number"/>
+                       type="number"
+                       noFast/>
               </Grid>
               <Grid item xs={12} sm={6} lg={4}>
                 <Input name="quantityUnit"
@@ -161,11 +164,14 @@ const StockItemForm = (props) => {
                 <Input name="quantityAlarm"
                        label="Mennyiségi riasztás"
                        InputLabelProps={{ shrink: true }}
-                       inputProps={{
-                         style: { textAlign: 'right' },
+                       InputProps={{
                          endAdornment: <InputAdornment position="end">{values.quantityUnit}</InputAdornment>,
+                         inputProps: {
+                           style: { textAlign: 'right' },
+                         },
                        }}
-                       type="number"/>
+                       type="number"
+                       noFast/>
               </Grid>
             </Grid>
             <ActionFooter submitting={isSubmitting}

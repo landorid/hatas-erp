@@ -1,10 +1,14 @@
 import React from 'react';
-import PageTitle from '../components/PageTitle';
-import AddFab from '../components/AddFab';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { Link } from 'react-router-dom';
+import PageTitle from '../components/PageTitle';
 import TableLoading from '../components/table/elements/TableLoading';
-import StockListing from '../components/table/StockListing';
+import MUIDataTable from 'mui-datatables';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { tableLabels } from '../config';
+import Button from '@material-ui/core/Button';
 
 const STOCK_ITEMS_QUERY = gql`
   query STOCK_ITEMS_QUERY {
@@ -25,13 +29,73 @@ const STOCK_ITEMS_QUERY = gql`
   }
 `;
 
-const Stock = (props) => {
-  const page = props.match.params.page ? props.match.params.page : 1;
+const getMuiTheme = () => createMuiTheme({
+  overrides: {
+    MUIDataTableBodyCell: {
+      root: {
+        cursor: 'pointer',
+      },
+    },
+  },
+});
 
-  const rows = [
-    { id: 'name', numeric: false, label: 'Megnevezés' },
-    { id: 'quantity', numeric: true, label: 'Raktárkészlet' },
+const Stock = (props) => {
+  const { history } = props;
+
+  const columns = [
+    {
+      name: 'ID',
+      display: 'excluded',
+      options: {
+        display: 'excluded',
+        filter: false,
+      },
+    },
+    {
+      name: 'Megnevezés',
+      options: {
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return value;
+        },
+      },
+    },
+    {
+      name: 'Készlet',
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          const unit = tableMeta.rowData[3];
+          return `${value} ${unit}`;
+        },
+      },
+    },
+    {
+      name: 'Mennyiségi egység',
+      display: 'excluded',
+      options: {
+        display: 'excluded',
+        filter: false,
+      },
+    },
+    {
+      name: 'Állapot',
+      options: {
+        customBodyRender: (value, tableMeta) => {
+          const onStock = tableMeta.rowData[2] >= value;
+          return onStock ? 'Készleten' : 'Rendelés szükséges';
+        },
+      },
+    },
   ];
+
+  const options = {
+    selectableRows: false,
+    fixedHeader: true,
+    print: false,
+    onRowClick: (currentRowsSelected) => {
+      history.push(`/stock/${currentRowsSelected[0]}`);
+    },
+    ...tableLabels,
+  };
 
   return (
     <div>
@@ -39,13 +103,43 @@ const Stock = (props) => {
       <Query query={STOCK_ITEMS_QUERY}>
         {({ data, loading, error }) => {
           if (loading) return <TableLoading/>;
-          return <StockListing data={data.stockItems}
-                               page={page}
-                               rows={rows}/>;
+
+          //we don't need all queried data, but we have to query it because of cache for single
+          const usedDataOnly = data.stockItems.map(item => ( {
+            id: item.id,
+            name: item.name,
+            quantity: item.quantity,
+            quantityUnit: item.quantityUnit,
+            quantityAlarm: item.quantityAlarm,
+          } ));
+
+          const newData = usedDataOnly.reduce((array, item) => {
+            const newItem = [];
+            Object.keys(item).map(key => newItem.push(item[key]));
+            array.push(newItem);
+
+            return array;
+          }, []);
+
+          return <MuiThemeProvider theme={getMuiTheme()}>
+            <MUIDataTable
+              title={<>
+                <Button color="primary"
+                        to="/stock/add"
+                        component={Link}
+                        variant="contained">Új Alapanyag</Button>
+                <Button color="primary"
+                        style={{ marginLeft: 10 }}
+                        to="/stock/category"
+                        component={Link}
+                        variant="contained">Kategóriák</Button>
+              </>}
+              data={newData}
+              columns={columns}
+              options={options}/>
+          </MuiThemeProvider>;
         }}
       </Query>
-
-      <AddFab title="Új alapanyag" to="/stock/add"/>
     </div>
   );
 };

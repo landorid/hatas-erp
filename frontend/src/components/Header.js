@@ -20,6 +20,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import Store from '@material-ui/icons/Store';
 import ListIcon from '@material-ui/icons/List';
 import Products from '@material-ui/icons/ImportantDevices';
+import Dashboard from '@material-ui/icons/Dashboard';
 import Divider from '@material-ui/core/Divider/Divider';
 import ListItemText from '@material-ui/core/ListItemText/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon/ListItemIcon';
@@ -138,13 +139,13 @@ class Header extends Component {
         <Divider/>
         <List>
           {[
-            { name: 'Munkalapok', icon: <Munkalap/>, to: '/worksheets' },
+            { name: 'Irányítópult', icon: <Dashboard/>, to: '/' },
+            { name: 'Új Munkalap', icon: <Munkalap/>, to: '/worksheet/add' },
             { name: 'Termékek', icon: <Products/>, to: '/products'},
             { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
             { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },
             { name: 'Beszállítók', icon: <LocalShipping/>, to: '/suppliers' },
             { name: 'Alapanyagok', icon: <Store/>, to: '/stock' },
-            { name: 'Kategóriák', icon: <ListIcon/>, to: '/stock/category', sub: true },
           ].map(item => (
             <ListItem key={item.name}
                       to={item.to}
