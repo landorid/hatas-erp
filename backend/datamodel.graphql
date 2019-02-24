@@ -61,7 +61,7 @@ type Customer {
 type StockCategory {
   id: ID! @unique
   name: String
-  parent: StockCategory @relation(name: "StockParent", onDelete: CASCADE)
+  parent: StockCategory
 }
 
 type StockItem {
