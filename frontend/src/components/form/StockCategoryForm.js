@@ -7,7 +7,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/es/Button/Button';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import ArrowRight from '@material-ui/icons/ArrowRight';
 import { Typography } from '@material-ui/core';
 import Remove from '@material-ui/icons/Delete';
 import Add from '@material-ui/icons/Add';
@@ -17,6 +16,7 @@ import ActionFooter from './elements/ActionFooter';
 import Input from './elements/Input';
 import { createCategoryTree, handleErrors } from '../../lib/utils';
 import { STOCKCATEGORIES_QUERY } from '../../containers/StockCategory';
+import StockMainCategory from '../StockMainCategory';
 
 const style = (theme) => ( {
   root: {
@@ -28,7 +28,7 @@ const style = (theme) => ( {
   },
   title: {
     marginTop: theme.spacing.unit * 2,
-  }
+  },
 } );
 
 class StockItemCategory extends React.Component {
@@ -99,7 +99,7 @@ class StockItemCategory extends React.Component {
           },
           update: (cache, payload) => {
             const data = cache.readQuery({ query: STOCKCATEGORIES_QUERY });
-
+console.log(payload.data);
             const newStockItem = {
               id: payload.data.upsertStockCategory.id,
               name: payload.data.upsertStockCategory.name,
@@ -190,8 +190,8 @@ class StockItemCategory extends React.Component {
       this.setState({ activeCategory });
     };
 
-    const deleteItem = (handler, index, id) => {
-      handler.remove(index);
+    const deleteItem = (remove, index, id) => {
+      remove(index);
       const deleteOnSubmit = [...this.state.deleteOnSubmit];
       deleteOnSubmit.push(id);
       this.setState({ deleteOnSubmit });
@@ -200,101 +200,81 @@ class StockItemCategory extends React.Component {
     return (
       <Formik initialValues={formInitValue}
               validationSchema={formScheme}
+              validateOnChange={false}
+              validateOnBlur={false}
               onSubmit={formOnSubmit}>
         {({ isSubmitting, dirty, values, error }) => (
           <FormContainer>
             <Grid container className={classes.root} spacing={16}>
               <Grid item xs={12} sm={6} lg={5}>
                 <FieldArray
-                  name="stockCategories">
-                  {arrayHelpers => (
-                    <div>
-                      {values.stockCategories && values.stockCategories.length > 0 ? (
-                        values.stockCategories.map((item, index) => (
-                          <Input name={`stockCategories[${index}].name`}
-                                 key={index}
-                                 className={index === this.state.activeCategory ? classes.activeInput : null}
-                                 autoComplete="off"
-                                 onFocus={() => subCatHandler(index, values)}
-                                 inputProps={{
-                                   endAdornment: (
-                                     <InputAdornment variant="filled" position="end">
-                                       {index === this.state.activeCategory ? <ArrowRight/> :
-                                         <IconButton
-                                           aria-label="Törlés"
-                                           onClick={() => deleteItem(arrayHelpers, index,
-                                             values.stockCategories[index].id)}
-                                         >
-                                           <Remove/>
-                                         </IconButton>}
-                                     </InputAdornment>
-                                   ),
-                                 }}
-                          />
-                        ))
-                      ) : null}
-                      <Button
-                        color="primary"
-                        onClick={() => arrayHelpers.push({ name: '', id: null, children: [] })}>
-                        <Add/> Új kategória
-                      </Button>
-                    </div>
-                  )}
-                </FieldArray>
+                  validateOnChange={false}
+                  validateOnBlur={false}
+
+                  name="stockCategories"
+                  render={(props) => <StockMainCategory
+                    active={this.state.activeCategory}
+                    deleteHandler={deleteItem}
+                    subCatHandler={subCatHandler}
+                    {...props}/>}/>
 
               </Grid>
               <Grid item xs={12} sm={6} lg={7}>
                 <div>
-                <Typography
-                  className={classes.title}
-                  variant="h6">{values.stockCategories[this.state.activeCategory].name}</Typography>
-                <FieldArray
-                  name={`stockCategories[${this.state.activeCategory}].children`}>
-                  {arrayHelpers => {
-                    const currentCategory = values.stockCategories[this.state.activeCategory];
-                    return ( <div>
-                      {currentCategory && currentCategory.children.length > 0 ? (
-                        currentCategory.children.map((item, index) => (
-                          <Input name={`stockCategories[${this.state.activeCategory}].children[${index}].name`}
-                                 key={index}
-                                 margin="normal"
-                                 variant="standard"
-                                 autoComplete="off"
-                                 inputProps={{
-                                   endAdornment: (
-                                     <InputAdornment variant="filled" position="end">
-                                       <IconButton
-                                         aria-label="Törlés"
-                                         onClick={() => deleteItem(arrayHelpers, index,
-                                           values.stockCategories[this.state.activeCategory].children[index].id)}
-                                       >
-                                         <Remove/>
-                                       </IconButton>
-                                     </InputAdornment>
-                                   ),
-                                 }}
-                          />
-                        ))
+                  <Typography
+                    className={classes.title}
+                    variant="h6">{values.stockCategories[this.state.activeCategory].name}</Typography>
+                  <FieldArray
+                    validateOnChange={false}
+                    validateOnBlur={false}
 
-                      ) : null}
-                      {currentCategory.id ?
-                        <Button
-                          color="primary"
-                          onClick={() => arrayHelpers.push({
-                          name: '',
-                          id: null,
-                          parent: {
-                            id: values.stockCategories[this.state.activeCategory].id,
-                          },
-                        })}>
-                          <Add/> Új alkategória
-                        </Button> : <Typography
-                          variant="body1">
-                          Mentsd el a főkategóriát, hogy alkategóriát hozzáadhass!
-                        </Typography>}
-                    </div> );
-                  }}
-                </FieldArray>
+                    name={`stockCategories[${this.state.activeCategory}].children`}>
+                    {arrayHelpers => {
+                      const currentCategory = values.stockCategories[this.state.activeCategory];
+                      console.log(currentCategory);
+                      return ( <div>
+                        {currentCategory && currentCategory.children.length > 0 ? (
+                          currentCategory.children.map((item, index) => (
+                            <Input name={`stockCategories[${this.state.activeCategory}].children[${index}].name`}
+                                   key={index}
+                                   margin="dense"
+                                   variant="standard"
+                                   autoComplete="off"
+                                   InputProps={{
+                                     endAdornment: (
+                                       <InputAdornment variant="filled" position="end">
+                                         <IconButton
+                                           aria-label="Törlés"
+                                           onClick={() => deleteItem(arrayHelpers.remove, index,
+                                             values.stockCategories[this.state.activeCategory].children[index].id)}
+                                         >
+                                           <Remove/>
+                                         </IconButton>
+                                       </InputAdornment>
+                                     ),
+                                   }}
+                            />
+                          ))
+
+                        ) : null}
+                        {currentCategory.id ?
+                          <Button
+                            color="primary"
+                            onClick={() => arrayHelpers.push({
+                              name: '',
+                              id: null,
+                              parent: {
+                                id: values.stockCategories[this.state.activeCategory].id,
+                              },
+                            })}>
+                            <Add/> Új alkategória
+                          </Button> : <Typography
+                            variant="body1">
+                            Mentsd el a főkategóriát, hogy alkategóriát hozzáadhass!
+                          </Typography>}
+                      </div> );
+                    }}
+                  </FieldArray>
                 </div>
               </Grid>
             </Grid>
