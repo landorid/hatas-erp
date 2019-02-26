@@ -71,13 +71,14 @@ const ProductItem = (props) => {
             return (
               <div style={{ width: '100%' }}>
                 {data.fields.map((field, index) => {
-                  if (field.type === 'text') {
+                  if (field.type === 'text' || field.type === 'textarea') {
                     return (
                       <Input name={`products[${item}].fields[${index}].value`}
                              label={field.name}
                              margin='dense'
+                             multiline={field.type === 'textarea'}
+                             rows={5}
                              validate={(value) => validateField(value, field.required, [field.role], me.job)}
-                             defaultValue={item.default}
                              InputProps={{
                                endAdornment: field.suffix
                                  ? <InputAdornment position="end">{field.suffix}</InputAdornment>
