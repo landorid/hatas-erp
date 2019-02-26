@@ -142,7 +142,6 @@ function ValueContainer(props) {
 }
 
 function MultiValue(props) {
-  console.log(props);
   return (
     <Chip
       tabIndex={-1}
