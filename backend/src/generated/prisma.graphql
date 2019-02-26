@@ -642,7 +642,6 @@ type ProductField {
   id: ID!
   type: String!
   name: String!
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -657,7 +656,6 @@ type ProductFieldConnection {
 input ProductFieldCreateInput {
   type: String!
   name: String!
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -685,8 +683,6 @@ enum ProductFieldOrderByInput {
   type_DESC
   name_ASC
   name_DESC
-  default_ASC
-  default_DESC
   suffix_ASC
   suffix_DESC
   role_ASC
@@ -703,7 +699,6 @@ type ProductFieldPreviousValues {
   id: ID!
   type: String!
   name: String!
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -752,20 +747,6 @@ input ProductFieldScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  default: String
-  default_not: String
-  default_in: [String!]
-  default_not_in: [String!]
-  default_lt: String
-  default_lte: String
-  default_gt: String
-  default_gte: String
-  default_contains: String
-  default_not_contains: String
-  default_starts_with: String
-  default_not_starts_with: String
-  default_ends_with: String
-  default_not_ends_with: String
   suffix: String
   suffix_not: String
   suffix_in: [String!]
@@ -818,7 +799,6 @@ input ProductFieldSubscriptionWhereInput {
 input ProductFieldUpdateDataInput {
   type: String
   name: String
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -827,7 +807,6 @@ input ProductFieldUpdateDataInput {
 input ProductFieldUpdateInput {
   type: String
   name: String
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -836,7 +815,6 @@ input ProductFieldUpdateInput {
 input ProductFieldUpdateManyDataInput {
   type: String
   name: String
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -856,7 +834,6 @@ input ProductFieldUpdateManyInput {
 input ProductFieldUpdateManyMutationInput {
   type: String
   name: String
-  default: String
   suffix: String
   role: Job
   required: Int
@@ -933,20 +910,6 @@ input ProductFieldWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
-  default: String
-  default_not: String
-  default_in: [String!]
-  default_not_in: [String!]
-  default_lt: String
-  default_lte: String
-  default_gt: String
-  default_gte: String
-  default_contains: String
-  default_not_contains: String
-  default_starts_with: String
-  default_not_starts_with: String
-  default_ends_with: String
-  default_not_ends_with: String
   suffix: String
   suffix_not: String
   suffix_in: [String!]

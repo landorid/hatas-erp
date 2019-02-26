@@ -1,6 +1,6 @@
 import React from 'react';
 import { adopt } from 'react-adopt';
-import { Query } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import PageTitle from '../components/PageTitle';
 import WorksheetForm from '../components/form/WorksheetForm';
 import gql from 'graphql-tag';
@@ -19,11 +19,33 @@ const PRODUCTTEMPLATES_SQUERY = gql`
         id
         type
         name
-        default
         suffix
         role
         required
       }
+    }
+  }
+`;
+
+const USERS_QUERY = gql`
+  query USERS_QUERY {
+    users(where: {status: true}) {
+      id
+      lastName
+      firstName
+      job
+    }
+  }
+`;
+
+const UPSERT_WORKSHEET = gql`
+  mutation UPSERT_WORKSHEET(
+  $where: WorksheetWhereUniqueInput!
+  $create: WorksheetCreateInput!
+  $update: WorksheetUpdateInput!
+  ) {
+    upsertWorksheet(where: $where, create: $create, update: $update) {
+      id
     }
   }
 `;
@@ -42,11 +64,18 @@ const ComposedWorksheet = adopt({
     <Query query={TAGS_SQUERY}
            children={render}
            fetchPolicy="cache-first"/>,
+  users: ({ single, render }) =>
+    <Query query={USERS_QUERY}
+           children={render}
+           fetchPolicy="cache-first"/>,
   me: ({ single, render }) =>
     <Query query={CURRENT_USER_QUERY}
            children={render}
            fetchPolicy="cache-first"/>,
-
+  upsertWorksheet: ({ render }) =>
+    <Mutation mutation={UPSERT_WORKSHEET}>
+      {(mutation, result) => render({ mutation, result })}
+    </Mutation>,
 });
 
 const Worksheet = props => {
@@ -54,14 +83,17 @@ const Worksheet = props => {
 
   return (
     <ComposedWorksheet single={singleWorksheet}>
-      {({ customers, templates, tags, me }) => {
-        if (templates.loading || customers.loading || tags.loading || me.loading) return '';
+      {({ customers, templates, tags, me, upsertWorksheet, users }) => {
+        if (templates.loading || customers.loading
+          || tags.loading || me.loading || users.loading) return '';
         return (
           <>
             <PageTitle title="Új munkalap"/>
             <WorksheetForm customers={customers.data.customers}
                            tags={tags.data.tags}
                            me={me.data.me}
+                           users={users.data.users}
+                           mutation={upsertWorksheet.mutation}
                            templates={templates.data.productTemplates}/>
           </>
         );
@@ -69,13 +101,6 @@ const Worksheet = props => {
     </ComposedWorksheet>
   );
 };
-
-// const Worksheet = props => {
-//   return ( <>
-//     <PageTitle title="Új munkalap"/>
-//     <WorksheetForm/>
-//   </> );
-// };
 
 Worksheet.propTypes = {};
 

@@ -6,6 +6,14 @@ export const roles = [
   { id: 'OPERATOR', name: 'Gyártás' },
   { id: 'DECOR', name: 'Dekor' },
 ];
+
+export const status = [
+  ...roles,
+  { id: 'ARCHIVE', name: 'Archív' },
+  { id: 'INVOICE', name: 'Számlázás' },
+  { id: 'SUPPLIER', name: 'Beszállító' },
+];
+
 export const permissions = [
   { id: 'ADMIN', name: 'Adminisztrátor' },
   { id: 'USER', name: 'Felhasználó' },
@@ -50,8 +58,8 @@ export const tableLabels = {
 };
 
 export const SUPPORTED_FORMATS = [
-  "image/jpg",
-  "image/jpeg",
-  "image/gif",
-  "image/png"
+  'image/jpg',
+  'image/jpeg',
+  'image/gif',
+  'image/png',
 ];

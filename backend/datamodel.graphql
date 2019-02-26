@@ -100,7 +100,6 @@ type ProductField {
   id: ID! @unique
   type: String!
   name: String!
-  default: String
   suffix: String
   role: Job
   required: Int @default(value: 0)
@@ -132,5 +131,5 @@ type Worksheet {
   cover: String
   responsible: User! @relation(name: "WorksheetResponsible")
   tags: [Tag]!
-  products: [Product]!
+  products: [Product]! @relation(name: "ProductOnWorksheet", onDelete: CASCADE)
 }

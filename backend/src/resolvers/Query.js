@@ -11,6 +11,7 @@ const queries = {
   productTemplate: forwardTo('prisma'),
   productTemplates: forwardTo('prisma'),
   tags: forwardTo('prisma'),
+  users: forwardTo('prisma'),
 
   async customers(parent, args, { req, prisma }, info) {
     authHelper(req);
@@ -26,11 +27,6 @@ const queries = {
     authHelper(req);
 
     return await prisma.query.user(args, info);
-  },
-  async users(parent, args, { req, prisma }, info) {
-    authHelper(req);
-
-    return await prisma.query.users(args, info);
   },
   async me(parent, args, { req, prisma }, info) {
     if (!req.userId) {

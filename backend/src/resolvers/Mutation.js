@@ -14,6 +14,7 @@ const mutations = {
   upsertSupplier: forwardTo('prisma'),
   upsertProductTemplate: forwardTo('prisma'),
   upsertProductField: forwardTo('prisma'),
+  upsertWorksheet: forwardTo('prisma'),
   async signIn(parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
     const user = await prisma.query.user({ where: { email } });
