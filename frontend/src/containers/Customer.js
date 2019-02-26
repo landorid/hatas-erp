@@ -87,3 +87,4 @@ const Customer = (props) => {
 };
 
 export default Customer;
+export { SINGLE_CUSTOMER_QUERY };
