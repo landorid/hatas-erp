@@ -106,7 +106,7 @@ class WorksheetForm extends React.Component {
 
     const formDefaultValue = {
       name: '',
-      owner: me.id,
+      owner: { id: me.id },
       responsible: {
         label: `${me.lastName} ${me.firstName}`,
         value: me.id,
@@ -135,7 +135,16 @@ class WorksheetForm extends React.Component {
     } ));
 
     const formOnSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
-      console.log(values);
+      const productsToDelete = [];
+
+      if (data) {
+        data.products.forEach(item => {
+          if (!values.products.some(fieldItem => fieldItem.id && ( fieldItem.id === item.id ))) {
+            productsToDelete.push({ id: item.id });
+          }
+        });
+      }
+
       const createData = {
         name: values.name,
         owner: {
@@ -176,7 +185,6 @@ class WorksheetForm extends React.Component {
           // } )),
         },
       };
-      console.log(createData);
 
       const updateData = {
         name: values.name,
@@ -235,10 +243,9 @@ class WorksheetForm extends React.Component {
               },
             },
           } )),
+          delete: productsToDelete,
         },
       };
-      
-      console.log(updateData);
 
       const formData = {
         variables: {
@@ -247,7 +254,7 @@ class WorksheetForm extends React.Component {
           update: { ...updateData },
         },
       };
-      console.log(formData);
+
       await mutation(formData).then(({ errors }) => {
         handleErrors(errors, setErrors);
       }).catch(err => {
@@ -337,7 +344,7 @@ class WorksheetForm extends React.Component {
                 </Field>
               </Grid>
             </Grid>
-            <FormikDebug/>
+            {/*<FormikDebug/>*/}
             <ActionFooter submitting={isSubmitting}
                           updatedAt={updatedAt}
                           dirty={dirty}/>
