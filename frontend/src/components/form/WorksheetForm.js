@@ -54,161 +54,68 @@ const formScheme = Yup.object().shape({
 
 class WorksheetForm extends React.Component {
   render() {
-    const { data, classes, templates, me, customers, tags, mutation, users } = this.props;
+    const { data, classes, templates, me, customers, tags, mutation, users, stock } = this.props;
     const updatedAt = data ? data.updatedAt : null;
 
+    //rebase laoded data to form
+    if (data) {
+      data.customer = {
+        value: data.customer.id,
+        label: data.customer.name,
+      };
+
+      data.responsible = {
+        value: data.responsible.id,
+        label: `${data.responsible.lastName} ${data.responsible.firstName}`,
+      };
+
+      data.tags = data.tags.map(item => ( {
+        value: item.id,
+        label: item.name,
+      } ));
+
+      data.products = data.products.map(item => ( {
+        id: item.id,
+        template: {
+          ...item.template,
+        },
+        fields: item.template.fields.map((field, index) => {
+          let value;
+          if (field.type === 'stockitem') {
+            const [stockItem] = stock.filter(st => st.id === item.fields[index].value);
+            //if there is stockitem, then set it to react-select, if its empty show: kezdj el gépelni
+            value = stockItem ? {
+              label: stockItem.name,
+              value: item.fields[index].value,
+            } : '';
+
+          } else {
+            value = item.fields[index].value;
+          }
+
+          return ( {
+            ...field,
+            id: item.fields[index].id,
+            value,
+          } );
+        }),
+      } ));
+
+    }
+
     const formDefaultValue = {
-      name: 'Névjegyes munkalap 1.0',
+      name: '',
       owner: me.id,
       responsible: {
         label: `${me.lastName} ${me.firstName}`,
         value: me.id,
       },
-      customer: {
-        label: 'Roadrecord Kft',
-        value: 'cjs4vqx6gwlvh0b47y4uyswnz',
-      },
+      customer: '',
       status: me.job,
-      cover: 'https://hatas-dev.s3.amazonaws.com/avatar/worksheet-cover-1551097145925.jpeg',
-      tags: [
-        {
-          label: 'Ügyfélre vár',
-          value: 'cjs586f0i3m3g0b4772teepnh',
-        },
-        {
-          label: 'Fontos',
-          value: 'cjs58625w3lmw0b476ftjnbu2',
-        },
-      ],
-      products: [
-        {
-          'id': 'cjs3yxn69d2an0b47xhkrd52t',
-          'name': 'Névjegykártya',
-          'status': 1,
-          'updatedAt': '2019-02-25T12:25:21.675Z',
-          'fields': [
-            {
-              'id': 'cjs3yxn6bd2ao0b47lrxasgwg',
-              'type': 'text',
-              'name': 'Magasság',
-              'suffix': 'mm',
-              'role': 'EVERYBODY',
-              'required': 1,
-              '__typename': 'ProductField',
-              'value': '70',
-            },
-            {
-              'id': 'cjsahur074bh80b97jgnpr4sg',
-              'type': 'text',
-              'name': 'Hosszúság',
-              'suffix': 'mm',
-              'role': 'EVERYBODY',
-              'required': 1,
-              '__typename': 'ProductField',
-              'value': '360',
-            },
-            {
-              'id': 'cjsahur0b4bha0b97bmyj0s23',
-              'type': 'stockitem',
-              'name': 'Anyag',
-              'suffix': '',
-              'role': 'OPERATOR',
-              'required': 1,
-              '__typename': 'ProductField',
-              'value': {
-                label: 'Avery 500 event film',
-                value: 'cjr5kwewph7g70a89jvorlnr9',
-              },
-            },
-            {
-              'id': 'cjsahur0e4bhc0b9768eiduq2',
-              'type': 'deadline',
-              'name': 'Határidő',
-              'suffix': '',
-              'role': 'EVERYBODY',
-              'required': 0,
-              '__typename': 'ProductField',
-              'value': '',
-            },
-            {
-              'id': 'cjsahur0i4bhe0b97nnb0otju',
-              'type': 'text',
-              'name': 'Darabszám',
-              'suffix': 'db',
-              'role': 'EVERYBODY',
-              'required': 1,
-              '__typename': 'ProductField',
-              'value': 236,
-            },
-            {
-              'id': 'cjskbezhtbhfj0b68ws0rwidc',
-              'type': 'textarea',
-              'name': 'Megjegyzés',
-              'suffix': '',
-              'role': 'EVERYBODY',
-              'required': 0,
-              '__typename': 'ProductField',
-              'value': 'Legszebb legyen ez a névjegy, ami a piacon létezik. Ez a megrendelő kérése. Köszi',
-            },
-          ],
-          '__typename': 'ProductTemplate',
-        },
-      ],
+      cover: '',
+      tags: [],
+      products: [],
       current_product: '',
-    };
-
-    const formOnSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
-      console.log(values);
-      const worksheetData = {
-        name: values.name,
-        owner: {
-          connect: { id: values.owner },
-        },
-        responsible: {
-          connect: { id: values.responsible.value },
-        },
-        cover: values.cover,
-        status: 'FRONTOFFICE',
-        customer: {
-          connect: { id: values.customer.value },
-        },
-        tags: {
-          connect: values.tags.map(item => ( {
-            id: item.value,
-          } )),
-        },
-        products: {
-          create: values.products.map(item => ( {
-            template: {
-              connect: { id: item.id },
-            },
-            fields: {
-              create: item.fields.map(item => ( {
-                value: typeof item.value === 'string' ? item.value : item.value.value,
-                field: {
-                  connect: { id: item.id },
-                },
-              } )),
-            },
-          } )),
-        },
-      };
-
-      console.log(worksheetData);
-
-      const formData = {
-        variables: {
-          where: { id: values.id || 1 },
-          create: { ...worksheetData },
-          update: { ...worksheetData },
-        },
-      };
-
-      await mutation(formData).then(({ errors }) => {
-        handleErrors(errors, setErrors);
-      }).catch(err => {
-        setSubmitting(false);
-      });
     };
 
     const customerList = customers.map(item => ( {
@@ -226,6 +133,127 @@ class WorksheetForm extends React.Component {
       label: item.name,
     } ));
 
+    const formOnSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
+      console.log(values);
+      const createData = {
+        name: values.name,
+        owner: {
+          connect: { id: values.owner.id },
+        },
+        responsible: {
+          connect: { id: values.responsible.value },
+        },
+        cover: values.cover,
+        status: values.status,
+        customer: {
+          connect: { id: values.customer.value },
+        },
+        tags: {
+          connect: values.tags.map(item => ( {
+            id: item.value,
+          } )),
+        },
+        products: {
+          create: values.products.map(item => ( {
+            template: {
+              connect: { id: item.template.id },
+            },
+            fields: {
+              create: item.fields.map(item => ( {
+                value: typeof item.value === 'string' ? item.value : item.value.value,
+                field: {
+                  connect: { id: item.id },
+                },
+              } )),
+              connect: item.fields.map(item => ( {
+                id: item.id,
+              } )),
+            },
+          } )),
+          connect: values.products.map(item => ( {
+            id: item.id,
+          } )),
+        },
+      };
+      console.log(createData);
+
+      const updateData = {
+        name: values.name,
+        owner: {
+          connect: { id: values.owner.id },
+        },
+        responsible: {
+          connect: { id: values.responsible.value },
+        },
+        cover: values.cover,
+        status: values.status,
+        customer: {
+          connect: { id: values.customer.value },
+        },
+        tags: {
+          connect: values.tags.map(item => ( {
+            id: item.value,
+          } )),
+        },
+        products: {
+          upsert: values.products.map(product => ( {
+            where: { id: product.id || 1 },
+            update: {
+              template: {
+                connect: { id: product.template.id },
+              },
+              fields: {
+                upsert: product.fields.map((field, index) => ( {
+                  where: { id: field.id || 1 },
+                  update: {
+                    field: {
+                      connect: { id: product.template.fields[index].id },
+                    },
+                    value: typeof field.value === 'string' ? field.value : field.value.value,
+                  },
+                  create: {
+                    field: {
+                      connect: { id: product.template.fields[index].id },
+                    },
+                    value: typeof field.value === 'string' ? field.value : field.value.value,
+                  },
+                } )),
+              },
+            },
+            create: {
+              template: {
+                connect: { id: product.template.id },
+              },
+              fields: {
+                create: product.fields.map((field, index) => ( {
+                  field: {
+                    connect: { id: product.template.fields[index].id },
+                  },
+                  value: typeof field.value === 'string' ? field.value : field.value.value,
+                } )),
+              },
+            },
+          } )),
+        },
+      };
+
+      const formData = {
+        variables: {
+          where: { id: values.id || 1 },
+          create: { ...createData },
+          update: { ...updateData },
+        },
+      };
+      console.log(formData);
+      await mutation(formData).then(({ errors }) => {
+        handleErrors(errors, setErrors);
+      }).catch(err => {
+        setSubmitting(false);
+      });
+
+      resetForm(values);
+    };
+
     return (
       <Formik initialValues={data || formDefaultValue}
               validateOnChange={false}
@@ -233,6 +261,7 @@ class WorksheetForm extends React.Component {
               validationSchema={formScheme}
               onSubmit={formOnSubmit}>
         {({ isSubmitting, dirty, values, setFieldValue, errors }) => {
+
           return ( <FormContainer>
             <Grid container spacing={16}>
               <Grid item xs={12} sm={7} style={{ paddingTop: 16 }}>
@@ -241,6 +270,7 @@ class WorksheetForm extends React.Component {
                             render={(props) =>
                               <WorksheetProducts
                                 me={me}
+                                stock={stock}
                                 templates={templates} {...props}/>}/>
               </Grid>
 
@@ -321,6 +351,7 @@ WorksheetForm.propTypes = {
   customers: PropTypes.array.isRequired,
   tags: PropTypes.array.isRequired,
   users: PropTypes.array.isRequired,
+  stock: PropTypes.array.isRequired,
   me: PropTypes.object.isRequired,
   mutation: PropTypes.func.isRequired,
 };

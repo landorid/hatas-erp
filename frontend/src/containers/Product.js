@@ -38,7 +38,6 @@ const PRODUCTTEMPLATE_QUERY = gql`
         id
         type
         name
-        default
         suffix
         role
         required

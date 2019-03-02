@@ -41,6 +41,7 @@ const WorksheetProducts = (props) => {
     templates,
     me,
     classes,
+    stock
   } = props;
 
   const addNewEvent = (item, push, setFieldValue) => {
@@ -52,10 +53,11 @@ const WorksheetProducts = (props) => {
     }
   };
 
-  const templatesList = templates.filter(item => item.status).map(item => ( {
+  const templatesList = templates.map(item => ( {
     value: item.id,
     label: item.name,
   } ));
+  console.log(values.products);
   return ( <>
     {values.products.map((item, index) => (
       <ProductItem
@@ -63,6 +65,7 @@ const WorksheetProducts = (props) => {
         errors={errors}
         item={index}
         me={me}
+        stock={stock}
         data={values.products[index]}
         key={index}/>
     ))}
@@ -100,6 +103,7 @@ const WorksheetProducts = (props) => {
 
 WorksheetProducts.propTypes = {
   templates: PropTypes.array.isRequired,
+  stock: PropTypes.array.isRequired,
   me: PropTypes.object.isRequired,
 };
 

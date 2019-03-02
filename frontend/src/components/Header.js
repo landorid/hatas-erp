@@ -18,7 +18,6 @@ import People from '@material-ui/icons/People';
 import LocalShipping from '@material-ui/icons/LocalShipping';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Store from '@material-ui/icons/Store';
-import ListIcon from '@material-ui/icons/List';
 import Products from '@material-ui/icons/ImportantDevices';
 import Dashboard from '@material-ui/icons/Dashboard';
 import Divider from '@material-ui/core/Divider/Divider';
@@ -140,7 +139,7 @@ class Header extends Component {
         <List>
           {[
             { name: 'Irányítópult', icon: <Dashboard/>, to: '/' },
-            { name: 'Új Munkalap', icon: <Munkalap/>, to: '/worksheet/add' },
+            { name: 'Munkalapok', icon: <Munkalap/>, to: '/worksheets' },
             { name: 'Termékek', icon: <Products/>, to: '/products'},
             { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
             { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },

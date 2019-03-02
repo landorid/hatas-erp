@@ -10,11 +10,9 @@ import { CURRENT_USER_QUERY } from '../components/User';
 
 const PRODUCTTEMPLATES_SQUERY = gql`
   query PRODUCTTEMPLATES_SQUERY {
-    productTemplates {
+    productTemplates(where: {status: 1}) {
       id
       name
-      status
-      updatedAt
       fields {
         id
         type
@@ -38,6 +36,52 @@ const USERS_QUERY = gql`
   }
 `;
 
+const WORKSHEET_QUERY = gql`
+  query WORKSHEET_QUERY($id: ID!) {
+    worksheet(where: {id: $id}) {
+      id
+      name
+      owner {
+        id
+      }
+      customer {
+        id
+        name
+      }
+      status
+      cover
+      responsible {
+        id
+        firstName
+        lastName
+      }
+      tags {
+        id
+        name
+      }
+      products {
+        id
+        template {
+          id
+          name
+          fields {
+            id
+            type
+            name
+            suffix
+            role
+            required
+          }
+        }
+        fields {
+          id
+          value
+        }
+      }
+    }
+  }
+`;
+
 const UPSERT_WORKSHEET = gql`
   mutation UPSERT_WORKSHEET(
   $where: WorksheetWhereUniqueInput!
@@ -46,6 +90,65 @@ const UPSERT_WORKSHEET = gql`
   ) {
     upsertWorksheet(where: $where, create: $create, update: $update) {
       id
+      name
+      owner {
+        id
+        firstName
+        lastName
+      }
+      customer {
+        id
+        name
+      }
+      status
+      cover
+      responsible {
+        id
+        firstName
+        lastName
+      }
+      tags {
+        id
+        name
+      }
+      products {
+        id
+        template {
+          id
+          name
+          fields {
+            id
+            type
+            name
+            suffix
+            role
+            required
+          }
+        }
+        fields {
+          id
+          value
+        }
+      }
+    }
+  }
+`;
+
+const STOCK_ITEMS_QUERY = gql`
+  query STOCK_ITEMS_QUERY {
+    stockItems(orderBy: createdAt_ASC) {
+      id
+      name
+      category {
+        id
+        parent {
+          id
+        }
+      }
+      quantity
+      quantityUnit
+      quantityAlarm
+      createdAt
     }
   }
 `;
@@ -72,6 +175,16 @@ const ComposedWorksheet = adopt({
     <Query query={CURRENT_USER_QUERY}
            children={render}
            fetchPolicy="cache-first"/>,
+  worksheet: ({ single, render }) =>
+    <Query query={WORKSHEET_QUERY}
+           children={render}
+           variables={{ id: single }}
+           skip={!single}
+           fetchPolicy="cache-first"/>,
+  stock: ({ single, render }) =>
+    <Query query={STOCK_ITEMS_QUERY}
+           children={render}
+           fetchPolicy="cache-first"/>,
   upsertWorksheet: ({ render }) =>
     <Mutation mutation={UPSERT_WORKSHEET}>
       {(mutation, result) => render({ mutation, result })}
@@ -83,16 +196,19 @@ const Worksheet = props => {
 
   return (
     <ComposedWorksheet single={singleWorksheet}>
-      {({ customers, templates, tags, me, upsertWorksheet, users }) => {
-        if (templates.loading || customers.loading
-          || tags.loading || me.loading || users.loading) return '';
+      {({ customers, templates, tags, me, upsertWorksheet, users, worksheet, stock }) => {
+        if (templates.loading || customers.loading || worksheet.loading
+          || tags.loading || me.loading || users.loading || stock.loading ) return '';
+
         return (
           <>
-            <PageTitle title="Új munkalap"/>
+            <PageTitle title={singleWorksheet ? worksheet.data.worksheet.name : 'Új munkalap'}/>
             <WorksheetForm customers={customers.data.customers}
                            tags={tags.data.tags}
                            me={me.data.me}
                            users={users.data.users}
+                           data={singleWorksheet ? worksheet.data.worksheet : null}
+                           stock={stock.data.stockItems}
                            mutation={upsertWorksheet.mutation}
                            templates={templates.data.productTemplates}/>
           </>

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Field, FieldArray } from 'formik';
-import { Query } from 'react-apollo';
 import { withStyles } from '@material-ui/core/styles';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
@@ -15,7 +14,6 @@ import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Input from '../form/elements/Input';
 import MuiSelect from '../form/elements/MuiSelect';
-import { STOCK_ITEMS_QUERY } from '../../containers/Stock';
 import { hasPermission } from '../../lib/utils';
 import * as classnames from 'classnames';
 
@@ -40,7 +38,12 @@ const styles = theme => ( {
 } );
 
 const ProductItem = (props) => {
-  const { classes, item, data, remove, errors, me } = props;
+  const { classes, item, data, remove, errors, me, stock } = props;
+
+  const stockList = stock.map(item => ( {
+    value: item.id,
+    label: item.name,
+  } ));
 
   const validateField = (value, required, roles, myRoles) => {
     let error;
@@ -56,12 +59,14 @@ const ProductItem = (props) => {
     && errors.products[item].fields
     && errors.products[item].fields.length;
 
+  
+  console.log(data);
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
         <Typography className={classnames(classes.heading, { [classes.headingError]: isErrorInProduct })}>
           {isErrorInProduct ? <Warning className={classes.warningIcon}/> : ''}
-          {data.name}
+          {data.template.name}
         </Typography>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
@@ -100,32 +105,16 @@ const ProductItem = (props) => {
                   }
                   if (field.type === 'stockitem') {
                     return (
-                      <Query query={STOCK_ITEMS_QUERY}
+                      <Field component={MuiSelect}
+                             name={`products[${item}].fields[${index}].value`}
+                             label={field.name}
+                             options={stockList}
+                             type="text"
+                             margin='dense'
                              key={index}
-                             fetchPolicy="cache-first">
-                        {({ data, loading }) => {
-                          const list = !data.stockItems ? [] : data.stockItems.map(item => ( {
-                              value: item.id,
-                              label: item.name,
-                            } ),
-                          );
-
-                          return (
-                            <Field component={MuiSelect}
-                                   name={`products[${item}].fields[${index}].value`}
-                                   label={field.name}
-                                   isLoading={loading}
-                                   isDisabled={loading}
-                                   options={list}
-                                   type="text"
-                                   margin='dense'
-                                   isClearable/>
-                          );
-                        }}
-                      </Query>
+                             isClearable/>
                     );
                   }
-                  return '';
                 })}
               </div>
             );
@@ -149,6 +138,7 @@ ProductItem.propTypes = {
   errors: PropTypes.object.isRequired,
   remove: PropTypes.func.isRequired,
   item: PropTypes.number.isRequired,
+  stock: PropTypes.array.isRequired,
 };
 
 export default withStyles(styles)(React.memo(ProductItem));

@@ -12,6 +12,8 @@ const queries = {
   productTemplates: forwardTo('prisma'),
   tags: forwardTo('prisma'),
   users: forwardTo('prisma'),
+  worksheets: forwardTo('prisma'),
+  worksheet: forwardTo('prisma'),
 
   async customers(parent, args, { req, prisma }, info) {
     authHelper(req);

@@ -10,14 +10,24 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import PageTitle from '../components/PageTitle';
 import TableLoading from '../components/table/elements/TableLoading';
 import { tableLabels } from '../config';
+import Chip from '@material-ui/core/Chip';
 
-const PRODUCTTEMPLATE_SQUERY = gql`
-  query PRODUCTTEMPLATE_SQUERY {
-    productTemplates {
+const WORKSHEETS_SQUERY = gql`
+  query WORKSHEETS_SQUERY {
+    worksheets {
       id
       name
+      customer {
+        name
+      }
       status
-      createdAt
+      responsible {
+        firstName
+        lastName
+      }
+      tags {
+        name
+      }
     }
   }
 `;
@@ -46,25 +56,37 @@ const Worksheets = props => {
     },
     {
       name: 'Megnevezés',
+    },
+    {
+      name: 'Ügyfél',
       options: {
-        customBodyRender: (value, tableMeta, updateValue) => {
+        customBodyRender: (value) => value.name,
+      },
+    },
+    {
+      name: 'Státusz',
+      options: {
+        customBodyRender: (value) => {
           return value;
         },
       },
     },
     {
-      name: 'Állapot',
+      name: 'Felelős',
       options: {
         customBodyRender: (value) => {
-          return value ? 'Elérhető' : 'Nem elérhető';
+          return `${value.lastName} ${value.firstName}`;
         },
       },
     },
     {
-      name: 'Létrehozva',
+      name: 'Címkék',
       options: {
+        filter: false,
         customBodyRender: (value) => {
-          return format(value, 'YYYY. MM. D. HH:s');
+          return value.map((item, index) => (
+            <Chip label={item.name} style={{ marginRight: 10 }} key={index}/>
+          ));
         },
       },
     },
@@ -75,19 +97,19 @@ const Worksheets = props => {
     fixedHeader: true,
     print: false,
     onRowClick: (currentRowsSelected) => {
-      history.push(`/product/${currentRowsSelected[0]}`);
+      history.push(`/worksheet/${currentRowsSelected[0]}`);
     },
     ...tableLabels,
   };
 
   return (
     <>
-      <PageTitle title="Termékek"/>
+      <PageTitle title="Munkalapok"/>
 
-      <Query query={PRODUCTTEMPLATE_SQUERY}>
+      <Query query={WORKSHEETS_SQUERY}>
         {({ data, loading, error }) => {
           if (loading) return <TableLoading/>;
-          const newData = data.productTemplates.reduce((array, item) => {
+          const newData = data.worksheets.reduce((array, item) => {
             const newItem = [];
             delete item.__typename;
             Object.keys(item).map(key => newItem.push(item[key]));
@@ -99,9 +121,9 @@ const Worksheets = props => {
           return <MuiThemeProvider theme={getMuiTheme()}>
             <MUIDataTable
               title={<Button color="primary"
-                             to="/product/add"
+                             to="/worksheet/add"
                              component={Link}
-                             variant="contained">Új Termék</Button>}
+                             variant="contained">Új Munkalap</Button>}
               data={newData}
               columns={columns}
               options={options}/>
