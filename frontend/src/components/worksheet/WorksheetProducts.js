@@ -47,8 +47,12 @@ const WorksheetProducts = (props) => {
   const addNewEvent = (item, push, setFieldValue) => {
     if (item.value) {
       const [template] = templates.filter(template => template.id === item.value);
-      template.fields = template.fields.map(item => ( { ...item, value: '' } ));
-      push(template);
+      const newProduct = {
+        id: null,
+        fields: template.fields.map(item => ( { ...item, id: null, value: '' } )),
+        template,
+      };
+      push(newProduct);
       setFieldValue('current_product', '');
     }
   };
