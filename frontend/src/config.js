@@ -1,4 +1,7 @@
 export const endpoint = `http://localhost:4000`;
+export const stagingEndpoint = `http://localhost:4000`;
+export const productionEndpoint = `http://localhost:4000`;
+
 export const roles = [
   { id: 'FRONTOFFICE', name: 'FrontOffice' },
   { id: 'SALES', name: 'Sales' },

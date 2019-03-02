@@ -3,7 +3,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
-import { endpoint } from '../config';
+import { endpoint, stagingEndpoint, productionEndpoint } from '../config';
 
 const defaultOptions = {
   watchQuery: {
@@ -18,6 +18,13 @@ const defaultOptions = {
     errorPolicy: 'all',
   },
 };
+
+let uri;
+switch (process.env.REACT_APP_STAGE) {
+  case "development": uri = endpoint; break;
+  case "staging": uri = stagingEndpoint; break;
+  case "production": uri = productionEndpoint; break;
+}
 
 const client = new ApolloClient({
   link: ApolloLink.from([
