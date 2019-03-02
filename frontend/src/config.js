@@ -1,5 +1,5 @@
 export const endpoint = `http://localhost:4000`;
-export const stagingEndpoint = `http://localhost:4000`;
+export const stagingEndpoint = `https://hatas.v1.honlapvarazslo.com`;
 export const productionEndpoint = `http://localhost:4000`;
 
 export const roles = [
