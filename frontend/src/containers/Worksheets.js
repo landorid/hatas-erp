@@ -2,7 +2,6 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import { format } from 'date-fns';
 import MUIDataTable from 'mui-datatables';
 import Button from '@material-ui/core/Button';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
@@ -18,14 +17,17 @@ const WORKSHEETS_SQUERY = gql`
       id
       name
       customer {
+        id
         name
       }
       status
       responsible {
+        id
         firstName
         lastName
       }
       tags {
+        id
         name
       }
     }

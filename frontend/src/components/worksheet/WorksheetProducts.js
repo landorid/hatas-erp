@@ -61,7 +61,7 @@ const WorksheetProducts = (props) => {
     value: item.id,
     label: item.name,
   } ));
-  console.log(values.products);
+
   return ( <>
     {values.products.map((item, index) => (
       <ProductItem

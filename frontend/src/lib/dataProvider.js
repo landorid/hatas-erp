@@ -54,6 +54,9 @@ const client = new ApolloClient({
         supplier: (_, args, { getCacheKey }) => {
           return getCacheKey({ __typename: 'Supplier', id: args.where.id });
         },
+        worksheet: (_, args, { getCacheKey }) => {
+          return getCacheKey({ __typename: 'Worksheet', id: args.where.id });
+        },
       },
     },
   }),

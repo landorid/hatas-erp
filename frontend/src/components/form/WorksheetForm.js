@@ -50,6 +50,7 @@ const formScheme = Yup.object().shape({
   }).required(),
   cover: Yup.string(),
   products: Yup.array().min(1),
+  status: Yup.string().required(),
 });
 
 class WorksheetForm extends React.Component {
@@ -111,7 +112,7 @@ class WorksheetForm extends React.Component {
         value: me.id,
       },
       customer: '',
-      status: me.job,
+      status: '',
       cover: '',
       tags: [],
       products: [],
@@ -159,20 +160,20 @@ class WorksheetForm extends React.Component {
               connect: { id: item.template.id },
             },
             fields: {
-              create: item.fields.map(item => ( {
-                value: typeof item.value === 'string' ? item.value : item.value.value,
+              create: item.fields.map((field, index) => ( {
+                value: typeof field.value === 'string' ? field.value : field.value.value,
                 field: {
-                  connect: { id: item.id },
+                  connect: { id: item.template.fields[index].id },
                 },
               } )),
-              connect: item.fields.map(item => ( {
-                id: item.id,
-              } )),
+              // connect: item.fields.map(item => ( {
+              //   id: item.id,
+              // } )),
             },
           } )),
-          connect: values.products.map(item => ( {
-            id: item.id,
-          } )),
+          // connect: values.products.map(item => ( {
+          //   id: item.id,
+          // } )),
         },
       };
       console.log(createData);
@@ -236,6 +237,8 @@ class WorksheetForm extends React.Component {
           } )),
         },
       };
+      
+      console.log(updateData);
 
       const formData = {
         variables: {
@@ -334,7 +337,7 @@ class WorksheetForm extends React.Component {
                 </Field>
               </Grid>
             </Grid>
-            {/*<FormikDebug/>*/}
+            <FormikDebug/>
             <ActionFooter submitting={isSubmitting}
                           updatedAt={updatedAt}
                           dirty={dirty}/>

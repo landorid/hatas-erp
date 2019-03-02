@@ -57,6 +57,8 @@ class CustomerInfoDrawerBase extends React.PureComponent {
   render() {
     const { classes, customer } = this.props;
 
+    if (!customer) return '';
+
     return (
       <div>
         <Button onClick={this.toggleDrawer('status', true)}>Info</Button>

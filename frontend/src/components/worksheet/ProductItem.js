@@ -59,8 +59,6 @@ const ProductItem = (props) => {
     && errors.products[item].fields
     && errors.products[item].fields.length;
 
-  
-  console.log(data);
   return (
     <ExpansionPanel>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
