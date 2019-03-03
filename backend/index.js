@@ -43,6 +43,11 @@ app.post('/upload', upload.single('data'), function(req, res, next) {
   next();
 });
 
+app.get('/test', function(req, res, next) {
+  console.log('okés');
+  next();
+});
+
 server.applyMiddleware({
   app,
   path: '/',
