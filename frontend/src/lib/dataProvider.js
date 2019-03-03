@@ -19,13 +19,13 @@ const defaultOptions = {
   },
 };
 
-let uri;
+let uri = endpoint;
 switch (process.env.REACT_APP_STAGE) {
   case "development": uri = endpoint; break;
   case "staging": uri = stagingEndpoint; break;
   case "production": uri = productionEndpoint; break;
 }
-
+console.log(uri);
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError, operation, forward }) => {
@@ -42,7 +42,7 @@ const client = new ApolloClient({
       }
     }),
     new HttpLink({
-      uri: process.env.NODE_ENV === 'development' ? endpoint : endpoint,
+      uri,
       credentials: 'include',
     }),
   ]),
