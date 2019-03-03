@@ -29,8 +29,8 @@ const server = new ApolloServer({
   } ),
   tracing: true,
   engine: {
-    apiKey: process.env.ENGINE_API_KEY
-  }
+    apiKey: process.env.ENGINE_API_KEY,
+  },
 });
 
 app.use(cookieParser(), helmet());
@@ -39,7 +39,6 @@ app.use(cors({
   origin: process.env.FRONTEND_URL,
 }));
 app.use(auth);
-
 
 app.post('/upload', upload.single('data'), function(req, res, next) {
   if (!req.userId) {
@@ -61,8 +60,8 @@ server.applyMiddleware({
 
 // This `listen` method launches a web-server.  Existing apps
 // can utilize middleware options, which we'll discuss later.
-app.listen({ port: 4000 }, () => {
+app.listen({ port: process.env.PORT }, () => {
     console.log(`Server is now runnon on port 
-      http://localhost:4000${server.graphqlPath}`);
+      http://localhost:${process.env.PORT}${server.graphqlPath}`);
   },
 );
