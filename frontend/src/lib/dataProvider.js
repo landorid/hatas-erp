@@ -25,7 +25,7 @@ switch (process.env.REACT_APP_STAGE) {
   case "staging": uri = stagingEndpoint; break;
   case "production": uri = productionEndpoint; break;
 }
-console.log(uri);
+
 const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError, operation, forward }) => {

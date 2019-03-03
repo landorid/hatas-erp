@@ -58,8 +58,8 @@ const styles = theme => ( {
 const LoginForm = (props) => {
   const { classes } = props;
   const formDefaultValue = {
-    email: 'landori.david@gmail.com',
-    password: '123456',
+    email: '',
+    password: '',
   };
 
   const formLoginFormScheme = Yup.object().shape({
@@ -87,6 +87,8 @@ const LoginForm = (props) => {
       </Mutation>,
     formik: ({ render, signIn }) =>
       <Formik initialValues={formDefaultValue}
+              validateOnBlur={false}
+              validateOnChange={false}
               validationSchema={formLoginFormScheme}
               onSubmit={(v, a) => formOnSubmit(v, a, signIn.mutation)}
               children={render}/>,
