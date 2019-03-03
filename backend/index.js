@@ -1,6 +1,5 @@
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
-const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const Mutation = require('./src/resolvers/Mutation');
 const Query = require('./src/resolvers/Query');
@@ -33,12 +32,7 @@ const server = new ApolloServer({
   },
 });
 
-app.use(cookieParser(), helmet());
-app.use(cors({
-  credentials: true,
-  origin: process.env.FRONTEND_URL,
-}));
-app.use(auth);
+app.use(cookieParser(), helmet(), auth);
 
 app.post('/upload', upload.single('data'), function(req, res, next) {
   if (!req.userId) {
@@ -60,7 +54,7 @@ server.applyMiddleware({
 
 // This `listen` method launches a web-server.  Existing apps
 // can utilize middleware options, which we'll discuss later.
-app.listen({ port: process.env.PORT }, () => {
+app.listen({ port: process.env.PORT || 80 }, () => {
     console.log(`Server is now runnon on port 
       http://localhost:${process.env.PORT}${server.graphqlPath}`);
   },
