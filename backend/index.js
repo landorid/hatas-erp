@@ -2,17 +2,17 @@ const { ApolloServer, gql } = require('apollo-server-express');
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const Mutation = require('./resolvers/Mutation');
-const Query = require('./resolvers/Query');
+const Mutation = require('./src/resolvers/Mutation');
+const Query = require('./src/resolvers/Query');
 const { importSchema } = require('graphql-import');
 const path = require('path');
 const helmet = require('helmet');
 require('dotenv').config();
 require('express-async-errors');
 
-const upload = require('./libs/fileToS3');
-const auth = require('./libs/auth');
-const prisma = require('./dataSources/Prisma');
+const upload = require('./src/libs/fileToS3');
+const auth = require('./src/libs/auth');
+const prisma = require('./src/dataSources/Prisma');
 
 const app = express();
 const typeDefs = importSchema(path.resolve('src/schema.graphql'));
