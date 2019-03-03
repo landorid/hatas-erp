@@ -63,7 +63,6 @@ const ProductForm = props => {
       Yup.object().shape({
         name: Yup.string().required(),
         type: Yup.mixed().oneOf(fieldTypes.map(item => item.id)),
-        default: Yup.string(),
         suffix: Yup.string(),
         required: Yup.boolean(),
         role: Yup.string(),
@@ -74,7 +73,6 @@ const ProductForm = props => {
   const fieldDefaultValue = {
     name: '',
     type: 'text',
-    default: '',
     suffix: '',
     required: 0,
     role: 'EVERYBODY',
@@ -175,12 +173,6 @@ const ProductForm = props => {
                               <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                             ))}
                           </FastField>
-
-                          <Input name={`fields[${index}].default`}
-                                 fullWidth={false}
-                                 disabled={values.fields[index].type === 'stockitem'}
-                                 className={classes.subField}
-                                 label="Alap érték"/>
 
                           <Input name={`fields[${index}].suffix`}
                                  fullWidth={false}

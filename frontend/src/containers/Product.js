@@ -18,7 +18,6 @@ const UPSERT_PRODUCTTEMPLATE_MUTATION = gql`
         id
         type
         name
-        default
         suffix
         role
         required
