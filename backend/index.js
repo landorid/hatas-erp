@@ -54,7 +54,7 @@ server.applyMiddleware({
 
 // This `listen` method launches a web-server.  Existing apps
 // can utilize middleware options, which we'll discuss later.
-app.listen({ port: process.env.PORT || 80 }, () => {
+app.listen({ port: 80 }, () => {
     console.log(`Server is now runnon on port 
       http://localhost:${process.env.PORT}${server.graphqlPath}`);
   },
