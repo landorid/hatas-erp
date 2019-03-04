@@ -141,7 +141,6 @@ class Header extends Component {
             { name: 'Irányítópult', icon: <Dashboard/>, to: '/' },
             { name: 'Munkalapok', icon: <Munkalap/>, to: '/worksheets' },
             { name: 'Termékek', icon: <Products/>, to: '/products'},
-            { name: 'Feladatok', icon: <Feladatok/>, to: '/task' },
             { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },
             { name: 'Beszállítók', icon: <LocalShipping/>, to: '/suppliers' },
             { name: 'Alapanyagok', icon: <Store/>, to: '/stock' },
@@ -150,6 +149,7 @@ class Header extends Component {
                       to={item.to}
                       className={item.sub ? classes.menu_sub : null}
                       component={Link}
+                      onClick={this.closeDrawerMenu}
                       button>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.name}/>
