@@ -5,8 +5,6 @@ import { Query } from 'react-apollo';
 import { format } from 'date-fns';
 import MUIDataTable from 'mui-datatables';
 import Button from '@material-ui/core/Button';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import PageTitle from '../components/PageTitle';
 import TableLoading from '../components/table/elements/TableLoading';
 import { tableLabels } from '../config';
@@ -21,16 +19,6 @@ const PRODUCTTEMPLATE_SQUERY = gql`
     }
   }
 `;
-
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        cursor: 'pointer',
-      },
-    },
-  },
-});
 
 const Products = props => {
   const { history } = props;
@@ -96,16 +84,14 @@ const Products = props => {
             return array;
           }, []);
 
-          return <MuiThemeProvider theme={getMuiTheme()}>
-            <MUIDataTable
+          return  <MUIDataTable
               title={<Button color="primary"
                              to="/product/add"
                              component={Link}
                              variant="contained">Új Termék</Button>}
               data={newData}
               columns={columns}
-              options={options}/>
-          </MuiThemeProvider>;
+              options={options}/>;
         }}
       </Query>
     </>

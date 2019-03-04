@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 import PageTitle from '../components/PageTitle';
 import TableLoading from '../components/table/elements/TableLoading';
 import MUIDataTable from 'mui-datatables';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import { tableLabels } from '../config';
 import Button from '@material-ui/core/Button';
 
@@ -28,16 +26,6 @@ const STOCK_ITEMS_QUERY = gql`
     }
   }
 `;
-
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        cursor: 'pointer',
-      },
-    },
-  },
-});
 
 const Stock = (props) => {
   const { history } = props;
@@ -121,8 +109,7 @@ const Stock = (props) => {
             return array;
           }, []);
 
-          return <MuiThemeProvider theme={getMuiTheme()}>
-            <MUIDataTable
+          return <MUIDataTable
               title={<>
                 <Button color="primary"
                         to="/stock/add"
@@ -136,8 +123,7 @@ const Stock = (props) => {
               </>}
               data={newData}
               columns={columns}
-              options={options}/>
-          </MuiThemeProvider>;
+              options={options}/>;
         }}
       </Query>
     </div>

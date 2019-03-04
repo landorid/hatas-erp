@@ -34,16 +34,6 @@ const WORKSHEETS_SQUERY = gql`
   }
 `;
 
-const getMuiTheme = () => createMuiTheme({
-  overrides: {
-    MUIDataTableBodyCell: {
-      root: {
-        cursor: 'pointer',
-      },
-    },
-  },
-});
-
 const Worksheets = props => {
   const { history } = props;
 
@@ -120,16 +110,14 @@ const Worksheets = props => {
             return array;
           }, []);
 
-          return <MuiThemeProvider theme={getMuiTheme()}>
-            <MUIDataTable
+          return  <MUIDataTable
               title={<Button color="primary"
                              to="/worksheet/add"
                              component={Link}
                              variant="contained">Új Munkalap</Button>}
               data={newData}
               columns={columns}
-              options={options}/>
-          </MuiThemeProvider>;
+              options={options}/>;
         }}
       </Query>
     </>
