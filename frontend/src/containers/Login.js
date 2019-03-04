@@ -1,8 +1,7 @@
 import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import LoginForm from '../components/form/LoginForm';
-import { Helmet } from 'react-helmet';
-
+import PageTitle from '../components/PageTitle';
 
 const styles = theme => ( {
   main: {
@@ -35,9 +34,7 @@ const Login = (props) => {
 
   return (
       <div className={classes.main}>
-        <Helmet>
-          <title>Bejelentkezés</title>
-        </Helmet>
+        <PageTitle title="Bejelentkezés"/>
         <LoginForm/>
       </div>
   );
