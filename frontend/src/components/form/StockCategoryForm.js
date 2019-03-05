@@ -59,7 +59,7 @@ class StockItemCategory extends React.Component {
       ],
     };
 
-    const formInitValue = data ? {
+    const formInitValue = data.length > 0 ? {
       stockCategories: [...createCategoryTree(data)],
     } : formDefaultValue;
 
@@ -99,7 +99,7 @@ class StockItemCategory extends React.Component {
           },
           update: (cache, payload) => {
             const data = cache.readQuery({ query: STOCKCATEGORIES_QUERY });
-console.log(payload.data);
+
             const newStockItem = {
               id: payload.data.upsertStockCategory.id,
               name: payload.data.upsertStockCategory.name,
@@ -221,9 +221,11 @@ console.log(payload.data);
               </Grid>
               <Grid item xs={12} sm={6} lg={7}>
                 <div>
+                  {values.stockCategories.length > 0 &&
                   <Typography
                     className={classes.title}
                     variant="h6">{values.stockCategories[this.state.activeCategory].name}</Typography>
+                  }
                   <FieldArray
                     validateOnChange={false}
                     validateOnBlur={false}
@@ -231,9 +233,9 @@ console.log(payload.data);
                     name={`stockCategories[${this.state.activeCategory}].children`}>
                     {arrayHelpers => {
                       const currentCategory = values.stockCategories[this.state.activeCategory];
-                      console.log(currentCategory);
+
                       return ( <div>
-                        {currentCategory && currentCategory.children.length > 0 ? (
+                        {(!!currentCategory && currentCategory.children.length > 0) ? (
                           currentCategory.children.map((item, index) => (
                             <Input name={`stockCategories[${this.state.activeCategory}].children[${index}].name`}
                                    key={index}
