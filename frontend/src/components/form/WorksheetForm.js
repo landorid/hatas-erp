@@ -136,6 +136,7 @@ class WorksheetForm extends React.Component {
 
     const formOnSubmit = async (values, { setSubmitting, setErrors, resetForm }) => {
       const productsToDelete = [];
+      const tagsToDisconnect = [];
 
       if (data) {
         data.products.forEach(item => {
@@ -143,6 +144,16 @@ class WorksheetForm extends React.Component {
             productsToDelete.push({ id: item.id });
           }
         });
+
+        data.tags.forEach(item => {
+          console.log(item);
+          if (!values.tags.some(tag => tag.value !== 'newItem' && ( tag.value === item.value ))) {
+            tagsToDisconnect.push({ id: item.value });
+          }
+        });
+        
+        console.log(tagsToDisconnect);
+        console.log(values.tags);
       }
 
       const createData = {
@@ -156,10 +167,10 @@ class WorksheetForm extends React.Component {
         cover: values.cover,
         status: values.status,
         customer: {
-          connect: values.customer.value !== "newItem" ? { id: values.customer.value } : undefined,
-          create: values.customer.value === "newItem" ? {
+          connect: values.customer.value !== 'newItem' ? { id: values.customer.value } : undefined,
+          create: values.customer.value === 'newItem' ? {
             name: values.customer.label,
-          }: undefined,
+          } : undefined,
         },
         tags: {
           connect: values.tags.map(item => ( {
@@ -203,9 +214,13 @@ class WorksheetForm extends React.Component {
           connect: { id: values.customer.value },
         },
         tags: {
-          connect: values.tags.map(item => ( {
+          connect: values.tags.filter(tag => !/newItem/g.test(tag.value)).map(item => ( {
             id: item.value,
           } )),
+          disconnect: tagsToDisconnect,
+          create: values.tags.filter(tag => /newItem/g.test(tag.value)).map(item => ({
+            name: item.label,
+          }))
         },
         products: {
           upsert: values.products.map(product => ( {
