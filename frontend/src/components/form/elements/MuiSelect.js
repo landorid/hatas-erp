@@ -192,6 +192,7 @@ class MuiSelect extends React.PureComponent {
     const hasError = Boolean(touched[field.name] && errors[field.name]) || Boolean(getIn(errors, field.name));
     const errorText = errors[field.name] || getIn(errors, field.name);
     const SelectComponent = creatable ? CreatableSelect : Select;
+
     return (
       <SelectComponent
         {...field}
@@ -233,7 +234,6 @@ class MuiSelect extends React.PureComponent {
 
 MuiSelect.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
   newItem: PropTypes.string,
   name: PropTypes.string,
   isLoading: PropTypes.bool,
@@ -245,4 +245,4 @@ MuiSelect.propTypes = {
   label: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(MuiSelect);
+export default withStyles(styles)(MuiSelect);

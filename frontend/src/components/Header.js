@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PureComponent } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { ApolloConsumer, Mutation } from 'react-apollo';
@@ -99,7 +99,7 @@ const styles = theme => ( {
   },
 } );
 
-class Header extends Component {
+class Header extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {

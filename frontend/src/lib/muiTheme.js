@@ -9,10 +9,6 @@ export default createMuiTheme({
       main: '#00A0E3',
       contrastText: '#ffffff',
     },
-    // secondary: {
-    //   main: '#FDD835',
-    //   contrastText: '#ffffff',
-    // },
   },
   overrides: {
     MUIDataTableBodyCell: {
