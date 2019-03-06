@@ -40,7 +40,7 @@ const styles = (theme) => ( {
 class CustomerInfoDrawerBase extends React.PureComponent {
   static propTypes = {
     classes: PropTypes.object.isRequired,
-    customer: PropTypes.object.isRequired,
+    customer: PropTypes.object,
     loading: PropTypes.bool.isRequired,
   };
 
@@ -55,13 +55,18 @@ class CustomerInfoDrawerBase extends React.PureComponent {
   };
 
   render() {
-    const { classes, customer } = this.props;
+    const { classes, customer, loading } = this.props;
 
-    if (!customer) return '';
+    const toggleButton = (
+      <Button disabled={loading}
+              onClick={this.toggleDrawer('status', true)}>Info</Button>
+    );
+
+    if (loading) return toggleButton;
 
     return (
       <div>
-        <Button onClick={this.toggleDrawer('status', true)}>Info</Button>
+        {toggleButton}
         <Drawer open={this.state.status}
                 anchor="right"
                 onClose={this.toggleDrawer('status', false)}>

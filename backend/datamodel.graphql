@@ -132,4 +132,6 @@ type Worksheet {
   responsible: User! @relation(name: "WorksheetResponsible")
   tags: [Tag]!
   products: [Product]! @relation(name: "ProductOnWorksheet", onDelete: CASCADE)
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }

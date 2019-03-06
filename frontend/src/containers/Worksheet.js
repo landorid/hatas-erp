@@ -41,6 +41,7 @@ const WORKSHEET_QUERY = gql`
     worksheet(where: {id: $id}) {
       id
       name
+      updatedAt
       owner {
         id
       }
@@ -162,6 +163,7 @@ const ComposedWorksheet = adopt({
   customers: ({ single, render }) =>
     <Query query={CUSTOMERS_QUERY}
            children={render}
+           variables={{ where: { status: 1 } }}
            fetchPolicy="cache-first"/>,
   tags: ({ single, render }) =>
     <Query query={TAGS_SQUERY}
@@ -170,6 +172,7 @@ const ComposedWorksheet = adopt({
   users: ({ single, render }) =>
     <Query query={USERS_QUERY}
            children={render}
+           variables={{ where: { status: 1 } }}
            fetchPolicy="cache-first"/>,
   me: ({ single, render }) =>
     <Query query={CURRENT_USER_QUERY}
@@ -180,7 +183,7 @@ const ComposedWorksheet = adopt({
            children={render}
            variables={{ id: single }}
            skip={!single}
-           fetchPolicy="cache-first"/>,
+           fetchPolicy="cache-and-network"/>,
   stock: ({ single, render }) =>
     <Query query={STOCK_ITEMS_QUERY}
            children={render}
@@ -193,7 +196,6 @@ const ComposedWorksheet = adopt({
 
 const Worksheet = props => {
   const singleWorksheet = props.match.params.id;
-
   return (
     <ComposedWorksheet single={singleWorksheet}>
       {({ customers, templates, tags, me, upsertWorksheet, users, worksheet, stock }) => {
@@ -220,4 +222,4 @@ const Worksheet = props => {
 
 Worksheet.propTypes = {};
 
-export default Worksheet;
+export default React.memo(Worksheet);

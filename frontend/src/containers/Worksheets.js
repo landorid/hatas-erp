@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
 import MUIDataTable from 'mui-datatables';
 import Button from '@material-ui/core/Button';
-import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import PageTitle from '../components/PageTitle';
 import TableLoading from '../components/table/elements/TableLoading';
 import { tableLabels } from '../config';
@@ -13,7 +11,7 @@ import Chip from '@material-ui/core/Chip';
 
 const WORKSHEETS_SQUERY = gql`
   query WORKSHEETS_SQUERY {
-    worksheets {
+    worksheets(orderBy: createdAt_DESC) {
       id
       name
       customer {

@@ -27,6 +27,8 @@ export const fieldTypes = [
   { id: 'textarea', name: 'Szövegterület' },
   { id: 'stockitem', name: 'Alapanyag' },
   { id: 'deadline', name: 'Határidő' },
+  { id: 'hours', name: 'Munkaóra' },
+  { id: 'money', name: 'Pénzösszeg' },
 ];
 
 export const tableLabels = {

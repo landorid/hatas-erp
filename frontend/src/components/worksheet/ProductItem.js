@@ -74,7 +74,8 @@ const ProductItem = (props) => {
             return (
               <div style={{ width: '100%' }}>
                 {data.fields.map((field, index) => {
-                  if (field.type === 'text' || field.type === 'textarea') {
+                  if (field.type === 'text' || field.type === 'textarea'
+                    || field.type === 'money' || field.type === 'hours') {
                     return (
                       <Input name={`products[${item}].fields[${index}].value`}
                              label={field.name}

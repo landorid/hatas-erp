@@ -51,31 +51,36 @@ const formScheme = Yup.object().shape({
   cover: Yup.string(),
   products: Yup.array().min(1),
   status: Yup.string().required(),
+  responsible: Yup.object().shape({
+    label: Yup.string(),
+    value: Yup.string().required(),
+  }).required(),
 });
 
 class WorksheetForm extends React.Component {
   render() {
     const { data, classes, templates, me, customers, tags, mutation, users, stock } = this.props;
     const updatedAt = data ? data.updatedAt : null;
-
     //rebase laoded data to form
+    const newData = {...data};
+
     if (data) {
-      data.customer = {
+      newData.customer = {
         value: data.customer.id,
         label: data.customer.name,
       };
 
-      data.responsible = {
+      newData.responsible = {
         value: data.responsible.id,
         label: `${data.responsible.lastName} ${data.responsible.firstName}`,
       };
 
-      data.tags = data.tags.map(item => ( {
+      newData.tags = data.tags.map(item => ( {
         value: item.id,
         label: item.name,
       } ));
 
-      data.products = data.products.map(item => ( {
+      newData.products = data.products.map(item => ( {
         id: item.id,
         template: {
           ...item.template,
@@ -91,6 +96,15 @@ class WorksheetForm extends React.Component {
             } : '';
 
           } else {
+            //Check if there was template update
+            if (!item.fields[index]) {
+              item.fields[index] = {
+                id: -1,
+                value: '',
+                __typename: 'ProductData',
+              };
+            }
+
             value = item.fields[index].value;
           }
 
@@ -101,7 +115,6 @@ class WorksheetForm extends React.Component {
           } );
         }),
       } ));
-
     }
 
     const formDefaultValue = {
@@ -146,14 +159,10 @@ class WorksheetForm extends React.Component {
         });
 
         data.tags.forEach(item => {
-          console.log(item);
           if (!values.tags.some(tag => tag.value !== 'newItem' && ( tag.value === item.value ))) {
             tagsToDisconnect.push({ id: item.value });
           }
         });
-        
-        console.log(tagsToDisconnect);
-        console.log(values.tags);
       }
 
       const createData = {
@@ -189,14 +198,8 @@ class WorksheetForm extends React.Component {
                   connect: { id: item.template.fields[index].id },
                 },
               } )),
-              // connect: item.fields.map(item => ( {
-              //   id: item.id,
-              // } )),
             },
           } )),
-          // connect: values.products.map(item => ( {
-          //   id: item.id,
-          // } )),
         },
       };
 
@@ -218,9 +221,9 @@ class WorksheetForm extends React.Component {
             id: item.value,
           } )),
           disconnect: tagsToDisconnect,
-          create: values.tags.filter(tag => /newItem/g.test(tag.value)).map(item => ({
+          create: values.tags.filter(tag => /newItem/g.test(tag.value)).map(item => ( {
             name: item.label,
-          }))
+          } )),
         },
         products: {
           upsert: values.products.map(product => ( {
@@ -283,12 +286,17 @@ class WorksheetForm extends React.Component {
     };
 
     return (
-      <Formik initialValues={data || formDefaultValue}
+      <Formik initialValues={newData || formDefaultValue}
               validateOnChange={false}
               validateOnBlur={false}
               validationSchema={formScheme}
               onSubmit={formOnSubmit}>
         {({ isSubmitting, dirty, values, setFieldValue, errors }) => {
+          let customerInfo = null;
+
+          if (values.customer && values.customer.value && ( values.customer.value !== 'newItem' )) {
+            customerInfo = <CustomerInfoDrawer customer={values.customer.value}/>;
+          }
 
           return ( <FormContainer>
             <Grid container spacing={16}>
@@ -310,11 +318,10 @@ class WorksheetForm extends React.Component {
                            newItem="Új ügyfél:"
                            name="customer"
                            label="Ügyfél"
-                           creatable
+                           creatable={!!!data}
                            options={customerList}
                            type="text"/>
-                {values.customer && ( values.customer.value !== 'newItem' )
-                && <CustomerInfoDrawer customer={values.customer.value}/>}
+                {customerInfo}
 
                 <FastField component={MuiSelect}
                            newItem="Új címke:"
