@@ -1,5 +1,6 @@
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const Mutation = require('./src/resolvers/Mutation');
 const Query = require('./src/resolvers/Query');
@@ -31,8 +32,15 @@ const server = new ApolloServer({
     apiKey: process.env.ENGINE_API_KEY,
   },
 });
+app.use(cookieParser(), helmet());
 
-app.use(cookieParser(), helmet(), auth);
+// needed for image uploading
+app.use(cors({
+  credentials: true,
+  origin: process.env.FRONTEND_URL,
+}));
+
+app.use(auth);
 
 app.post('/upload', upload.single('data'), function(req, res, next) {
   if (!req.userId) {
@@ -40,12 +48,7 @@ app.post('/upload', upload.single('data'), function(req, res, next) {
     next();
   }
   res.status(201).json({ file: req.file.location });
-  next();
-});
-
-app.get('/test', function(req, res, next) {
-  console.log('okés');
-  next();
+  // next();
 });
 
 server.applyMiddleware({
@@ -55,10 +58,8 @@ server.applyMiddleware({
     credentials: true,
     origin: process.env.FRONTEND_URL,
   },
-}); // app is from an existing express app
+});
 
-// This `listen` method launches a web-server.  Existing apps
-// can utilize middleware options, which we'll discuss later.
 app.listen({ port: process.env.PORT || 4000 }, () => {
     console.log(`Server is now runnon on port 
       http://localhost:${process.env.PORT}${server.graphqlPath}`);
