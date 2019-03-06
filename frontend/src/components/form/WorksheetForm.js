@@ -156,7 +156,10 @@ class WorksheetForm extends React.Component {
         cover: values.cover,
         status: values.status,
         customer: {
-          connect: { id: values.customer.value },
+          connect: values.customer.value !== "newItem" ? { id: values.customer.value } : undefined,
+          create: values.customer.value === "newItem" ? {
+            name: values.customer.label,
+          }: undefined,
         },
         tags: {
           connect: values.tags.map(item => ( {
