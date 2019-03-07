@@ -286,7 +286,7 @@ class WorksheetForm extends React.Component {
     };
 
     return (
-      <Formik initialValues={newData || formDefaultValue}
+      <Formik initialValues={data ? newData : formDefaultValue}
               validateOnChange={false}
               validateOnBlur={false}
               validationSchema={formScheme}

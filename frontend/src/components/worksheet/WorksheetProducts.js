@@ -63,7 +63,7 @@ const WorksheetProducts = (props) => {
   } ));
 
   return ( <>
-    {values.products.map((item, index) => (
+    { values.products.map((item, index) => (
       <ProductItem
         remove={remove}
         errors={errors}

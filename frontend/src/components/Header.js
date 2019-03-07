@@ -161,8 +161,8 @@ class Header extends PureComponent {
         <List>
           {[
             { name: 'Felhasználók', icon: <UsersIcon/>, to: '/users' },
-            { name: 'Statisztika', icon: <StatIcon/>, to: '/statistic' },
-            { name: 'Beállítások', icon: <SettingsIcon/>, to: '/settings' },
+            // { name: 'Statisztika', icon: <StatIcon/>, to: '/statistic' },
+            // { name: 'Beállítások', icon: <SettingsIcon/>, to: '/settings' },
           ].map(item => (
             <ListItem key={item.name} to={item.to} component={NavLink} onClick={this.closeDrawerMenu} button>
               <ListItemIcon>{item.icon}</ListItemIcon>

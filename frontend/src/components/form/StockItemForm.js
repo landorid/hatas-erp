@@ -1,5 +1,5 @@
 import React from 'react';
-import { FastField, Formik } from 'formik';
+import { FastField, Field, Formik } from 'formik';
 import * as Yup from 'yup';
 import * as PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
@@ -121,7 +121,7 @@ const StockItemForm = (props) => {
                 </FastField>
               </Grid>
               <Grid item xs={12} sm={6} lg={4}>
-                <FastField type="text"
+                <Field type="text"
                            name="subcategory"
                            label="Alkategória"
                            component={MuiInput}
@@ -140,7 +140,7 @@ const StockItemForm = (props) => {
                       {item.name}
                     </MenuItem>,
                   )}
-                </FastField>
+                </Field>
               </Grid>
               <Grid item xs={12} sm={6} lg={4}>
                 <Input name="quantity"

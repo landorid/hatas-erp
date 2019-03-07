@@ -59,7 +59,7 @@ class CustomerInfoDrawerBase extends React.PureComponent {
 
     const toggleButton = (
       <Button disabled={loading}
-              onClick={this.toggleDrawer('status', true)}>Info</Button>
+              onClick={this.toggleDrawer('status', true)}>Ügyfél információ</Button>
     );
 
     if (loading) return toggleButton;
