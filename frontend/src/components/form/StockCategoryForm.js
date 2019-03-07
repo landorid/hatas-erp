@@ -221,7 +221,7 @@ class StockItemCategory extends React.Component {
               </Grid>
               <Grid item xs={12} sm={6} lg={7}>
                 <div>
-                  {values.stockCategories.length > 0 &&
+                  {values.stockCategories.length > 0 && values.stockCategories[this.state.activeCategory] &&
                   <Typography
                     className={classes.title}
                     variant="h6">{values.stockCategories[this.state.activeCategory].name}</Typography>
@@ -235,32 +235,35 @@ class StockItemCategory extends React.Component {
                       const currentCategory = values.stockCategories[this.state.activeCategory];
 
                       return ( <div>
-                        {(!!currentCategory && currentCategory.children.length > 0) ? (
-                          currentCategory.children.map((item, index) => (
-                            <Input name={`stockCategories[${this.state.activeCategory}].children[${index}].name`}
-                                   key={index}
-                                   margin="dense"
-                                   variant="standard"
-                                   autoComplete="off"
-                                   noFast
-                                   InputProps={{
-                                     endAdornment: (
-                                       <InputAdornment variant="filled" position="end">
-                                         <IconButton
-                                           aria-label="Törlés"
-                                           onClick={() => deleteItem(arrayHelpers.remove, index,
-                                             values.stockCategories[this.state.activeCategory].children[index].id)}
-                                         >
-                                           <Remove/>
-                                         </IconButton>
-                                       </InputAdornment>
-                                     ),
-                                   }}
-                            />
-                          ))
+                        {( currentCategory && currentCategory.children.length > 0 ) ? (
+                          currentCategory.children.map((item, index) => {
+                            console.log(item);
+                            return (
+                              <Input name={`stockCategories[${this.state.activeCategory}].children[${index}].name`}
+                                     key={index}
+                                     margin="dense"
+                                     variant="standard"
+                                     autoComplete="off"
+                                     noFast
+                                     InputProps={{
+                                       endAdornment: (
+                                         <InputAdornment variant="filled" position="end">
+                                           <IconButton
+                                             aria-label="Törlés"
+                                             onClick={() => deleteItem(arrayHelpers.remove, index,
+                                               values.stockCategories[this.state.activeCategory].children[index].id)}
+                                           >
+                                             <Remove/>
+                                           </IconButton>
+                                         </InputAdornment>
+                                       ),
+                                     }}
+                              />
+                            );
+                          })
 
                         ) : null}
-                        {currentCategory.id ?
+                        {currentCategory && currentCategory.id ?
                           <Button
                             color="primary"
                             onClick={() => arrayHelpers.push({
