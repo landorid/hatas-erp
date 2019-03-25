@@ -25,7 +25,7 @@ const styles = {
 
 const WorksheetItem = props => {
   const { classes, item } = props;
-  console.log(item);
+
   return (
     <Card>
       {item.cover &&

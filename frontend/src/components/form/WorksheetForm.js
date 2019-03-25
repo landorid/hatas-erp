@@ -159,8 +159,8 @@ class WorksheetForm extends React.Component {
         });
 
         data.tags.forEach(item => {
-          if (!values.tags.some(tag => tag.value !== 'newItem' && ( tag.value === item.value ))) {
-            tagsToDisconnect.push({ id: item.value });
+          if (!values.tags.some(tag => tag.value !== 'newItem' && ( tag.value === item.id ))) {
+            tagsToDisconnect.push({ id: item.id });
           }
         });
       }
