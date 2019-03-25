@@ -7,6 +7,7 @@ import gql from 'graphql-tag';
 import { CUSTOMERS_QUERY } from './Customers';
 import { TAGS_SQUERY } from './Tags';
 import { CURRENT_USER_QUERY } from '../components/User';
+import ErrorMessage from '../components/ErrorMessage';
 
 const PRODUCTTEMPLATES_SQUERY = gql`
   query PRODUCTTEMPLATES_SQUERY {
@@ -199,11 +200,13 @@ const Worksheet = props => {
   return (
     <ComposedWorksheet single={singleWorksheet}>
       {({ customers, templates, tags, me, upsertWorksheet, users, worksheet, stock }) => {
+
         if (templates.loading || customers.loading || worksheet.loading
           || tags.loading || me.loading || users.loading || stock.loading ) return '';
 
         return (
           <>
+            <ErrorMessage error={upsertWorksheet.result.error}/>
             <PageTitle title={singleWorksheet ? worksheet.data.worksheet.name : 'Új munkalap'}/>
             <WorksheetForm customers={customers.data.customers}
                            tags={tags.data.tags}

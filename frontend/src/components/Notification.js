@@ -111,7 +111,7 @@ class Notification extends React.Component {
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
-          horizontal: 'left',
+          horizontal: 'right',
         }}
         open={this.state.open}
         autoHideDuration={4000}
