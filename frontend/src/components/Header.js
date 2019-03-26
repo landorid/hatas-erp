@@ -9,11 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import UsersIcon from '@material-ui/icons/SupervisedUserCircle';
-import StatIcon from '@material-ui/icons/TrendingUp';
 import RefreshIcon from '@material-ui/icons/Refresh';
-import SettingsIcon from '@material-ui/icons/Settings';
 import Munkalap from '@material-ui/icons/Assignment';
-import Feladatok from '@material-ui/icons/Event';
 import People from '@material-ui/icons/People';
 import LocalShipping from '@material-ui/icons/LocalShipping';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -106,6 +103,7 @@ class Header extends PureComponent {
       drawerOpen: false,
       loading: false,
       anchorEl: null,
+      reloadQueries: false,
     };
   }
 
@@ -125,9 +123,20 @@ class Header extends PureComponent {
     this.setState({ drawerOpen: false });
   };
 
+  reloadQueries = (client) => {
+    this.setState({ reloadQueries: true });
+    client.resetStore().then(() => {
+      this.setState({ reloadQueries: false });
+    });
+
+    setTimeout(() => {
+      this.setState({ reloadQueries: false });
+    }, 7500);
+  };
+
   render() {
     const { classes } = this.props;
-    const { anchorEl } = this.state;
+    const { anchorEl, reloadQueries } = this.state;
     const open = Boolean(anchorEl);
 
     const renderDrawer = (
@@ -140,7 +149,7 @@ class Header extends PureComponent {
           {[
             { name: 'Irányítópult', icon: <Dashboard/>, to: '/' },
             { name: 'Munkalapok', icon: <Munkalap/>, to: '/worksheets' },
-            { name: 'Termékek', icon: <Products/>, to: '/products'},
+            { name: 'Termékek', icon: <Products/>, to: '/products' },
             { name: 'Ügyfelek', icon: <People/>, to: '/customers/all/1' },
             { name: 'Beszállítók', icon: <LocalShipping/>, to: '/suppliers' },
             { name: 'Alapanyagok', icon: <Store/>, to: '/stock' },
@@ -187,8 +196,10 @@ class Header extends PureComponent {
             <div className={classes.grow}/>
             <ApolloConsumer>
               {client => (
-                <IconButton color="inherit" onClick={() => client.resetStore()}>
-                  {this.state.loading ?
+                <IconButton color="inherit"
+                            disabled={reloadQueries}
+                            onClick={() => this.reloadQueries(client)}>
+                  {this.state.reloadQueries ?
                     <CircularProgress className={classes.progress} color="inherit" size={24}/> :
                     <RefreshIcon/>
                   }
