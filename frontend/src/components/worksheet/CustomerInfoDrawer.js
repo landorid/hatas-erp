@@ -12,7 +12,7 @@ import { SINGLE_CUSTOMER_QUERY } from '../../containers/Customer';
 import CustomerInfoContent from './CustomerInfoContent';
 import gql from 'graphql-tag';
 import WorksheetItem from '../WorksheetItem';
-import WorksheetLoading from './WorksheetLoading';
+import WorksheetsLoading from './WorksheetsLoading';
 
 const styles = (theme) => ( {
   infoBar: {
@@ -130,7 +130,7 @@ class CustomerInfoDrawerBase extends React.PureComponent {
               <Query query={WORKSHEETS_BY_CUSTOMER}
                      variables={{ customerId: customer.id, currentWorksheet }}>
                 {({ data, loading }) => {
-                  if (loading) return <WorksheetLoading/>;
+                  if (loading) return <WorksheetsLoading/>;
                   if (data.worksheets.length < 1) return ( <div className={classes.noResultError}>
                     <NoMoney/>
                     <Typography variant="body1"

@@ -1,7 +1,7 @@
 import React from 'react';
 import ContentLoader from 'react-content-loader';
 
-const WorksheetLoading = () => (
+const WorksheetsLoading = () => (
   <ContentLoader
     height={272}
     width={260}
@@ -16,4 +16,4 @@ const WorksheetLoading = () => (
   </ContentLoader>
 );
 
-export default WorksheetLoading;
+export default WorksheetsLoading;
