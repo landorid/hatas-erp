@@ -6,7 +6,7 @@ import { CURRENT_USER_QUERY } from '../components/User';
 import Query from 'react-apollo/Query';
 import WorksheetItem from '../components/WorksheetItem';
 import Grid from '@material-ui/core/es/Grid';
-import WorksheetLoading from '../components/worksheet/WorksheetLoading';
+import WorksheetsLoading from '../components/worksheet/WorksheetsLoading';
 
 const CURRENT_USER_WORKSHEET_QUERY = gql`
   query CURRENT_USER_WORKSHEET_QUERY($where: WorksheetWhereInput) {
@@ -58,9 +58,9 @@ const Home = () => {
           <ComposedWorksheet>
             {({ worksheet: { data, loading } }) => {
               if (loading) return [...Array(4).keys()].map(item =>
-                <Grid item xs={12} sm={12} lg={6} xl={4} key={item}> <WorksheetLoading/> </Grid>);
+                <Grid item xs={12} sm={12} lg={6} xl={4} key={item}> <WorksheetsLoading/> </Grid>);
 
-              if (loading) return <WorksheetLoading/>;
+              if (loading) return <WorksheetsLoading/>;
               if (!data.worksheets) return '';
 
               return ( data.worksheets.map((item, index) =>
