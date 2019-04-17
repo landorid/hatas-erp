@@ -71,7 +71,7 @@ const WorksheetProducts = (props) => {
         me={me}
         stock={stock}
         data={values.products[index]}
-        key={index}/>
+        key={values.products[index].id}/>
     ))}
 
     {!values.products.length > 0 &&
@@ -111,4 +111,4 @@ WorksheetProducts.propTypes = {
   me: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(WorksheetProducts);
+export default  withStyles(styles)(WorksheetProducts);

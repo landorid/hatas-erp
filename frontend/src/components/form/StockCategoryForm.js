@@ -237,10 +237,10 @@ class StockItemCategory extends React.Component {
                       return ( <div>
                         {( currentCategory && currentCategory.children.length > 0 ) ? (
                           currentCategory.children.map((item, index) => {
-                            console.log(item);
+                            const currentId = values.stockCategories[this.state.activeCategory].children[index].id;
                             return (
                               <Input name={`stockCategories[${this.state.activeCategory}].children[${index}].name`}
-                                     key={index}
+                                     key={currentId}
                                      margin="dense"
                                      variant="standard"
                                      autoComplete="off"
@@ -250,8 +250,7 @@ class StockItemCategory extends React.Component {
                                          <InputAdornment variant="filled" position="end">
                                            <IconButton
                                              aria-label="Törlés"
-                                             onClick={() => deleteItem(arrayHelpers.remove, index,
-                                               values.stockCategories[this.state.activeCategory].children[index].id)}
+                                             onClick={() => deleteItem(arrayHelpers.remove, index, currentId)}
                                            >
                                              <Remove/>
                                            </IconButton>

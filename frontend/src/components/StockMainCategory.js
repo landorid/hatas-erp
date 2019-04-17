@@ -17,7 +17,7 @@ const StockMainCategory = props => {
     <div>
       {form.values.stockCategories && form.values.stockCategories.length > 0 ? (
         form.values.stockCategories.map((item, index) => (
-          <StockMainCategoryItem key={index}
+          <StockMainCategoryItem key={item.id}
                                  index={index}
                                  {...props}/>
         ))
@@ -31,6 +31,9 @@ const StockMainCategory = props => {
   );
 };
 
-StockMainCategory.propTypes = {};
+StockMainCategory.propTypes = {
+  push: PropTypes.func.isRequired,
+  form: PropTypes.object.isRequired,
+};
 
 export default withStyles(style)(StockMainCategory);
