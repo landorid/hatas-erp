@@ -9,6 +9,7 @@ import { TAGS_SQUERY } from './Tags';
 import { CURRENT_USER_QUERY } from '../components/User';
 import ErrorMessage from '../components/ErrorMessage';
 import { Redirect } from 'react-router-dom';
+import WorksheetLoading from '../components/worksheet/WorksheetLoading';
 
 const PRODUCTTEMPLATES_SQUERY = gql`
   query PRODUCTTEMPLATES_SQUERY {
@@ -203,9 +204,13 @@ const Worksheet = props => {
       {({ customers, templates, tags, me, upsertWorksheet, users, worksheet, stock }) => {
 
         if (templates.loading || customers.loading || worksheet.loading
-          || tags.loading || me.loading || users.loading || stock.loading) return '';
+          || tags.loading || me.loading || users.loading || stock.loading) return <>
+          <PageTitle title={' ...'}/>
+          <WorksheetLoading/>
+        </>;
 
-        if (!singleWorksheet && upsertWorksheet.result.data && !upsertWorksheet.result.loading) return <Redirect to={`/worksheet/${upsertWorksheet.result.data.upsertWorksheet.id}`}/>;
+        if (!singleWorksheet && upsertWorksheet.result.data && !upsertWorksheet.result.loading) return <Redirect
+          to={`/worksheet/${upsertWorksheet.result.data.upsertWorksheet.id}`}/>;
         if (singleWorksheet && !worksheet.data.worksheet) return <Redirect to={`/worksheets/`}/>;
 
         return (
