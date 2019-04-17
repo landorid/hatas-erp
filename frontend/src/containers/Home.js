@@ -6,6 +6,7 @@ import { CURRENT_USER_QUERY } from '../components/User';
 import Query from 'react-apollo/Query';
 import WorksheetItem from '../components/WorksheetItem';
 import Grid from '@material-ui/core/es/Grid';
+import WorksheetLoading from '../components/worksheet/WorksheetLoading';
 
 const CURRENT_USER_WORKSHEET_QUERY = gql`
   query CURRENT_USER_WORKSHEET_QUERY($where: WorksheetWhereInput) {
@@ -44,20 +45,26 @@ const ComposedWorksheet = adopt({
 
 const Home = () => {
   return (
-    <div>
+    <div style={{padding: 8}}>
       <PageTitle title="Irányítópult"/>
 
-      <Grid container spacing={16} alignItems="stretch">
+      <Grid container
+            spacing={16}
+            alignItems="stretch">
         <Grid container item
               alignItems="stretch"
               xs={12} sm={12} md={6} lg={8}
               spacing={16}>
           <ComposedWorksheet>
             {({ worksheet: { data, loading } }) => {
-              if (loading && !data.worksheets) return '';
+              if (loading) return [...Array(4).keys()].map(item =>
+                <Grid item xs={12} sm={12} lg={6} xl={4} key={item}> <WorksheetLoading/> </Grid>);
+
+              if (loading) return <WorksheetLoading/>;
+              if (!data.worksheets) return '';
 
               return ( data.worksheets.map((item, index) =>
-                <Grid item xs={12} sm={12} lg={4} key={index}>
+                <Grid item xs={12} sm={12} lg={6} xl={4} key={index}>
                   <WorksheetItem item={item}/>
                 </Grid>,
               ) );
