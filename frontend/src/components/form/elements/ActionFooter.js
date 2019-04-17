@@ -20,7 +20,7 @@ const style = (theme) => ( {
   },
 } );
 
-const ActionFooter = ({ classes, submitting, dirty, updatedAt }) => (
+const ActionFooter = ({ classes, submitting, dirty, updatedAt, children }) => (
   <div className={classes.root}>
     <Button type="submit"
             variant="contained"
@@ -28,6 +28,7 @@ const ActionFooter = ({ classes, submitting, dirty, updatedAt }) => (
             disabled={submitting || !dirty}>
       Ment{!dirty ? 've' : 'és'}
     </Button>
+    {children && children(submitting, dirty, updatedAt)}
     {updatedAt && <Typography variant="caption" color="textSecondary" className={classes.updatedAt}>
       Utolsó módosítás: {distanceInWordsToNow(
       new Date(updatedAt),
@@ -43,6 +44,7 @@ ActionFooter.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
+  children: PropTypes.func,
 };
 
 export default withStyles(style)(React.memo(ActionFooter));
