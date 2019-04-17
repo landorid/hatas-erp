@@ -20,6 +20,7 @@ import { handleErrors } from '../../lib/utils';
 import MuiInput from './elements/MuiInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import { status } from '../../config';
+import Button from '@material-ui/core/Button';
 
 const styles = (theme) => ( {
   imageContainer: {
@@ -39,6 +40,9 @@ const styles = (theme) => ( {
     width: theme.spacing.unit * 4,
     height: theme.spacing.unit * 4,
     minHeight: theme.spacing.unit * 4,
+  },
+  closeProjectButton: {
+    marginLeft: theme.spacing.unit,
   },
 } );
 
@@ -62,7 +66,7 @@ class WorksheetForm extends React.Component {
     const { data, classes, templates, me, customers, tags, mutation, users, stock } = this.props;
     const updatedAt = data ? data.updatedAt : null;
     //rebase laoded data to form
-    const newData = {...data};
+    const newData = { ...data };
 
     if (data) {
       newData.customer = {
@@ -295,7 +299,8 @@ class WorksheetForm extends React.Component {
           let customerInfo = null;
 
           if (values.customer && values.customer.value && ( values.customer.value !== 'newItem' )) {
-            customerInfo = <CustomerInfoDrawer customer={values.customer.value}/>;
+            customerInfo = <CustomerInfoDrawer currentWorksheet={data.id}
+                                               customer={values.customer.value}/>;
           }
 
           return ( <FormContainer>
@@ -372,7 +377,17 @@ class WorksheetForm extends React.Component {
             {/*<FormikDebug/>*/}
             <ActionFooter submitting={isSubmitting}
                           updatedAt={updatedAt}
-                          dirty={dirty}/>
+                          dirty={dirty}>
+              {(submitting, dirty, updatedAt) => updatedAt ? (
+                <Button onClick={() => console.log('submitted')}
+                        variant="contained"
+                        color="secondary"
+                        className={classes.closeProjectButton}
+                        disabled={submitting || dirty}>
+                  Projekt lezárása
+                </Button>
+              ) : ''}
+            </ActionFooter>
           </FormContainer> );
         }}
       </Formik>

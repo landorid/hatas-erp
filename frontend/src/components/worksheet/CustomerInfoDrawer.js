@@ -7,8 +7,12 @@ import Button from '@material-ui/core/Button';
 import { Typography } from '@material-ui/core';
 import Divider from '@material-ui/core/Divider';
 import Edit from '@material-ui/icons/Edit';
+import NoMoney from '@material-ui/icons/MoneyOff';
 import { SINGLE_CUSTOMER_QUERY } from '../../containers/Customer';
 import CustomerInfoContent from './CustomerInfoContent';
+import gql from 'graphql-tag';
+import WorksheetItem from '../WorksheetItem';
+import WorksheetLoading from './WorksheetLoading';
 
 const styles = (theme) => ( {
   infoBar: {
@@ -17,7 +21,6 @@ const styles = (theme) => ( {
   },
   infoContent: {
     padding: theme.spacing.unit * 3,
-    marginBottom: theme.spacing.unit * 2,
   },
   fullList: {
     width: 'auto',
@@ -35,7 +38,40 @@ const styles = (theme) => ( {
   editButton: {
     alignSelf: 'center',
   },
+  noResultError: {
+    textAlign: 'center',
+    color: theme.palette.grey[400],
+  },
+  noResultText: {
+    color: 'inherit',
+  },
+  worksheetWrap: {
+    marginBottom: theme.spacing.unit * 3,
+  },
 } );
+
+const WORKSHEETS_BY_CUSTOMER = gql`
+  query WORKSHEETS_BY_CUSTOMER($customerId: ID!, $currentWorksheet: ID!) {
+    worksheets(where: {customer: {id: $customerId}, id_not: $currentWorksheet}) {
+      id
+      name
+      status
+      cover
+      customer {
+        id
+        name
+      }
+      responsible {
+        id
+        firstName
+        lastName
+      }
+      tags {
+        id
+        name
+      }
+    }
+  }`;
 
 class CustomerInfoDrawerBase extends React.PureComponent {
   static propTypes = {
@@ -55,7 +91,7 @@ class CustomerInfoDrawerBase extends React.PureComponent {
   };
 
   render() {
-    const { classes, customer, loading } = this.props;
+    const { classes, customer, loading, currentWorksheet } = this.props;
 
     const toggleButton = (
       <Button disabled={loading}
@@ -90,6 +126,24 @@ class CustomerInfoDrawerBase extends React.PureComponent {
             </div>
             <Divider/>
 
+            <div className={classes.infoContent}>
+              <Query query={WORKSHEETS_BY_CUSTOMER}
+                     variables={{ customerId: customer.id, currentWorksheet }}>
+                {({ data, loading }) => {
+                  if (loading) return <WorksheetLoading/>;
+                  if (data.worksheets.length < 1) return ( <div className={classes.noResultError}>
+                    <NoMoney/>
+                    <Typography variant="body1"
+                                className={classes.noResultText}>Ez az ügyfél még nem rendelt</Typography>
+                  </div> );
+                  return data.worksheets.map(item => <div key={item.id} className={classes.worksheetWrap}>
+                    <WorksheetItem item={item}/>
+                  </div>);
+                }}
+              </Query>
+            </div>
+            <Divider/>
+
           </div>
         </Drawer>
       </div>
@@ -97,7 +151,7 @@ class CustomerInfoDrawerBase extends React.PureComponent {
   }
 }
 
-const CustomerInfoDrawer = ({ classes, customer }) => {
+const CustomerInfoDrawer = ({ classes, customer, currentWorksheet }) => {
   return (
     <Query query={SINGLE_CUSTOMER_QUERY}
            fetchPolicy="cache-first"
@@ -106,6 +160,7 @@ const CustomerInfoDrawer = ({ classes, customer }) => {
         <CustomerInfoDrawerBase
           classes={classes}
           loading={loading}
+          currentWorksheet={currentWorksheet}
           customer={data.customer}/>}
     </Query>
   );
@@ -113,6 +168,7 @@ const CustomerInfoDrawer = ({ classes, customer }) => {
 
 CustomerInfoDrawer.propTypes = {
   customer: PropTypes.string.isRequired,
+  currentWorksheet: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(CustomerInfoDrawer);
