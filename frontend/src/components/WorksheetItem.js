@@ -21,13 +21,21 @@ const styles = {
   chipContainer: {
     marginTop: 12,
   },
+  customCard: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardActions: {
+    marginTop: 'auto'
+  }
 };
 
 const WorksheetItem = props => {
   const { classes, item } = props;
 
   return (
-    <Card>
+    <Card className={classes.customCard}>
       {item.cover &&
       <CardActionArea component={Link} to={`/worksheet/${item.id}`}>
         <CardMedia
@@ -53,7 +61,7 @@ const WorksheetItem = props => {
         </div>
 
       </CardContent>
-      <CardActions>
+      <CardActions className={classes.cardActions}>
         <Button size="small"
                 color="primary"
                 component={Link}

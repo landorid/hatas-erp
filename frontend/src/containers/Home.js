@@ -47,10 +47,11 @@ const Home = () => {
     <div>
       <PageTitle title="Irányítópult"/>
 
-      <Grid container spacing={16} >
+      <Grid container spacing={16} alignItems="stretch">
         <Grid container item
+              alignItems="stretch"
               xs={12} sm={12} md={6} lg={8}
-              spacing={16} alignItems="flex-end">
+              spacing={16}>
           <ComposedWorksheet>
             {({ worksheet: { data, loading } }) => {
               if (loading && !data.worksheets) return '';
