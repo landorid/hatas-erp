@@ -48,7 +48,6 @@ app.post('/upload', upload.single('data'), function(req, res, next) {
     next();
   }
   res.status(201).json({ file: req.file.location });
-  // next();
 });
 
 server.applyMiddleware({

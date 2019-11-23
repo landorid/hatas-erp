@@ -35,9 +35,7 @@ const queries = {
       return null;
     }
 
-    return await prisma.query.user({
-      where: { id: req.userId },
-    }, info);
+    return await prisma.query.user({ where: { id: req.userId }, }, info);
   },
 };
 

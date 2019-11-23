@@ -13,10 +13,6 @@ const styles = (theme) => ( {
 } );
 
 class DisplayError extends React.Component {
-  state = {
-    open: true,
-  };
-
   render() {
     const { error } = this.props;
 
@@ -24,7 +20,6 @@ class DisplayError extends React.Component {
     if (error.networkError && error.networkError.result && error.networkError.result.errors.length) {
       return error.networkError.result.errors.map((error, i) => (
         <Notification key={i} variant={'error'} message={error.message.replace('GraphQL error: ', '')}/>
-
       ));
     }
     return (

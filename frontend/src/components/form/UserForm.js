@@ -93,6 +93,7 @@ const UserForm = (props) => {
     ICEName: '',
     ICEContact: '',
   };
+
   const formScheme = Yup.object().shape({
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
