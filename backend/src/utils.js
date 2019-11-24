@@ -14,9 +14,6 @@ function authHelper(req) {
   if (!req.userId) {
     throw new AuthenticationError('Lépj be!');
   }
-  // if (!req.user.status) {
-  //   throw new AuthenticationError('Archivált felhasználó!');
-  // }
 }
 
 exports.hasPermission = hasPermission;
