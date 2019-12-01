@@ -33,7 +33,7 @@ const StockItemForm = (props) => {
   const formScheme = Yup.object().shape({
     name: Yup.string().required(),
     category: Yup.string().required(),
-    subcategory: Yup.string(),
+    subcategory: Yup.string().required(),
     quantity: Yup.number(),
     quantityUnit: Yup.string(),
     quantityAlarm: Yup.string(),
