@@ -42,7 +42,6 @@ const styles = (theme) => ( {
 
 const ProductFormItem = props => {
   const { data, classes, item, remove, count } = props;
-  console.log(data);
   return (
     <div className={classes.subFieldGroup} key={data.id}>
       <div className={classes.subFieldList}>

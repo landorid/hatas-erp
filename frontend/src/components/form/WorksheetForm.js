@@ -377,15 +377,15 @@ class WorksheetForm extends React.Component {
             <ActionFooter submitting={isSubmitting}
                           updatedAt={updatedAt}
                           dirty={dirty}>
-              {(submitting, dirty, updatedAt) => updatedAt ? (
-                <Button onClick={() => console.log('submitted')}
-                        variant="contained"
-                        color="secondary"
-                        className={classes.closeProjectButton}
-                        disabled={submitting || dirty}>
-                  Projekt lezárása
-                </Button>
-              ) : ''}
+              {/*{(submitting, dirty, updatedAt) => updatedAt ? (*/}
+              {/*  <Button onClick={() => console.log('submitted')}*/}
+              {/*          variant="contained"*/}
+              {/*          color="secondary"*/}
+              {/*          className={classes.closeProjectButton}*/}
+              {/*          disabled={submitting || dirty}>*/}
+              {/*    Projekt lezárása*/}
+              {/*  </Button>*/}
+              {/*) : ''}*/}
             </ActionFooter>
           </FormContainer> );
         }}
