@@ -45,7 +45,7 @@ const client = new ApolloClient({
     }),
     new HttpLink({
       uri,
-      credentials: 'include',
+      credentials: 'include'
     }),
   ]),
   cache: new InMemoryCache({
