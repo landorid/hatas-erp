@@ -14,13 +14,6 @@ module.exports = async function (req, res, next) {
         req.userId = userId
         req.permissions = permissions
       }
-      // put the userId onto the req for future requests to access
-      if (!userId) return next()
-
-      // const user = await prisma.query.user({ where: { id: userId } },
-      //   '{id, status, permissions}');
-      //
-      // req.user = user;
     } catch (e) {
       console.log(e)
     }

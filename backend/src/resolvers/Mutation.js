@@ -17,7 +17,8 @@ const mutations = {
   upsertWorksheet: forwardTo('prisma'),
   async signIn (parent, { email, password }, { res, prisma }, info) {
     //1.check if there si a user with that email
-    const user = await prisma.query.user({ where: { email } }, '{id, permissions, status, password}')
+    const user = await prisma.query.user({ where: { email } },
+      '{id, permissions, status, password}')
     if (!user.id) {
       throw new UserInputError('Form Arguments invalid', {
         invalidArgs: {
@@ -46,7 +47,7 @@ const mutations = {
         userId: user.id,
         permissions: user.permissions,
       },
-      process.env.APP_SECRET)
+      process.env.APP_SECRET, { expiresIn: '1h' })
     //4. set the cookie with the token
     res.cookie('token', token, {
       httpOnly: true,
@@ -63,7 +64,7 @@ const mutations = {
 
   async signUp (parent, { data }, { req, prisma }, info) {
     authHelper(req)
-    hasPermission(req.user, ['ADMIN'])
+    hasPermission(req.permissions, ['ADMIN'])
 
     const user = await prisma.query.user({ where: { email: data.email } })
     if (user) {
