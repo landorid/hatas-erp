@@ -12,7 +12,7 @@ class MuiInput extends PureComponent {
       value: props.field.value,
     };
 
-    this.syncChange = debounce(this.syncChange, 200);
+    this.syncChange = debounce(this.syncChange, 100);
   }
 
   syncChange = (e) => {
