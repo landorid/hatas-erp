@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import ActionFooter from './elements/ActionFooter';
 import { handleErrors } from '../../lib/utils';
 import * as PropTypes from 'prop-types';
+import CustomerInfoDrawer from '../worksheet/CustomerInfoDrawer'
 
 const style = (theme) => ( {
   root: {
@@ -95,6 +96,13 @@ const CustomerForm = (props) => {
                        rowsMax="10"
                        rows="4"
                        multiline/>
+              </Grid>
+              <Grid lg={4}>
+                <div style={{height: 20}}/>
+                {data.id &&
+                <CustomerInfoDrawer currentWorksheet={'newItem'}
+                                    customer={data.id}/>
+                }
               </Grid>
             </Grid>
             <ActionFooter submitting={isSubmitting}
