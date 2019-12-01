@@ -297,9 +297,8 @@ class WorksheetForm extends React.Component {
               onSubmit={formOnSubmit}>
         {({ isSubmitting, dirty, values, setFieldValue, errors }) => {
           let customerInfo = null;
-
           if (values.customer && values.customer.value && ( values.customer.value !== 'newItem' )) {
-            customerInfo = <CustomerInfoDrawer currentWorksheet={data.id}
+            customerInfo = <CustomerInfoDrawer currentWorksheet={data ? data.id : 'newItem'}
                                                customer={values.customer.value}/>;
           }
 
