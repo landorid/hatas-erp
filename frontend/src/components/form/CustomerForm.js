@@ -97,7 +97,7 @@ const CustomerForm = (props) => {
                        rows="4"
                        multiline/>
               </Grid>
-              <Grid lg={4}>
+              <Grid item lg={4}>
                 <div style={{height: 20}}/>
                 {data.id &&
                 <CustomerInfoDrawer currentWorksheet={'newItem'}

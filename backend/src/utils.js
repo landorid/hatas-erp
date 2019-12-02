@@ -1,12 +1,12 @@
 const { AuthenticationError } = require('apollo-server');
 
-function hasPermission(user, permissionsNeeded) {
-  const matchedPermissions = user.permissions.filter(permissionTheyHave =>
+function hasPermission(permissions, permissionsNeeded) {
+  const matchedPermissions = permissions.filter(permissionTheyHave =>
     permissionsNeeded.includes(permissionTheyHave),
   );
 
   if (!matchedPermissions.length) {
-    throw new AuthenticationError(`Szükséges jogkör: ${permissionsNeeded}, amivel rendelkezel: ${user.permissions}`);
+    throw new AuthenticationError(`Szükséges jogkör: ${permissionsNeeded}, amivel rendelkezel: ${permissions}`);
   }
 }
 
